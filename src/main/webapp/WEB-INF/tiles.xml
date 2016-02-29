@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC  
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
+<tiles-definitions>  
+    <!-- Base Define -->
+   
+    
+    
+    <definition name="base.definition" 
+        template="/WEB-INF/pages/layouts/layout.jsp">  
+        <put-attribute name="title" value="" />  
+        <put-attribute name="header" value="/WEB-INF/pages/head.jsp" />  
+        <put-attribute name="head" value="/WEB-INF/pages/header.jsp"></put-attribute>
+        <put-attribute name="menu" value="/WEB-INF/pages/navbar.jsp" />  
+        <put-attribute name="body" value="" />  
+    </definition>  
+ 
+    <!-- Home Page -->
+    <definition name="home" extends="base.definition">  
+        <put-attribute name="title" value="Home Page" />  
+        <put-attribute name="body" value="/WEB-INF/pages/home.jsp" />  
+    </definition>  
+       
+    <!-- ContactUs Page -->
+    <definition name="users" extends="base.definition">  
+        <put-attribute name="title" value="Users" />  
+        <put-attribute name="body" value="/WEB-INF/pages/client/manage/user/users.jsp" />  
+    </definition>  
+    
+    <definition name="orgdefinition" extends="base.definition">  
+        <put-attribute name="title" value="Organization Details" />  
+        <put-attribute name="body" value="/WEB-INF/pages/organization/orgdefinition.jsp" />  
+    </definition>  
+    
+     <definition name="orgSetupScreen" extends="base.definition">  
+        <put-attribute name="title" value="Organization Set Up" />  
+        <put-attribute name="body" value="/WEB-INF/pages/submenus/orgSetupScreen.jsp" />  
+    </definition>  
+    
+     <definition name="uwsetups" extends="base.definition">  
+        <put-attribute name="title" value="Underwriting Parameters" />  
+        <put-attribute name="body" value="/WEB-INF/pages/submenus/setupScreen.jsp" />  
+    </definition>  
+    
+     <definition name="productsdefinition" extends="base.definition">  
+        <put-attribute name="title" value="Products" />  
+        <put-attribute name="body" value="/WEB-INF/pages/products/products.jsp" />  
+    </definition>  
+    
+    <definition name="entities" extends="base.definition">  
+        <put-attribute name="title" value="Entities Search" />  
+        <put-attribute name="body" value="/WEB-INF/pages/entities/entities.jsp" />  
+    </definition>  
+    
+     <definition name="createentity" extends="base.definition">  
+        <put-attribute name="title" value="Entities Details" />  
+        <put-attribute name="body" value="/WEB-INF/pages/entities/entityform.jsp" />  
+    </definition>  
+    
+</tiles-definitions> 
