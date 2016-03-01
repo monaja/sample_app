@@ -1,5 +1,8 @@
 package com.brokersystems.setups.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.setups.model.Bank;
@@ -9,7 +12,6 @@ import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.Organization;
 import com.brokersystems.setups.model.Town;
-import com.brokersystems.setups.model.User;
 
 
 public interface OrganizationService {
@@ -38,4 +40,8 @@ public interface OrganizationService {
 	void deleteOrgBranch(Long branchCode);
 	
 	void deleteOrgBank(Long bankCode);
+
+	Page<Country> findForSelect(String term, Pageable pageable);
+	
+	Page<County> findCountyForSelect(String term, Pageable pageable,long couId);
 }

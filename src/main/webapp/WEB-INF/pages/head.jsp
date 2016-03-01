@@ -25,6 +25,10 @@
 	    
 	    <link rel="stylesheet" href="<c:url value='/libs/css/validation.css' /> ">
 	    
+	     <link href="<c:url value="/libs/select2/select2.css"/>" rel="stylesheet">
+		<link href="<c:url value="/libs/select2/select2-bootstrap.css"/>" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="<c:url value="/libs/bootstrap/select/css/bootstrap-select.min.css"/>" >
+	    
 	    <!-- File Input css -->
         <link href="<c:url value='/libs/fileinput.min.css' /> " rel="stylesheet"/>
         
@@ -45,4 +49,9 @@
 	  <script type="text/javascript" src="<c:url value='/libs/DataTables/media/js/jquery.dataTables.min.js' /> "></script>
 	  
 	 <script type="text/javascript" src="<c:url value='/libs/DataTables/media/js/dataTables.bootstrap.js' /> "></script>
+	 <script type="text/javascript" src="<c:url value="/libs/bootstrap/select/js/bootstrap-select.min.js"/>"></script>
+	 <script src="<c:url value="/libs/select2/select2.js"/>"></script>
+	 <script type="text/javascript" src="<c:url value="/libs/rivets/rivets.js"/>"></script>
+	 
+	
 </head>

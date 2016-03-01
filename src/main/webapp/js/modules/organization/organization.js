@@ -88,7 +88,7 @@ function selectCounty(button){
 function showTownModal(){
 	 var countyUrl = "towns/0"
 	if ($("#txtcountyCode").val() != ''){
-		 countyUrl = "towns/"+$("#txtcountyCode").val();
+		 countyUrl = "towns/"+model.organization.country.couCode;
 	}
     var usersTable = $('#town').DataTable( {
 			"processing": true,
@@ -340,14 +340,60 @@ $(function(){
 				request.always(function(){
 	            });
 			});
+		  //01-March Update
+		  rivets.bind($("#organization_model"), model);
+		  Select2Builder.initAjaxSelect2({
+	            containerId : "country",
+	            sort : 'couName',
+	            change: countryChanged,
+	            formatResult : function(a)
+	            {
+	            	return a.couName
+	            },
+	            formatSelection : function(a)
+	            {
+	            	return a.couName
+	            },
+	            id: "couCode",
+	            width:"300px"
+	        });
 		  
+		  Select2Builder.initAjaxSelect2({
+	            containerId : "county",
+	            sort : 'countyName',
+	            change: countyChanged,
+	            formatResult : function(a)
+	            {
+	            	return a.countyName
+	            },
+	            formatSelection : function(a)
+	            {
+	            	return a.countyName
+	            },
+	            id: "countyId",
+	            width:"300px",
+	            params: {couCode: function(){
+	            	return model.organization.country.couCode;
+	            }}
+	        });
 		  
-		 
-
-
-
-		
-		
-	})
+		  function countryChanged(e, a, v) {
+	            model.organization.country = e.added || {};
+	        }
+		  function countyChanged(e, a, v) {
+	            model.organization.country.county = e.added || {};
+	        }
+	});
 	
-})
+	
+});
+
+var model = {
+		organization: {
+			country:{
+				couCode:"",
+				county:{}
+			}
+	    }
+	    /////////////////////////////
+	};

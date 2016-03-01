@@ -2,27 +2,32 @@ package com.brokersystems.setup.controllers;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.brokersystems.server.datatables.DataTable;
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
+import com.brokersystems.server.exception.BadRequestException;
 import com.brokersystems.server.utils.FileUploadValidator;
+import com.brokersystems.server.validator.OrganizationValidator;
 import com.brokersystems.setups.model.Bank;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
@@ -30,7 +35,6 @@ import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.Organization;
 import com.brokersystems.setups.model.Town;
-import com.brokersystems.setups.model.User;
 import com.brokersystems.setups.service.OrganizationService;
 
 
@@ -60,6 +64,9 @@ public class OrganizationController {
 	
 	 @Autowired
 	 FileUploadValidator fileValidator;
+	 
+	 @Autowired 
+	 OrganizationValidator organizationValidator;
 	 
 	 @InitBinder("organization")
 	    protected void initBinder(WebDataBinder binder) {
@@ -132,6 +139,13 @@ public class OrganizationController {
 	            throws IllegalAccessException {
 	        return orgService.findCountryDatatables(pageable);
 	    }
+	    
+	    @RequestMapping(value = "countries/select", method = RequestMethod.GET)
+		@ResponseBody
+		public Page<Country> select(@RequestParam(value = "term", required = false) String term, Pageable pageable)
+				throws IllegalAccessException {
+			return orgService.findForSelect(term, pageable);
+		}
 	
 	    
 	    @RequestMapping(value = "counties/{couCode}", method = RequestMethod.GET)
@@ -140,6 +154,18 @@ public class OrganizationController {
 	            throws IllegalAccessException {
 	           return orgService.findCountiesByCountry(couCode,pageable);
 	    }
+	    
+	    @RequestMapping(value = "counties/select", method = RequestMethod.GET)
+		@ResponseBody
+		public Page<County> selectCounties(@RequestParam(value = "term", required = false) String term,
+				@RequestParam(value="couCode") Long couCode,
+				Pageable pageable)
+				throws IllegalAccessException, BadRequestException {
+	    	// just a sample
+	    	organizationValidator.validateSelectCountiesForCountry(couCode);
+			return orgService.findCountyForSelect(term, pageable, couCode);
+		}
+	
 	    
 	    
 	    @RequestMapping(value = "towns/{countyCode}", method = RequestMethod.GET)
@@ -214,6 +240,14 @@ public class OrganizationController {
 	        orgService.deleteOrgBank(bankCode);
 
 	     }
+	    	
+	    
+	    @ExceptionHandler(BadRequestException.class)
+	    @ResponseStatus(HttpStatus.BAD_REQUEST)
+	    @ResponseBody
+	    public String handleBadRequestException(BadRequestException ex) {
+	        return ex.getMessage();
+	    }
 	
 
 }

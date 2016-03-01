@@ -2,10 +2,10 @@ package com.brokersystems.setups.service.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,11 +32,8 @@ import com.brokersystems.setups.model.QCurrencies;
 import com.brokersystems.setups.model.QOrgBranch;
 import com.brokersystems.setups.model.QOrganization;
 import com.brokersystems.setups.model.QTown;
-import com.brokersystems.setups.model.QUser;
 import com.brokersystems.setups.model.Town;
-import com.brokersystems.setups.model.User;
 import com.brokersystems.setups.service.OrganizationService;
-import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
 
 @Service
@@ -173,5 +170,22 @@ public class OrganizationServiceImpl implements OrganizationService {
 	public void deleteOrgBank(Long bankCode) {
 		orgBankrepo.delete(bankCode);
 		
+	}
+
+
+	@Override
+    public Page<Country> findForSelect(String term, Pageable pageable) {
+
+        term = "%" + StringUtils.defaultString(term) + "%";
+        return countryRepo.findByCouNameLikeIgnoreCase(term, pageable);
+
+    }
+
+
+	@Override
+	public Page<County> findCountyForSelect(String term, Pageable pageable,
+			long couId) {
+		term = "%" + StringUtils.defaultString(term) + "%";
+		return countyRepo.findByCountyNameLikeIgnoreCaseAndCountyId(term, pageable, couId);
 	}
 }

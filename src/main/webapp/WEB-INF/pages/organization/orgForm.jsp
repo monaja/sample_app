@@ -1,8 +1,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script type="text/javascript" src="<c:url value="/js/modules/utils/select2builder.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/libs/rivets/rivets.js"/>"></script>
 <form:form class="form-horizontal" role="form"  modelAttribute="organization"
                        method="post" action="createOrganization" id="orgForm"
                        enctype="multipart/form-data">
-                   <div class="box-body">
+                   <div class="box-body" id="organization_model">
 				          <div class="spacer"></div>
 				        <input type="submit"  class="btn btn-info" value="Save" >
 				        <hr>
@@ -79,14 +82,13 @@
 				        <div class="col-md-6">
 		                 <label for="countryName" class="control-label col-md-5">Country</label>
 		                    <div class="col-md-7">
-		                     <div class="input-group">
-		                     <form:input  path="address.country.couName" name="countryName" class="form-control" id="countryName" disabled="true"/>
-		                     <form:hidden path="address.country.couCode" id="countryCode"/>
-		                      <span class="input-group-btn">
-						        <button class="btn btn-default" type="button" onclick="showCountryModal();"> 
-						          <i class="fa fa-search"></i>
-						        </button>
-						      </span>
+		                     <div class="form-group">
+		                     <%-- <form:input  path="address.country.couName" name="countryName" class="form-control" id="countryName"/> --%>
+		                     <form:hidden path="address.country.couCode" id="countryCode" rv-value="organization.country.couCode"/>
+		                      <div class="col-md-7">
+				                            <div id="country"
+				                                 select2-url="<c:url value="/protected/organization/countries/select"/>" ></div>
+				               </div >
 		                     </div>                  
 		                 </div>
 		                 </div>
@@ -97,14 +99,13 @@
 				           <div class="col-md-6">
 		                 <label for="countyName" class="control-label col-md-5">County</label>
 		                    <div class="col-md-7">
-		                     <div class="input-group">
-		                     <form:input path="address.county.countyName" name="countyName" class="form-control" id="txtcounty" disabled="true"/>
-		                     <form:hidden path="address.county.countyId" id="txtcountyCode"/>
-		                      <span class="input-group-btn">
-						       <button class="btn btn-default" type="button" onclick="showCountyModal();">
-						          <i class="fa fa-search"></i>
-						        </button>
-						      </span>
+		                     <div class="form-group">
+		                     <%-- <form:input path="address.county.countyName" name="countyName" class="form-control" id="txtcounty" disabled="true"/> --%>
+		                     <form:hidden path="address.county.countyId" rv-value="organization.county.countyId"/>
+		                      <div class="col-md-7">
+				                            <div id="county"
+				                                 select2-url="<c:url value="/protected/organization/counties/select"/>"></div>
+				               </div >
 		                     </div>                  
 		                 </div>
 		                 </div>
