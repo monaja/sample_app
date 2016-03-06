@@ -37,7 +37,7 @@ public class Country implements Serializable {
 	//bi-directional many-to-one association to County
 	 @XmlTransient
 	 @JsonIgnore
-	@OneToMany(mappedBy="country",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="country")
 	private List<County> counties;
 
 	public Country() {

@@ -1,15 +1,5 @@
 package com.brokersystems.setups.service.impl;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.setup.repository.CountryRepository;
@@ -35,157 +25,157 @@ import com.brokersystems.setups.model.QTown;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.service.OrganizationService;
 import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.path.NumberPath;
+import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class OrganizationServiceImpl implements OrganizationService {
-
-	@Autowired
-	private OrganizationRepository orgRepo;
-	
-	@Autowired
-	private CountryRepository countryRepo;
-	
-	@Autowired
-	private CountyRepository countyRepo;
-	
-	@Autowired
-	private TownRepository townRepo;
-	
-	@Autowired
-	private CurrencyRepository currencyrepo;
-	
-	@Autowired
-	private OrgBankRepository orgBankrepo;
-	
-
-	@Autowired
-	private OrgBranchRepository orgBranchrepo;
-	
-		
-	//@Cacheable(value="organizationCache")
-	@Override
-	@Transactional(readOnly = true)
-	public Organization getOrganizationDetails() {
-		List<Organization> orgDetails = orgRepo.findAll();
-		if(!orgDetails.isEmpty())
-			return orgDetails.get(0);
-		else
-		return new Organization();
-	}
-
-
-//	@CacheEvict(value="organizationCache")
-	@Modifying
-	@Transactional(readOnly = false)
-	@Override
-	public void createOrganization(Organization org) {
-		 orgRepo.save(org);
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public DataTablesResult<Country> findCountryDatatables(DataTablesRequest request) throws IllegalAccessException {
-		Page<Country> page =countryRepo.findAll(request.searchPredicate(QCountry.country),request);
-		return new DataTablesResult<Country>(request, page);
-	}
-
-
-	@Override
-	@Transactional(readOnly = true)
-	public DataTablesResult<County> findCountiesByCountry(long countryCode, DataTablesRequest request)
-			throws IllegalAccessException {
-		QCountry country = QCounty.county.country;
-		BooleanExpression pred = country.couCode.eq(countryCode);
-		 Page<County> page = countyRepo.findAll(pred.and(request.searchPredicate(QCounty.county)),request);
-		 return new DataTablesResult<County>(request, page);
-	}
-	
-	
-	@Override
-	@Transactional(readOnly = true)
-	public DataTablesResult<Town> findTownsByCounty(long countyCode, DataTablesRequest request)
-			throws IllegalAccessException {
-		QCounty county = QTown.town.county;
-		BooleanExpression pred = county.countyId.eq(countyCode);
-		 Page<Town> page = townRepo.findAll(pred.and(request.searchPredicate(QTown.town)),request);
-		 return new DataTablesResult<Town>(request, page);
-	}
-
-
-	@Override
-	@Transactional(readOnly = true)
-	public DataTablesResult<Currencies> findCurrencies(DataTablesRequest request) throws IllegalAccessException {
-		Page<Currencies> page  = currencyrepo.findAll(request.searchPredicate(QCurrencies.currencies),request);
-		return new DataTablesResult<>(request, page);
-	}
-
-
-	@Override
-	@Transactional(readOnly = true)
-	public DataTablesResult<OrgBranch> findOrgBranches(long orgCode, DataTablesRequest request)
-			throws IllegalAccessException {
-		QOrganization org = QOrgBranch.orgBranch.organization;
-		BooleanExpression pred = org.orgCode.eq(orgCode);
-		Page<OrgBranch> page = orgBranchrepo.findAll(pred.and(request.searchPredicate(QOrgBranch.orgBranch)),request);
-		return new DataTablesResult<>(request, page);
-	}
-
-
-	@Override
-	@Transactional(readOnly = true)
-	public DataTablesResult<Bank> findOrgBanks(long orgCode, DataTablesRequest request)
-			throws IllegalAccessException {
-		 QOrganization org = QBank.bank.organization;
-		 BooleanExpression pred = org.orgCode.eq(orgCode);
-		 Page<Bank> page = orgBankrepo.findAll(pred.and(request.searchPredicate(QBank.bank)),request);
-		 return new DataTablesResult<>(request, page);
-	}
-
-	@Modifying
-	@Transactional(readOnly = false)
-	@Override
-	public void createOrgBranch(OrgBranch branch) {
-		 orgBranchrepo.save(branch);
-	}
-
-	@Modifying
-	@Transactional(readOnly = false)
-	@Override
-	public void createOrgBank(Bank bank) {
-		orgBankrepo.save(bank);
-		
-	}
-
-	@Modifying
-	@Transactional(readOnly = false)
-	@Override
-	public void deleteOrgBranch(Long branchCode) {
-		orgBranchrepo.delete(branchCode);
-		
-	}
-
-	@Modifying
-	@Transactional(readOnly = false)
-	@Override
-	public void deleteOrgBank(Long bankCode) {
-		orgBankrepo.delete(bankCode);
-		
-	}
-
-
-	@Override
-    public Page<Country> findForSelect(String term, Pageable pageable) {
-
-        term = "%" + StringUtils.defaultString(term) + "%";
-        return countryRepo.findByCouNameLikeIgnoreCase(term, pageable);
-
+public class OrganizationServiceImpl
+  implements OrganizationService
+{
+  @Autowired
+  private OrganizationRepository orgRepo;
+  @Autowired
+  private CountryRepository countryRepo;
+  @Autowired
+  private CountyRepository countyRepo;
+  @Autowired
+  private TownRepository townRepo;
+  @Autowired
+  private CurrencyRepository currencyrepo;
+  @Autowired
+  private OrgBankRepository orgBankrepo;
+  @Autowired
+  private OrgBranchRepository orgBranchrepo;
+  
+  @Transactional(readOnly=true)
+  public Organization getOrganizationDetails()
+  {
+    List<Organization> orgDetails = this.orgRepo.findAll();
+    if (!orgDetails.isEmpty()) {
+      return (Organization)orgDetails.get(0);
     }
-
-
-	@Override
-	public Page<County> findCountyForSelect(String term, Pageable pageable,
-			long couId) {
-		term = "%" + StringUtils.defaultString(term) + "%";
-		return countyRepo.findByCountyNameLikeIgnoreCaseAndCountyId(term, pageable, couId);
-	}
+    return new Organization();
+  }
+  
+  public void createOrganization(Organization org)
+  {
+    this.orgRepo.save(org);
+  }
+  
+  @Transactional(readOnly=true)
+  public DataTablesResult<Country> findCountryDatatables(DataTablesRequest request)
+    throws IllegalAccessException
+  {
+    Page<Country> page = this.countryRepo.findAll(request.searchPredicate(QCountry.country), request);
+    return new DataTablesResult(request, page);
+  }
+  
+  @Transactional(readOnly=true)
+  public DataTablesResult<County> findCountiesByCountry(long countryCode, DataTablesRequest request)
+    throws IllegalAccessException
+  {
+    QCountry country = QCounty.county.country;
+    BooleanExpression pred = country.couCode.eq(Long.valueOf(countryCode));
+    Page<County> page = this.countyRepo.findAll(pred.and(request.searchPredicate(QCounty.county)), request);
+    return new DataTablesResult(request, page);
+  }
+  
+  @Transactional(readOnly=true)
+  public DataTablesResult<Town> findTownsByCounty(long countyCode, DataTablesRequest request)
+    throws IllegalAccessException
+  {
+    QCounty county = QTown.town.county;
+    BooleanExpression pred = county.countyId.eq(Long.valueOf(countyCode));
+    Page<Town> page = this.townRepo.findAll(pred.and(request.searchPredicate(QTown.town)), request);
+    return new DataTablesResult(request, page);
+  }
+  
+  @Transactional(readOnly=true)
+  public DataTablesResult<Currencies> findCurrencies(DataTablesRequest request)
+    throws IllegalAccessException
+  {
+    Page<Currencies> page = this.currencyrepo.findAll(request.searchPredicate(QCurrencies.currencies), request);
+    return new DataTablesResult(request, page);
+  }
+  
+  @Transactional(readOnly=true)
+  public DataTablesResult<OrgBranch> findOrgBranches(long orgCode, DataTablesRequest request)
+    throws IllegalAccessException
+  {
+    QOrganization org = QOrgBranch.orgBranch.organization;
+    BooleanExpression pred = org.orgCode.eq(Long.valueOf(orgCode));
+    Page<OrgBranch> page = this.orgBranchrepo.findAll(pred.and(request.searchPredicate(QOrgBranch.orgBranch)), request);
+    return new DataTablesResult(request, page);
+  }
+  
+  @Transactional(readOnly=true)
+  public DataTablesResult<Bank> findOrgBanks(long orgCode, DataTablesRequest request)
+    throws IllegalAccessException
+  {
+    QOrganization org = QBank.bank.organization;
+    BooleanExpression pred = org.orgCode.eq(Long.valueOf(orgCode));
+    Page<Bank> page = this.orgBankrepo.findAll(pred.and(request.searchPredicate(QBank.bank)), request);
+    return new DataTablesResult(request, page);
+  }
+  
+  @Modifying
+  @Transactional(readOnly=false)
+  public void createOrgBranch(OrgBranch branch)
+  {
+    this.orgBranchrepo.save(branch);
+  }
+  
+  @Modifying
+  @Transactional(readOnly=false)
+  public void createOrgBank(Bank bank)
+  {
+    this.orgBankrepo.save(bank);
+  }
+  
+  @Modifying
+  @Transactional(readOnly=false)
+  public void deleteOrgBranch(Long branchCode)
+  {
+    this.orgBranchrepo.delete(branchCode);
+  }
+  
+  @Modifying
+  @Transactional(readOnly=false)
+  public void deleteOrgBank(Long bankCode)
+  {
+    this.orgBankrepo.delete(bankCode);
+  }
+  
+  public Page<Country> findCountryForSelect(String term, Pageable pageable)
+  {
+    term = "%" + StringUtils.defaultString(term) + "%";
+    return this.countryRepo.findByCouNameLikeIgnoreCase(term, pageable);
+  }
+  
+  public Page<County> findCountyForSelect(String term, Pageable pageable, long couId)
+  {
+    term = "%" + StringUtils.defaultString(term) + "%";
+    Country country = (Country)this.countryRepo.findOne(Long.valueOf(couId));
+    return this.countyRepo.findByCountyNameLikeIgnoreCaseAndCountry(term, pageable, country);
+  }
+  
+  public Page<Town> findTownForSelect(String term, Pageable pageable, long countyId)
+  {
+    term = "%" + StringUtils.defaultString(term) + "%";
+    County county = (County)this.countyRepo.findOne(Long.valueOf(countyId));
+    return this.townRepo.findByCtNameLikeIgnoreCaseAndCounty(term, pageable, county);
+  }
+  
+  public Page<Currencies> findCurrenciesForSelect(String term, Pageable pageable)
+  {
+    term = "%" + StringUtils.defaultString(term) + "%";
+    return this.currencyrepo.findByCurNameLikeIgnoreCase(term, pageable);
+  }
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.brokersystems.setups.model.Country;
 
 @Repository
-public interface CountryRepository extends PagingAndSortingRepository<Country, Integer>, QueryDslPredicateExecutor<Country> {
+public interface CountryRepository extends PagingAndSortingRepository<Country, Long>, QueryDslPredicateExecutor<Country> {
 	
 	Page<Country> findByCouNameLikeIgnoreCase(String countryName,Pageable pageable);
 	

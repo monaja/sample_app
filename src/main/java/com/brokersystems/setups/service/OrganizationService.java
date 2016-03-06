@@ -1,8 +1,5 @@
 package com.brokersystems.setups.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.setups.model.Bank;
@@ -12,36 +9,46 @@ import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.Organization;
 import com.brokersystems.setups.model.Town;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-
-public interface OrganizationService {
-	
-
-     Organization getOrganizationDetails();
-	
-    void createOrganization(Organization org);
-	
-	DataTablesResult<Country> findCountryDatatables(DataTablesRequest request) throws IllegalAccessException;
-	   
-	DataTablesResult<County> findCountiesByCountry(long countryCode,DataTablesRequest request) throws IllegalAccessException;
-	  
-    DataTablesResult<Town> findTownsByCounty(long countyCode, DataTablesRequest request) throws IllegalAccessException;
-	
-	DataTablesResult<Currencies> findCurrencies(DataTablesRequest request) throws IllegalAccessException;
-	
-	DataTablesResult<OrgBranch> findOrgBranches(long orgCode, DataTablesRequest request) throws IllegalAccessException;
-	
-	DataTablesResult<Bank> findOrgBanks(long orgCode, DataTablesRequest request) throws IllegalAccessException;
-	
-	void createOrgBranch(OrgBranch branch);
-	
-	void createOrgBank(Bank bank);
-	
-	void deleteOrgBranch(Long branchCode);
-	
-	void deleteOrgBank(Long bankCode);
-
-	Page<Country> findForSelect(String term, Pageable pageable);
-	
-	Page<County> findCountyForSelect(String term, Pageable pageable,long couId);
+public abstract interface OrganizationService
+{
+  public abstract Organization getOrganizationDetails();
+  
+  public abstract void createOrganization(Organization paramOrganization);
+  
+  public abstract DataTablesResult<Country> findCountryDatatables(DataTablesRequest paramDataTablesRequest)
+    throws IllegalAccessException;
+  
+  public abstract DataTablesResult<County> findCountiesByCountry(long paramLong, DataTablesRequest paramDataTablesRequest)
+    throws IllegalAccessException;
+  
+  public abstract DataTablesResult<Town> findTownsByCounty(long paramLong, DataTablesRequest paramDataTablesRequest)
+    throws IllegalAccessException;
+  
+  public abstract DataTablesResult<Currencies> findCurrencies(DataTablesRequest paramDataTablesRequest)
+    throws IllegalAccessException;
+  
+  public abstract DataTablesResult<OrgBranch> findOrgBranches(long paramLong, DataTablesRequest paramDataTablesRequest)
+    throws IllegalAccessException;
+  
+  public abstract DataTablesResult<Bank> findOrgBanks(long paramLong, DataTablesRequest paramDataTablesRequest)
+    throws IllegalAccessException;
+  
+  public abstract void createOrgBranch(OrgBranch paramOrgBranch);
+  
+  public abstract void createOrgBank(Bank paramBank);
+  
+  public abstract void deleteOrgBranch(Long paramLong);
+  
+  public abstract void deleteOrgBank(Long paramLong);
+  
+  public abstract Page<Country> findCountryForSelect(String paramString, Pageable paramPageable);
+  
+  public abstract Page<County> findCountyForSelect(String paramString, Pageable paramPageable, long paramLong);
+  
+  public abstract Page<Town> findTownForSelect(String paramString, Pageable paramPageable, long paramLong);
+  
+  public abstract Page<Currencies> findCurrenciesForSelect(String paramString, Pageable paramPageable);
 }

@@ -83,11 +83,14 @@
 		                 <label for="countryName" class="control-label col-md-5">Country</label>
 		                    <div class="col-md-7">
 		                     <div class="form-group">
-		                     <%-- <form:input  path="address.country.couName" name="countryName" class="form-control" id="countryName"/> --%>
-		                     <form:hidden path="address.country.couCode" id="countryCode" rv-value="organization.country.couCode"/>
+		                      <form:input  path="address.country.couName" name="countryName" class="form-control" id="countryName" cssStyle="display:none;" disabled="true"/> 
+		                      <form:input  path="address.country.couCode" name="couCode" class="form-control" id="countryCode" cssStyle="display:none;" disabled="true"/> 
+		                     <form:hidden path="address.country.couCode" rv-value="organization.country.couCode"/>
 		                      <div class="col-md-7">
 				                            <div id="country"
-				                                 select2-url="<c:url value="/protected/organization/countries/select"/>" ></div>
+				                                 select2-url="<c:url value="/protected/organization/countries"/>" >
+				                                 
+				                                 </div>
 				               </div >
 		                     </div>                  
 		                 </div>
@@ -100,27 +103,26 @@
 		                 <label for="countyName" class="control-label col-md-5">County</label>
 		                    <div class="col-md-7">
 		                     <div class="form-group">
-		                     <%-- <form:input path="address.county.countyName" name="countyName" class="form-control" id="txtcounty" disabled="true"/> --%>
-		                     <form:hidden path="address.county.countyId" rv-value="organization.county.countyId"/>
+		                      <form:input path="address.county.countyName" name="countyName" class="form-control" id="txtcounty" cssStyle="display:none;" disabled="true"/> 
+		                      <form:input path="address.county.countyId" name="countyId" class="form-control" id="txtcountyId" cssStyle="display:none;" disabled="true"/>
+		                     <form:hidden path="address.county.countyId" rv-value="organization.country.county.countyId"/>
 		                      <div class="col-md-7">
 				                            <div id="county"
-				                                 select2-url="<c:url value="/protected/organization/counties/select"/>"></div>
+				                                 select2-url="<c:url value="/protected/organization/counties/"/>"></div>
 				               </div >
 		                     </div>                  
 		                 </div>
 		                 </div>
 				           
 		                  <div class="col-md-6">
-		                 <label for="cityName" class="control-label col-md-5">City</label>
+		                 <label for="cityName" class="control-label col-md-5">Town</label>
 		                    <div class="col-md-7">
 		                     <div class="input-group">
-		                     <form:input path="address.town.ctName" name="cityName" class="form-control" id="txtCity" disabled="true"/>
-		                     <form:hidden path="address.town.ctCode" id="txtCityCode"/>
-		                      <span class="input-group-btn">
-						        <button class="btn btn-default" type="button" onclick="showTownModal();"> 
-						          <i class="fa fa-search"></i>
-						        </button>
-						      </span>
+		                     <form:input path="address.town.ctName" name="cityName" class="form-control" id="txtCity" cssStyle="display:none;" disabled="true"/>
+		                      <form:input path="address.town.ctCode" name="ctCode" class="form-control" id="txtCityCode" cssStyle="display:none;" disabled="true"/>
+		                     <form:hidden path="address.town.ctCode" id="ctCode" rv-value="organization.country.county.town.ctCode"/>
+		                      <div id="town"
+				                                 select2-url="<c:url value="/protected/organization/towns"/>"></div>
 		                     </div>                  
 		                 </div>
 		                 </div>
@@ -146,13 +148,13 @@
 		                 <label for="currencyName" class="control-label col-md-5">Currency</label>
 		                    <div class="col-md-7">
 		                     <div class="input-group">
-		                     <form:input type="text" path="currency.curName" name="currencyName" class="form-control" id="txtCurrency" disabled="true"/>
-		                     <form:hidden path="currency.curCode" id="txtCurCode"/>
-		                      <span class="input-group-btn">
-						        <button class="btn btn-default" type="button" data-toggle="modal" data-target="#currencyModal"> 
-						          <i class="fa fa-search"></i>
-						        </button>
-						      </span>
+		                     <form:input type="text" path="currency.curName" name="currencyName" class="form-control" id="txtCurrency" cssStyle="display:none;" disabled="true"/>
+		                     <form:input type="text" path="currency.curCode" name="curCode" class="form-control" id="txtCurrencyCode" cssStyle="display:none;" disabled="true"/>
+		                     <form:hidden path="currency.curCode" id="curCode" rv-value="organization.currency.curCode"/>
+		                        <div id="currency"
+				                                 select2-url="<c:url value="/protected/organization/currencies"/>" >
+				                                 
+				                                 </div>
 		                     </div>                  
 		                 </div>
 		                 </div>
