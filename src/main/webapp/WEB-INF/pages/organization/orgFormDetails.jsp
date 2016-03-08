@@ -7,6 +7,12 @@
 				          <div class="spacer"></div>
 				        <a href="<c:url value='/protected/organization/editOrganization'/> " class="btn btn-info">Edit</a>
 				        <hr>
+				         <c:if test="${not empty message}">
+				          <div class="alert alert-success alert-dismissible">
+				              <button class="close" aria-hidden="true" data-dismiss="alert" type="button">x</button>
+				                ${message}
+				          </div>
+				          </c:if>
 				        <div class="form-group">
 				            <div class="col-md-6">
 		                    <label for="orgName" class="control-label col-md-5">Organization Name</label>

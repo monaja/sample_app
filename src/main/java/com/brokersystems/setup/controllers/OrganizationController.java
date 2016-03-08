@@ -21,6 +21,7 @@ import java.nio.file.Files;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -38,7 +40,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping({"/protected/organization"})
@@ -91,7 +95,10 @@ public class OrganizationController
   }
   
   @RequestMapping(value={"/createOrganization"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
-  public String createOrganization(Organization organization, Model model)
+  public String createOrganization(@Valid Organization organization,BindingResult result,
+		  SessionStatus sessionStatus,
+          RedirectAttributes redirectAttrs,Model model
+          )
     throws IOException, BadRequestException
   {
     this.organizationValidator.validateSelectCountiesForCountry(organization.getAddress().getCountry().getCouCode());
@@ -105,6 +112,8 @@ public class OrganizationController
     
     this.orgService.createOrganization(organization);
     organization.setFormAction("E");
+    sessionStatus.setComplete();
+    redirectAttrs.addFlashAttribute("message", "Organization Created/Updated Successfully");
     return "redirect:/protected/organization/";
   }
   
