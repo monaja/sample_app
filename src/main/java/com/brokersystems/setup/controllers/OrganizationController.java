@@ -18,6 +18,10 @@ import com.brokersystems.setups.service.OrganizationService;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -98,28 +102,18 @@ public class OrganizationController
       (!organization.getFile().isEmpty())) {
       organization.setOrgLogo(organization.getFile().getBytes());
     }
+    
     this.orgService.createOrganization(organization);
     organization.setFormAction("E");
     return "redirect:/protected/organization/";
   }
   
-  @RequestMapping({"/logo"})
-  @ResponseBody
-  public byte[] getImage()
-    throws IOException
-  {
-    Organization organization = this.orgService.getOrganizationDetails();
-    File temporaryLogo = new File(IMAGES_SYSTEM_DIR_ABSOLUTE_PATH + "logo.jpg");
-    if (temporaryLogo.exists()) {
-      temporaryLogo.delete();
-    }
-    byte[] readAllBytes = null;
-    if (organization.getOrgLogo() != null)
-    {
-      FileUtils.writeByteArrayToFile(temporaryLogo, organization.getOrgLogo());
-      readAllBytes = Files.readAllBytes(temporaryLogo.toPath());
-    }
-    return readAllBytes;
+  @RequestMapping(value = "/logo")
+  public void getImage(HttpServletResponse response) throws IOException,ServletException {
+	 Organization organization = orgService.getOrganizationDetails();
+	 response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+	 response.getOutputStream().write(organization.getOrgLogo());
+	 response.getOutputStream().close();
   }
   
   @RequestMapping(value={"countries"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})

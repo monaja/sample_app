@@ -136,7 +136,7 @@
 		                    <label for="logo" class="control-label col-md-5">Logo</label>
 		                    <div class="col-md-7">
 		                     <div class="kv-avatar center-block" style="width:200px">
-						        <img alt="" src="<c:url value='/protected/organization/logo'/> ">
+						        <img  src="<c:url value='/protected/organization/logo'/> ">
 						    </div>
 						    </div>
 		                 </div>

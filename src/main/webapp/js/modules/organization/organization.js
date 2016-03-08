@@ -12,15 +12,21 @@ function orgDetails(){
 	    removeTitle: 'Cancel or reset changes',
 	    elErrorContainer: '#kv-avatar-errors',
 	    msgErrorClass: 'alert alert-block alert-danger',
-	    defaultPreviewContent: '<img src="/archweb/protected/organization/logo"  style="width:160px">',
+	    defaultPreviewContent: '<img src="'+getContextPath()+'/protected/organization/logo"  style="width:160px">',
 	    layoutTemplates: {main2: '{preview} ' + ' {remove} {browse}'},
 	    allowedFileExtensions: ["jpg", "png", "gif"]
 	});
 }
 
 
+function getContextPath() {
+	return window.location.pathname.substring(0, window.location.pathname
+			.indexOf("/", 2));
+}
+
 //function to display country details from the database
 //This is based on Jquery Datatables framework 
+/*
 function showCountryModal(){
 	var dataTableUrl = "countries";
     var usersTable = $('#country').DataTable( {
@@ -125,7 +131,7 @@ function selectCurrency(button){
 	$("#txtCurCode").val(country["curCode"]);
 	$('#currencyModal').modal('hide');
 }
-
+*/
 function openEditBranchModal(button){
 	var branch = JSON.parse(decodeURI($(button).data("branch")));	
 	$("#brn-code").val(branch["obId"]);
@@ -154,7 +160,7 @@ function confirmBranchDelete(button){
 			        async: true,
 			        success: function(result) {
 			        	$('#confirm-delete').modal('hide');
-			        	createBranchTable();
+			        	$('#orgBranches').DataTable().ajax.reload();
 			        },
 			        error: function(jqXHR, textStatus, errorThrown) {
 			            alert(jqXHR.status + ' ' + jqXHR.responseText);
@@ -175,7 +181,7 @@ function confirmBankDelete(button){
 			        dataType: 'json',
 			        async: true,
 			        success: function(result) {
-			        	createBankTable();
+			        	$('#orgBranks').DataTable().ajax.reload();
 			        },
 			        error: function(jqXHR, textStatus, errorThrown) {
 			            alert(jqXHR.status + ' ' + jqXHR.responseText);
@@ -275,9 +281,9 @@ $(function(){
 				]
 			} );
 		  
-		  var banksTable = createBankTable();
+		   createBankTable();
 		  
-		  var branchTable = createBranchTable();
+		   createBranchTable();
 		  
 		  
 		  var $branchForm = $('#branch-form');
@@ -296,7 +302,7 @@ $(function(){
 				var url = "createOrgBranch";
 	            var request = $.post(url, data );
 				request.success(function(){
-					createBranchTable();
+					$('#orgBranches').DataTable().ajax.reload();
 					branchvalidator.resetForm();
 					$('#branch-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
 					$('#branchModal').modal('hide');
@@ -328,7 +334,7 @@ $(function(){
 				var url = "createOrgBank";
 	            var request = $.post(url, data );
 				request.success(function(){
-					banksTable.fnReloadAjax();
+					$('#orgBranks').DataTable().ajax.reload();
 					bankvalidator.resetForm();
 					$('#bank-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
 					$('#bankModal').modal('hide');
