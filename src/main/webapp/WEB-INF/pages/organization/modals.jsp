@@ -147,9 +147,10 @@
 						Edit/Add Branch
 					</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body" id="branch_model">
 					<form id="branch-form" class="form-horizontal">
 						<input type="hidden" class="form-control" id="brn-code" name="obId">
+						<input type="hidden" name="organization" id="branchOrgCode"/>
 						<div class="form-group">
 							<label for="brn-id" class="col-md-3 control-label">Branch ID</label>
 

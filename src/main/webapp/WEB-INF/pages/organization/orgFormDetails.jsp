@@ -3,7 +3,7 @@
 <form:form class="form-horizontal" role="form" modelAttribute="organization"
                        method="post" action="createOrganization" id="orgForm"
                        enctype="multipart/form-data">
-                   <div class="box-body">
+                   <div class="box-body" id="organization_model">
 				          <div class="spacer"></div>
 				        <a href="<c:url value='/protected/organization/editOrganization'/> " class="btn btn-info">Edit</a>
 				        <hr>
@@ -151,6 +151,6 @@
 				        
 				      </div> 
 				      
-				     <form:hidden path="orgCode" id="orgCodepk"/> 
+				     <form:hidden path="orgCode" id="orgCodepk" /> 
                       </form:form>
                       

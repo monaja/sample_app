@@ -291,12 +291,15 @@ $(function(){
 		  $('#branchModal').on('hidden.bs.modal', function () {
 			    branchvalidator.resetForm();
 				$('#branch-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
+				if($("#orgCodepk"))
+					$("#branchOrgCode").val($("#orgCodepk").val());
 	        });
 		  
 		  $('#saveBranchBtn').click(function(){
 				if (!$branchForm.valid()) {
 					return;
 				}
+				var $btn = $(this).button('loading');
 				var data = {};
 				$branchForm.serializeArray().map(function(x){data[x.name] = x.value;});
 				var url = "createOrgBranch";
@@ -312,7 +315,7 @@ $(function(){
 					alert(data.responseText);
 				});
 				request.always(function(){
-					
+					$btn.button('reset');
 	            });
 			});
 		  
@@ -348,105 +351,113 @@ $(function(){
 			});
 		  //01-March Update
 		  rivets.bind($("#organization_model"), model);
-		  Select2Builder.initAjaxSelect2({
-	            containerId : "country",
-	            sort : 'couName',
-	            change: countryChanged,
-	            formatResult : function(a)
-	            {
-	            	return a.couName
-	            },
-	            formatSelection : function(a)
-	            {
-	            	return a.couName
-	            },
-	            initSelection: function (element, callback) {
-                      var countryCode = $("#countryCode").val();
-                      var countryName = $("#countryName").val();
-	            	 model.organization.country.couCode = countryCode;
-	            	var data = {couName:countryName,couCode:countryCode};
-                    callback(data);
-                }, 
-	            id: "couCode",
-	            width:"200px"
-	        });
+		  //10-March Update
+		  if($("#orgCodepk"))
+			  $("#branchOrgCode").val($("#orgCodepk").val());
 		  
-		  Select2Builder.initAjaxSelect2({
-	            containerId : "county",
-	            sort : 'countyName',
-	            change: countyChanged,
-	            formatResult : function(a)
-	            {
-	            	return a.countyName
+		  if($("#country").filter("div").html() != undefined)
+		  {
+			  Select2Builder.initAjaxSelect2({
+		            containerId : "country",
+		            sort : 'couName',
+		            change: countryChanged,
+		            formatResult : function(a)
+		            {
+		            	return a.couName
+		            },
+		            formatSelection : function(a)
+		            {
+		            	return a.couName
+		            },
+		            initSelection: function (element, callback) {
+	                      var countryCode = $("#countryCode").val();
+	                      var countryName = $("#countryName").val();
+		            	 model.organization.country.couCode = countryCode;
+		            	var data = {couName:countryName,couCode:countryCode};
+	                    callback(data);
+	                }, 
+		            id: "couCode",
+		            width:"200px"
+		        });
+			  
+			  Select2Builder.initAjaxSelect2({
+		            containerId : "county",
+		            sort : 'countyName',
+		            change: countyChanged,
+		            formatResult : function(a)
+		            {
+		            	return a.countyName
+		            },
+		            formatSelection : function(a)
+		            {
+		            	return a.countyName
+		            },
+		            initSelection: function (element, callback) {
+	                    var countyCode = $("#txtcountyId").val();
+	                    var countyName = $("#txtcounty").val();
+		            	 model.organization.country.county.countyId = countyCode;
+		            	var data = {countyName:countyName,countyCode:countyCode};
+	                  callback(data);
+	              },
+		            id: "countyId",
+		            width:"200px",
+		            params: {couCode: function(){
+		            	return model.organization.country.couCode;
+		            }}
+		        });
+			  
+			  
+			  Select2Builder.initAjaxSelect2({
+		            containerId : "town",
+		            sort : 'ctName',
+		            change: townChanged,
+		            formatResult : function(a)
+		            {
+		            	return a.ctName
+		            },
+		            formatSelection : function(a)
+		            {
+		            	return a.ctName
+		            },
+		            initSelection: function (element, callback) {
+	                  var cityCode = $("#txtCityCode").val();
+	                  var cityName = $("#txtCity").val();
+		              model.organization.country.county.town.ctCode = cityCode;
+		              var data = {ctName:cityName,ctCode:cityCode};
+	                  callback(data);
 	            },
-	            formatSelection : function(a)
-	            {
-	            	return a.countyName
+		            id: "ctCode",
+		            width:"200px",
+		            params: {countyId: function(){
+		            	return model.organization.country.county.countyId;
+		            }}
+		        });
+			  
+			  
+			  Select2Builder.initAjaxSelect2({
+		            containerId : "currency",
+		            sort : 'curName',
+		            change: currencyChanged,
+		            formatResult : function(a)
+		            {
+		            	return a.curName
+		            },
+		            formatSelection : function(a)
+		            {
+		            	return a.curName
+		            },
+		            initSelection: function (element, callback) {
+	                  var currCode = $("#txtCurrencyCode").val();
+	                  var currName = $("#txtCurrency").val();
+		              model.organization.currency.curCode = currCode;
+		              var data = {curName:currName,curCode:currCode};
+	                  callback(data);
 	            },
-	            initSelection: function (element, callback) {
-                    var countyCode = $("#txtcountyId").val();
-                    var countyName = $("#txtcounty").val();
-	            	 model.organization.country.county.countyId = countyCode;
-	            	var data = {countyName:countyName,countyCode:countyCode};
-                  callback(data);
-              },
-	            id: "countyId",
-	            width:"200px",
-	            params: {couCode: function(){
-	            	return model.organization.country.couCode;
-	            }}
-	        });
-		  
-		  
-		  Select2Builder.initAjaxSelect2({
-	            containerId : "town",
-	            sort : 'ctName',
-	            change: townChanged,
-	            formatResult : function(a)
-	            {
-	            	return a.ctName
-	            },
-	            formatSelection : function(a)
-	            {
-	            	return a.ctName
-	            },
-	            initSelection: function (element, callback) {
-                  var cityCode = $("#txtCityCode").val();
-                  var cityName = $("#txtCity").val();
-	              model.organization.country.county.town.ctCode = cityCode;
-	              var data = {ctName:cityName,ctCode:cityCode};
-                  callback(data);
-            },
-	            id: "ctCode",
-	            width:"200px",
-	            params: {countyId: function(){
-	            	return model.organization.country.county.countyId;
-	            }}
-	        });
-		  
-		  
-		  Select2Builder.initAjaxSelect2({
-	            containerId : "currency",
-	            sort : 'curName',
-	            change: currencyChanged,
-	            formatResult : function(a)
-	            {
-	            	return a.curName
-	            },
-	            formatSelection : function(a)
-	            {
-	            	return a.curName
-	            },
-	            initSelection: function (element, callback) {
-                  var currCode = $("#txtCurrencyCode").val();
-                  var currName = $("#txtCurrency").val();
-	              model.organization.currency.curCode = currCode;
-	              var data = {curName:currName,curCode:currCode};
-                  callback(data);
-            },
-	            id: "curCode",
-	            width:"200px"
-	        });
+		            id: "curCode",
+		            width:"200px"
+		        });
+			  
+		  }
 		  
 		  
 		  function currencyChanged(e, a, v) {

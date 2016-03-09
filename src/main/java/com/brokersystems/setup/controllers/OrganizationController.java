@@ -180,11 +180,11 @@ public class OrganizationController
   public void saveOrUpdateBranch(OrgBranch branch)
     throws IllegalAccessException
   {
-    Organization org = setOrganizationForm();
-    if (org == null) {
+   // Organization org = setOrganizationForm();
+    if (branch.getOrganization() == null) {
       throw new IllegalArgumentException("Cannot create branch without Organization");
     }
-    branch.setOrganization(org);
+//    branch.setOrganization(org);
     this.orgService.createOrgBranch(branch);
   }
   
