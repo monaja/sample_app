@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 
  */
 @Entity
-@Table(name="banks")
+@Table(name="banks",uniqueConstraints={@UniqueConstraint(columnNames={"bank_sht_desc","bank_org_code"})})
 public class Bank implements Serializable {
 	private static final long serialVersionUID = 1L;
 

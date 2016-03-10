@@ -181,11 +181,9 @@ public class OrganizationController
   public void saveOrUpdateBranch(OrgBranch branch)
     throws IllegalAccessException
   {
-   // Organization org = setOrganizationForm();
     if (branch.getOrganization() == null) {
       throw new IllegalArgumentException("Cannot create branch without Organization");
     }
-//    branch.setOrganization(org);
     this.orgService.createOrgBranch(branch);
   }
   
@@ -193,11 +191,9 @@ public class OrganizationController
   @ResponseStatus(HttpStatus.CREATED)
   public void saveOrUpdateBank(Bank bank)
   {
-    Organization org = setOrganizationForm();
-    if (org == null) {
+    if (bank.getOrganization() == null) {
       throw new IllegalArgumentException("Cannot create branch without Organization");
     }
-    bank.setOrganization(org);
     this.orgService.createOrgBank(bank);
   }
   
@@ -215,11 +211,5 @@ public class OrganizationController
     this.orgService.deleteOrgBank(bankCode);
   }
   
-  @ExceptionHandler({BadRequestException.class})
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ResponseBody
-  public String handleBadRequestException(BadRequestException ex)
-  {
-    return ex.getMessage();
-  }
+  
 }

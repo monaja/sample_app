@@ -1,5 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <script type="text/javascript" src="<c:url value="/js/modules/utils/select2builder.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/libs/rivets/rivets.js"/>"></script>
 <form:form class="form-horizontal" role="form"  modelAttribute="organization"
@@ -9,10 +10,12 @@
 				          <div class="spacer"></div>
 				        <input type="submit"  class="btn btn-info" value="Save" >
 				        <hr>
+				      <spring:hasBindErrors name="organization">
 				      <div class="alert alert-error alert-dismissible">
 						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						  <form:errors path="*" cssClass="help-inline"/>
 						</div>
+						</spring:hasBindErrors>
 				          
 				        <div class="form-group form-required">
 				            <div class="col-md-6">

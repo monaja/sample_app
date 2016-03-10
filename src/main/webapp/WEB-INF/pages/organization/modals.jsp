@@ -1,7 +1,10 @@
+<!--   
+
+This was replaced with Select drop downs 
+
 
 <div class="modal fade" id="countryModal" role="dialog">
 	<div class="modal-dialog">
-		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -34,7 +37,6 @@
 <div class="modal fade" id="countyModal" role="dialog">
 	<div class="modal-dialog">
 
-		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -68,7 +70,6 @@
 <div class="modal fade" id="townModal" role="dialog">
 	<div class="modal-dialog">
 
-		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -101,7 +102,6 @@
 <div class="modal fade" id="currencyModal" role="dialog">
 	<div class="modal-dialog">
 
-		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -132,7 +132,7 @@
 		</div>
 	</div>
 </div>
-
+ -->
 
  <div class="modal fade" id="branchModal" tabindex="-1" role="dialog"
 		aria-labelledby="branchModalLabel" aria-hidden="true">
@@ -149,6 +149,10 @@
 				</div>
 				<div class="modal-body" id="branch_model">
 					<form id="branch-form" class="form-horizontal">
+					    <div class="alert alert-error alert-dismissible" id="errorDiv" style="display: none;">
+						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						   <div id="errorId"></div>
+						</div>
 						<input type="hidden" class="form-control" id="brn-code" name="obId">
 						<input type="hidden" name="organization" id="branchOrgCode"/>
 						<div class="form-group">
@@ -184,27 +188,7 @@
 		</div>
 	</div>
 	
-	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
-                    <input type="hidden" id="pkey">
-                </div>
-            
-                <div class="modal-body">
-                    <p>Delete Selected Record</p>
-                </div>
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger btn-ok" id="btnDeletebranch">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
+	
     
     
     <div class="modal fade" id="bankModal" tabindex="-1" role="dialog"
@@ -222,7 +206,12 @@
 				</div>
 				<div class="modal-body">
 					<form id="bank-form" class="form-horizontal">
+					     <div class="alert alert-error alert-dismissible" id="errorbankDiv" style="display: none;">
+						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						   <div id="errorbankId"></div>
+						</div>
 						<input type="hidden" class="form-control" id="bank-code" name="bankCode">
+						<input type="hidden" name="organization" id="bankOrgCode"/>
 						<div class="form-group">
 							<label for="bank-id" class="col-md-3 control-label">Bank ID</label>
 							<div class="col-md-8">
@@ -255,25 +244,5 @@
 		</div>
 	</div>
 	
-	<div class="modal fade" id="confirm-delete-bank" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
-                    <input type="hidden" id="bankpkey">
-                </div>
-            
-                <div class="modal-body">
-                    <p>Delete Selected Record</p>
-                </div>
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger btn-ok" id="btnDeletebank">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
+	
 	

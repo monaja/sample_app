@@ -163,7 +163,9 @@ function confirmBranchDelete(button){
 			        	$('#orgBranches').DataTable().ajax.reload();
 			        },
 			        error: function(jqXHR, textStatus, errorThrown) {
-			            alert(jqXHR.status + ' ' + jqXHR.responseText);
+                           bootbox.alert(jqXHR.responseText, function() {
+			        		
+			        	    });
 			        }
 			    });
 	      }
@@ -184,7 +186,9 @@ function confirmBankDelete(button){
 			        	$('#orgBranks').DataTable().ajax.reload();
 			        },
 			        error: function(jqXHR, textStatus, errorThrown) {
-			            alert(jqXHR.status + ' ' + jqXHR.responseText);
+			        	bootbox.alert(jqXHR.responseText, function() {
+			        		
+			        	});
 			        }
 			    });
 	      }
@@ -201,6 +205,8 @@ function createBankTable(){
 			"processing": true,
 			"serverSide": true,
 			"ajax": banksUrl,
+			lengthMenu: [ [5, 10, 15], [5, 10, 15] ],
+			pageLength: 5,
 			destroy: true,
 			"columns": [
 				{ "data": "bankShtDesc" },
@@ -235,6 +241,8 @@ function createBranchTable(){
 			"processing": true,
 			"serverSide": true,
 			"ajax": branchesUrl,
+			lengthMenu: [ [5, 10, 15], [5, 10, 15] ],
+			pageLength: 5,
 			destroy: true,
 			"columns": [
 				{ "data": "obShtDesc" },
@@ -290,6 +298,7 @@ $(function(){
 		  var branchvalidator = $branchForm.validate();
 		  $('#branchModal').on('hidden.bs.modal', function () {
 			    branchvalidator.resetForm();
+			    $("#errorDiv").hide();
 				$('#branch-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
 				if($("#orgCodepk"))
 					$("#branchOrgCode").val($("#orgCodepk").val());
@@ -299,7 +308,7 @@ $(function(){
 				if (!$branchForm.valid()) {
 					return;
 				}
-				var $btn = $(this).button('loading');
+				var $btn = $(this).button('Saving');
 				var data = {};
 				$branchForm.serializeArray().map(function(x){data[x.name] = x.value;});
 				var url = "createOrgBranch";
@@ -311,8 +320,9 @@ $(function(){
 					$('#branchModal').modal('hide');
 				});
 
-				request.error(function(data){
-					alert(data.responseText);
+				request.error(function(jqXHR, textStatus, errorThrown){
+					$("#errorId").html(jqXHR.responseText);
+					$("#errorDiv").show();
 				});
 				request.always(function(){
 					$btn.button('reset');
@@ -324,14 +334,18 @@ $(function(){
 		  var bankvalidator = $bankForm.validate();
 		  $('#bankModal').on('hidden.bs.modal', function () {
 			  bankvalidator.resetForm();
+			  $("#errorbankDiv").hide();
 				$('#bank-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
-	        });
+				if($("#orgCodepk"))
+					$("#bankOrgCode").val($("#orgCodepk").val()); 
+		  });
 		  
 		  
 		  $('#saveBankBtn').click(function(){
 				if (!$bankForm.valid()) {
 					return;
 				}
+				var $btn = $(this).button('Saving');
 				var data = {};
 				$bankForm.serializeArray().map(function(x){data[x.name] = x.value;});
 				var url = "createOrgBank";
@@ -343,8 +357,9 @@ $(function(){
 					$('#bankModal').modal('hide');
 				});
 
-				request.error(function(data){
-					alert(data.responseText);
+				request.error(function(jqXHR, textStatus, errorThrown){
+					$("#errorbankId").html(jqXHR.responseText);
+					$("#errorbankDiv").show();
 				});
 				request.always(function(){
 	            });
@@ -354,6 +369,9 @@ $(function(){
 		  //10-March Update
 		  if($("#orgCodepk"))
 			  $("#branchOrgCode").val($("#orgCodepk").val());
+		  
+		  if($("#orgCodepk"))
+				$("#bankOrgCode").val($("#orgCodepk").val()); 
 		  
 		  if($("#country").filter("div").html() != undefined)
 		  {
