@@ -2,8 +2,11 @@ package com.brokersystems.setups.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,7 +19,6 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="Organization.findAll", query="SELECT o FROM Organization o")
 public class Organization implements Serializable {
 	
 
@@ -39,7 +41,8 @@ public class Organization implements Serializable {
 
 	@Column(name="org_mobile")
 	private String orgMobile;
-
+	
+    
 	@Column(name="org_name")
 	private String orgName;
 

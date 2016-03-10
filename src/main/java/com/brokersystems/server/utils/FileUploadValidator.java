@@ -2,6 +2,7 @@ package com.brokersystems.server.utils;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.brokersystems.setups.model.Organization;
@@ -19,10 +20,20 @@ public class FileUploadValidator implements Validator {
 		 
 		Organization holder = (Organization)obj;
 		if(holder.getFile()!=null){
-			if(holder.getFile().getSize()==0){
-				errors.rejectValue("file", "missing.file");
+			if(holder.getFile().getSize()> 4000){
+				errors.rejectValue("file", "file.toobig");
 			}
 		}
+		
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors,"currency.curCode", "missing.currency");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors,"orgName", "missing.orgname");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors,"orgShtDesc", "missing.orgshtdesc");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors,"address.country.couCode", "missing.orgcountry");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors,"address.county.countyId", "missing.orgcounty");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors,"address.town.ctCode", "missing.orgtown");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors,"address.addAddress", "missing.address");
+		
+		
 		
 	}
 

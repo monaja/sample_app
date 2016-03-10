@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 
  */
 @Entity
-@Table(name="org_branches")
+@Table(name="org_branches",uniqueConstraints={@UniqueConstraint(columnNames={"ob_sht_desc","ob_org_code"})})
 public class OrgBranch implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -24,6 +24,7 @@ public class OrgBranch implements Serializable {
 	@Column(name="ob_name")
 	private String obName;
 
+	
 	@Column(name="ob_sht_desc")
 	private String obShtDesc;
 

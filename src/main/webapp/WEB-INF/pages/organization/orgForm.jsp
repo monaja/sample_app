@@ -9,13 +9,16 @@
 				          <div class="spacer"></div>
 				        <input type="submit"  class="btn btn-info" value="Save" >
 				        <hr>
-				       
+				      <div class="alert alert-error alert-dismissible">
+						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						  <form:errors path="*" cssClass="help-inline"/>
+						</div>
 				          
 				        <div class="form-group form-required">
 				            <div class="col-md-6">
 		                    <label for="orgName" class="control-label col-md-5">Organization Name</label>
 		                     <div class="col-md-7">
-		                     <form:input path="orgName" class="form-control" placeholder="Org. Sht Desc" required="required"/>   
+		                     <form:input path="orgName" class="form-control" placeholder="Org. Sht Desc"/>   
 		                     </div>               
 		                    </div>
 		                    <div class="col-md-6">
@@ -170,7 +173,7 @@
 		                    <div class="col-md-7">
 		                     <div class="kv-avatar center-block" style="width:200px">
 						       <form:input path="file" type="file" id="avatar" cssClass="file-loading"/>
-						       <form:errors path="file" cssClass="help-inline"/>
+						       
 						    </div>
 						    </div>
 		                 </div>

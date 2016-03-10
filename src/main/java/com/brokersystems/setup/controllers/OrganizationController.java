@@ -109,20 +109,12 @@ public class OrganizationController
 		  redirectAttrs.addFlashAttribute("organization", organization);
 		  return organization.getOrgCode() == null ? "redirect:/protected/organization/" : "redirect:/protected/organization/editOrganization";
 	  }
-		  
-    this.organizationValidator.validateSelectCountiesForCountry(organization.getAddress().getCountry().getCouCode());
-    this.organizationValidator.validateSelectTownsForCounty(organization.getAddress().getCounty().getCountyId());
-    this.organizationValidator.validateCity(organization.getAddress().getTown().getCtCode());
-    this.organizationValidator.validateCurrency(organization.getCurrency().getCurCode());
     if ((organization.getFile() != null) && 
       (!organization.getFile().isEmpty())) {
       organization.setOrgLogo(organization.getFile().getBytes());
     }
-    
     this.orgService.createOrganization(organization);
     organization.setFormAction("E");
-//    sessionStatus.setComplete();
-    redirectAttrs.addFlashAttribute("message", "Organization Created/Updated Successfully");
     return "redirect:/protected/organization/";
   }
   
