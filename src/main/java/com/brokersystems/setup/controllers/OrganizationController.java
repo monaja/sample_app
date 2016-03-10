@@ -88,19 +88,28 @@ public class OrganizationController
   public String createOrganization(Model model)
     throws IOException
   {
-    Organization organization = this.orgService.getOrganizationDetails();
-    organization.setFormAction("A");
-    model.addAttribute("organization", organization);
-    return organizationHome(model);
+    if(!model.containsAttribute("org.springframework.validation.BindingResult.organization"))
+    {
+    	Organization organization = this.orgService.getOrganizationDetails();
+    	organization.setFormAction("A");
+        model.addAttribute("organization", organization);
+    }
+    return "orgdefinition";
   }
-  
+
   @RequestMapping(value={"/createOrganization"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
-  public String createOrganization(@Valid Organization organization,BindingResult result,
-		  SessionStatus sessionStatus,
-          RedirectAttributes redirectAttrs,Model model
+  public String createOrganization(@Valid @ModelAttribute Organization organization,BindingResult result,
+          RedirectAttributes redirectAttrs
           )
     throws IOException, BadRequestException
   {
+	  if(result.hasErrors())
+	  {
+		  redirectAttrs.addFlashAttribute("org.springframework.validation.BindingResult.organization", result);
+		  redirectAttrs.addFlashAttribute("organization", organization);
+		  return organization.getOrgCode() == null ? "redirect:/protected/organization/" : "redirect:/protected/organization/editOrganization";
+	  }
+		  
     this.organizationValidator.validateSelectCountiesForCountry(organization.getAddress().getCountry().getCouCode());
     this.organizationValidator.validateSelectTownsForCounty(organization.getAddress().getCounty().getCountyId());
     this.organizationValidator.validateCity(organization.getAddress().getTown().getCtCode());
@@ -112,7 +121,7 @@ public class OrganizationController
     
     this.orgService.createOrganization(organization);
     organization.setFormAction("E");
-    sessionStatus.setComplete();
+//    sessionStatus.setComplete();
     redirectAttrs.addFlashAttribute("message", "Organization Created/Updated Successfully");
     return "redirect:/protected/organization/";
   }

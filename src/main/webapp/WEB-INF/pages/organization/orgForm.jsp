@@ -170,7 +170,7 @@
 		                    <div class="col-md-7">
 		                     <div class="kv-avatar center-block" style="width:200px">
 						       <form:input path="file" type="file" id="avatar" cssClass="file-loading"/>
-						       <form:errors path="file" class="help-inline"/>
+						       <form:errors path="file" cssClass="help-inline"/>
 						    </div>
 						    </div>
 		                 </div>
@@ -178,7 +178,7 @@
 				          </div>
 				        
 				      </div> 
-				      
+				      <form:hidden path="formAction" />
 				      <form:hidden path="orgCode" id="orgCodepk"/>  
                       </form:form>
                       
