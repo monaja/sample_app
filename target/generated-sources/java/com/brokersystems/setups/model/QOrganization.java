@@ -28,8 +28,6 @@ public class QOrganization extends EntityPathBase<Organization> {
 
     public final QCurrencies currency;
 
-    public final ListPath<OrgBranch, QOrgBranch> orgBranches = this.<OrgBranch, QOrgBranch>createList("orgBranches", OrgBranch.class, QOrgBranch.class, PathInits.DIRECT2);
-
     public final NumberPath<Long> orgCode = createNumber("orgCode", Long.class);
 
     public final StringPath orgDesc = createString("orgDesc");
@@ -43,6 +41,8 @@ public class QOrganization extends EntityPathBase<Organization> {
     public final StringPath orgName = createString("orgName");
 
     public final StringPath orgPhone = createString("orgPhone");
+
+    public final ListPath<OrgRegions, QOrgRegions> orgRegions = this.<OrgRegions, QOrgRegions>createList("orgRegions", OrgRegions.class, QOrgRegions.class, PathInits.DIRECT2);
 
     public final StringPath orgShtDesc = createString("orgShtDesc");
 

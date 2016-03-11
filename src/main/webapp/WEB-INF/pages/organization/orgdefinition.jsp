@@ -36,45 +36,39 @@
                     <div class="panel-heading">
                       <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                          Organization Branches
+                          Organization Regions and Banks
                         </a>
                       </h4>
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse">
                       <div class="panel-body">
-                        <h4>Branch Details</h4>
-                         <div class="spacer"></div>
-                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#branchModal">New</button>
-                        <hr>
-                          <table id="orgBranches" class="table table-hover table-bordered"
-							>
-							<thead>
-								<tr>
-									
-									<th>Branch ID</th>
-									<th>Branch Name</th>
-									<th width="5%"> </th>
-									<th width="5%"> </th>
-								</tr>
-							</thead>
-						</table>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div class="panel panel-primary">
-                    <div class="panel-heading">
-                      <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                          Organization Banks
-                           
-                         
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapseThree" class="panel-collapse collapse">
-                      <div class="panel-body">
-                        <h4>Bank Details</h4>
+                       <ul class="nav nav-tabs">
+			              <li class="active"><a href="#tab_1" data-toggle="tab">Regions</a></li>
+			              <li><a href="#tab_2" data-toggle="tab">Banks</a></li>
+			              <li class="pull-right"><i class="fa fa-gear"></i></li>
+			            </ul>
+                        
+                         <div class="tab-content">
+                           <div class="tab-pane active" id="tab_1">
+                               <h4>Region Details</h4>
+		                         <div class="spacer"></div>
+		                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#branchModal">New</button>
+		                        <hr>
+		                          <table id="orgBranches" class="table table-hover table-bordered"
+									>
+									<thead>
+										<tr>
+											
+											<th>Branch ID</th>
+											<th>Branch Name</th>
+											<th width="5%"> </th>
+											<th width="5%"> </th>
+										</tr>
+									</thead>
+								</table>
+                           </div>
+                           <div class="tab-pane" id="tab_2">
+                                <h4>Bank Details</h4>
                           <div class="spacer"></div>
                         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#bankModal">New</button>
                         <hr>
@@ -89,6 +83,42 @@
 								</tr>
 							</thead>
 						</table>
+                           </div>
+                          </div>
+                      
+                        
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="panel panel-primary">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                          Organization Branches
+                           
+                         
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse">
+                      <div class="panel-body">
+                          <h4>Branch Details</h4>
+		                         <div class="spacer"></div>
+		                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#branchModal">New</button>
+		                        <hr>
+		                          <table id="orgBranches" class="table table-hover table-bordered"
+									>
+									<thead>
+										<tr>
+											
+											<th>Branch ID</th>
+											<th>Branch Name</th>
+											<th width="5%"> </th>
+											<th width="5%"> </th>
+										</tr>
+									</thead>
+								</table>
                        </div>
                     </div>
                   </div>

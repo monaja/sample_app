@@ -89,7 +89,7 @@ public class Organization implements Serializable {
 
 	//bi-directional many-to-one association to OrgBranch
 	@OneToMany(mappedBy="organization")
-	private List<OrgBranch> orgBranches;
+	private List<OrgRegions> orgRegions;
 
 	public Organization() {
 	}
@@ -198,15 +198,14 @@ public class Organization implements Serializable {
 		this.banks = banks;
 	}
 
-	public List<OrgBranch> getOrgBranches() {
-		return orgBranches;
+
+	public List<OrgRegions> getOrgRegions() {
+		return orgRegions;
 	}
 
-	public void setOrgBranches(List<OrgBranch> orgBranches) {
-		this.orgBranches = orgBranches;
+	public void setOrgRegions(List<OrgRegions> orgRegions) {
+		this.orgRegions = orgRegions;
 	}
-
-
 
 	public MultipartFile getFile() {
 		return file;

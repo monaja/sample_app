@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 
  */
 @Entity
-@Table(name="org_branches",uniqueConstraints={@UniqueConstraint(columnNames={"ob_sht_desc","ob_org_code"})})
+@Table(name="org_branches",uniqueConstraints={@UniqueConstraint(columnNames={"ob_sht_desc","ob_reg_code"})})
 public class OrgBranch implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -32,8 +32,10 @@ public class OrgBranch implements Serializable {
 	@XmlTransient
 	 @JsonIgnore
 	@ManyToOne
-	@JoinColumn(name="ob_org_code")
-	private Organization organization;
+	@JoinColumn(name="ob_reg_code")
+	private OrgRegions region;
+	
+	
 
 	public OrgBranch() {
 	}
@@ -62,12 +64,14 @@ public class OrgBranch implements Serializable {
 		this.obShtDesc = obShtDesc;
 	}
 
-	public Organization getOrganization() {
-		return this.organization;
+	public OrgRegions getRegion() {
+		return region;
 	}
 
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
+	public void setRegion(OrgRegions region) {
+		this.region = region;
 	}
+
+
 
 }

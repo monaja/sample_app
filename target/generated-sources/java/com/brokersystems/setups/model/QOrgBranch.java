@@ -28,7 +28,7 @@ public class QOrgBranch extends EntityPathBase<OrgBranch> {
 
     public final StringPath obShtDesc = createString("obShtDesc");
 
-    public final QOrganization organization;
+    public final QOrgRegions region;
 
     public QOrgBranch(String variable) {
         this(OrgBranch.class, forVariable(variable), INITS);
@@ -48,7 +48,7 @@ public class QOrgBranch extends EntityPathBase<OrgBranch> {
 
     public QOrgBranch(Class<? extends OrgBranch> type, PathMetadata<?> metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.organization = inits.isInitialized("organization") ? new QOrganization(forProperty("organization"), inits.get("organization")) : null;
+        this.region = inits.isInitialized("region") ? new QOrgRegions(forProperty("region"), inits.get("region")) : null;
     }
 
 }

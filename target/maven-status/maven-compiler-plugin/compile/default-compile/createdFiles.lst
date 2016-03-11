@@ -1,3 +1,6 @@
 com\brokersystems\server\exception\BadRequestException.class
+com\brokersystems\setup\repository\RegionRepository.class
 com\brokersystems\errorhandler\GeneralExceptionHandler.class
+com\brokersystems\setups\model\QOrgRegions.class
+com\brokersystems\setups\model\OrgRegions.class
 com\brokersystems\server\validator\OrganizationValidator.class

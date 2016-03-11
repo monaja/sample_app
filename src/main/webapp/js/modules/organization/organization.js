@@ -232,6 +232,43 @@ function createBankTable(){
 
 
 
+function createRegionTable(){
+	var regionsUrl = "regions/0";
+	  if ($("#orgCodepk").val() != ''){
+		  regionsUrl = "regions/"+$("#orgCodepk").val();
+		}
+	  var regionTable = $('#orgBranks').DataTable( {
+			"processing": true,
+			"serverSide": true,
+			"ajax": regionsUrl,
+			lengthMenu: [ [5, 10, 15], [5, 10, 15] ],
+			pageLength: 5,
+			destroy: true,
+			"columns": [
+				{ "data": "ShtDesc" },
+				{ "data": "regDesc" },
+				{ "data": "regWef" },
+				{ "data": "regWet" },
+				{ 
+					"data": "regCode",
+					"render": function ( data, type, full, meta ) {
+						return '<input type="button" class="btn btn-primary" data-bank='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="openEditRegionModal(this);"/>';
+					}
+
+				},
+				{ 
+					"data": "regCode",
+					"render": function ( data, type, full, meta ) {
+						return '<input type="button" class="btn btn-primary" data-bank='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmRegionDelete(this);"/>';
+					}
+
+				},
+			]
+		} );
+	  return regionTable;
+}
+
+
 function createBranchTable(){
 	var branchesUrl = "branches/0";
 	  if ($("#orgCodepk").val() != ''){
@@ -288,6 +325,8 @@ $(function(){
 					},
 				]
 			} );
+		  
+		  createRegionTable();
 		  
 		   createBankTable();
 		  

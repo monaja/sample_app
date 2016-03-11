@@ -34,8 +34,8 @@ public class GeneralExceptionHandler {
 
     @ExceptionHandler({DataAccessException.class})
     ResponseEntity databaseError(DataAccessException   e) {
-    	  return new ResponseEntity(e.getMostSpecificCause().getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
-  		
+    		  return new ResponseEntity(e.getMostSpecificCause().getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    	
     }
     
    

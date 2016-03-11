@@ -7,6 +7,7 @@ import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
+import com.brokersystems.setups.model.OrgRegions;
 import com.brokersystems.setups.model.Organization;
 import com.brokersystems.setups.model.Town;
 import org.springframework.data.domain.Page;
@@ -51,4 +52,6 @@ public abstract interface OrganizationService
   public abstract Page<Town> findTownForSelect(String paramString, Pageable paramPageable, long paramLong);
   
   public abstract Page<Currencies> findCurrenciesForSelect(String paramString, Pageable paramPageable);
+  
+  public DataTablesResult<OrgRegions> findOrgRegions(long orgCode, DataTablesRequest request);
 }

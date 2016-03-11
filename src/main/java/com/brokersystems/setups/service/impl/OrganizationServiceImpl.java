@@ -8,18 +8,21 @@ import com.brokersystems.setup.repository.CurrencyRepository;
 import com.brokersystems.setup.repository.OrgBankRepository;
 import com.brokersystems.setup.repository.OrgBranchRepository;
 import com.brokersystems.setup.repository.OrganizationRepository;
+import com.brokersystems.setup.repository.RegionRepository;
 import com.brokersystems.setup.repository.TownRepository;
 import com.brokersystems.setups.model.Bank;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
+import com.brokersystems.setups.model.OrgRegions;
 import com.brokersystems.setups.model.Organization;
 import com.brokersystems.setups.model.QBank;
 import com.brokersystems.setups.model.QCountry;
 import com.brokersystems.setups.model.QCounty;
 import com.brokersystems.setups.model.QCurrencies;
 import com.brokersystems.setups.model.QOrgBranch;
+import com.brokersystems.setups.model.QOrgRegions;
 import com.brokersystems.setups.model.QOrganization;
 import com.brokersystems.setups.model.QTown;
 import com.brokersystems.setups.model.Town;
@@ -53,6 +56,8 @@ public class OrganizationServiceImpl
   private OrgBankRepository orgBankrepo;
   @Autowired
   private OrgBranchRepository orgBranchrepo;
+  @Autowired
+  private RegionRepository regionRepo;
   
   @Transactional(readOnly=true)
   public Organization getOrganizationDetails()
@@ -106,11 +111,22 @@ public class OrganizationServiceImpl
   }
   
   @Transactional(readOnly=true)
-  public DataTablesResult<OrgBranch> findOrgBranches(long orgCode, DataTablesRequest request)
+  public DataTablesResult<OrgRegions> findOrgRegions(long orgCode, DataTablesRequest request)
     throws IllegalAccessException
   {
-    QOrganization org = QOrgBranch.orgBranch.organization;
-    BooleanExpression pred = org.orgCode.eq(Long.valueOf(orgCode));
+	QOrganization org  = QOrgRegions.orgRegions.organization;
+    BooleanExpression pred =org.orgCode.eq(Long.valueOf(orgCode));
+    Page<OrgRegions> page = this.regionRepo.findAll(pred.and(request.searchPredicate(QOrgRegions.orgRegions)), request);
+    return new DataTablesResult(request, page);
+  }
+  
+  
+  @Transactional(readOnly=true)
+  public DataTablesResult<OrgBranch> findOrgBranches(long regCode, DataTablesRequest request)
+    throws IllegalAccessException
+  {
+    QOrgRegions reg = QOrgBranch.orgBranch.region;
+    BooleanExpression pred =reg.regCode.eq(Long.valueOf(regCode));
     Page<OrgBranch> page = this.orgBranchrepo.findAll(pred.and(request.searchPredicate(QOrgBranch.orgBranch)), request);
     return new DataTablesResult(request, page);
   }

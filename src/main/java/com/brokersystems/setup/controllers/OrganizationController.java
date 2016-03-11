@@ -12,6 +12,7 @@ import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
+import com.brokersystems.setups.model.OrgRegions;
 import com.brokersystems.setups.model.Organization;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.service.OrganizationService;
@@ -160,13 +161,23 @@ public class OrganizationController
     return this.orgService.findCurrenciesForSelect(term, pageable);
   }
   
-  @RequestMapping(value={"branches/{orgCode}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+  @RequestMapping(value={"branches/{regCode}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
   @ResponseBody
-  public DataTablesResult<OrgBranch> orgBranch(@DataTable DataTablesRequest pageable, @PathVariable Long orgCode)
+  public DataTablesResult<OrgBranch> orgBranch(@DataTable DataTablesRequest pageable, @PathVariable Long regCode)
     throws IllegalAccessException
   {
-    return this.orgService.findOrgBranches(orgCode.longValue(), pageable);
+    return this.orgService.findOrgBranches(regCode.longValue(), pageable);
   }
+  
+
+  @RequestMapping(value={"regions/{orgCode}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+  @ResponseBody
+  public DataTablesResult<OrgRegions> orgRegions(@DataTable DataTablesRequest pageable, @PathVariable Long orgCode)
+    throws IllegalAccessException
+  {
+    return this.orgService.findOrgRegions(orgCode, pageable);
+  }
+  
   
   @RequestMapping(value={"banks/{orgCode}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
   @ResponseBody
@@ -181,8 +192,8 @@ public class OrganizationController
   public void saveOrUpdateBranch(OrgBranch branch)
     throws IllegalAccessException
   {
-    if (branch.getOrganization() == null) {
-      throw new IllegalArgumentException("Cannot create branch without Organization");
+    if (branch.getRegion() == null) {
+      throw new IllegalArgumentException("Cannot create branch without Region");
     }
     this.orgService.createOrgBranch(branch);
   }
