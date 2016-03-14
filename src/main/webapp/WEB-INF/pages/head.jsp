@@ -31,6 +31,7 @@
 	    
 	    <!-- File Input css -->
         <link href="<c:url value='/libs/fileinput.min.css' /> " rel="stylesheet"/>
+         <link href="<c:url value='/libs/css/bootstrap-datetimepicker.css' /> " rel="stylesheet"/>
         
         <!-- Jquery UI Css -->
         <link href="<c:url value='/libs/jquery-ui-1.10.4.custom.min.css' /> " rel="stylesheet"/>
@@ -40,7 +41,8 @@
 	   
 	  <script src="<c:url value="/libs/jquery-validation/jquery.validate.min.js"/>"></script>
 	  <script src="<c:url value="/libs/jquery-validation/additional-methods.min.js"/>"></script>
-	  <script src="<c:url value='/libs/js/jquery.ui.datepicker.js' /> "></script>
+	  <script src="<c:url value="/libs/js/moment.js"/>"></script>
+	  <script src="<c:url value='/libs/js/bootstrap-datetimepicker.js' /> "></script>
 	  <script src="<c:url value='/libs/js/fileinput.min.js' /> "></script>
 	  <script type="text/javascript" src="<c:url value="/libs/js/bootbox.min.js"/>"></script>
 	  <script src="<c:url value='/libs/js/app.min.js' /> "></script>

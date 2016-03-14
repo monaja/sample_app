@@ -52,6 +52,26 @@
                            <div class="tab-pane active" id="tab_1">
                                <h4>Region Details</h4>
 		                         <div class="spacer"></div>
+		                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#regModal">New</button>
+		                        <input type="hidden" id="selOrgReg">
+		                         <hr>
+		                          <table id="orgRegion" class="table table-bordered table-striped dataTable"
+									>
+									<thead>
+										<tr>
+											
+											<th>Region ID</th>
+											<th>Region Name</th>
+											<th>WEF</th>
+											<th>WET</th>
+											<th width="5%"> </th>
+											<th width="5%"> </th>
+										</tr>
+									</thead>
+								</table>
+								<div class="spacer"></div>
+								 <h4>Branch Details</h4>
+		                         <div class="spacer"></div>
 		                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#branchModal">New</button>
 		                        <hr>
 		                          <table id="orgBranches" class="table table-hover table-bordered"
@@ -91,37 +111,7 @@
                     </div>
                   </div>
                   
-                  <div class="panel panel-primary">
-                    <div class="panel-heading">
-                      <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                          Organization Branches
-                           
-                         
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapseThree" class="panel-collapse collapse">
-                      <div class="panel-body">
-                          <h4>Branch Details</h4>
-		                         <div class="spacer"></div>
-		                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#branchModal">New</button>
-		                        <hr>
-		                          <table id="orgBranches" class="table table-hover table-bordered"
-									>
-									<thead>
-										<tr>
-											
-											<th>Branch ID</th>
-											<th>Branch Name</th>
-											<th width="5%"> </th>
-											<th width="5%"> </th>
-										</tr>
-									</thead>
-								</table>
-                       </div>
-                    </div>
-                  </div>
+                 
                  
                 </div>
                 </div>

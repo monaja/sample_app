@@ -1,6 +1,7 @@
 package com.brokersystems.setups.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -11,11 +12,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity(name="regions")
+@Entity
+@Table(name="regions",uniqueConstraints={@UniqueConstraint(columnNames={"sht_desc","reg_org_code"})})
 public class OrgRegions implements Serializable {
 	
 	/**
@@ -29,18 +37,20 @@ public class OrgRegions implements Serializable {
 	private Long regCode;
 	
 	@Column(name="sht_desc")
-	private String ShtDesc;
+	private String shtDesc;
 	
 	@Column(name="reg_desc")
 	private String regDesc;
 	
-	
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
 	@Column(name="wef")
-	private String regWef;
+	private Date regWef;
 	
-	
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
 	@Column(name="wet")
-	private String regWet;
+	private Date regWet;
 	
 	@XmlTransient
 	 @JsonIgnore
@@ -63,11 +73,11 @@ public class OrgRegions implements Serializable {
 	}
 
 	public String getShtDesc() {
-		return ShtDesc;
+		return shtDesc;
 	}
 
 	public void setShtDesc(String shtDesc) {
-		ShtDesc = shtDesc;
+		this.shtDesc = shtDesc;
 	}
 
 	public String getRegDesc() {
@@ -78,19 +88,21 @@ public class OrgRegions implements Serializable {
 		this.regDesc = regDesc;
 	}
 
-	public String getRegWef() {
+	 
+
+	public Date getRegWef() {
 		return regWef;
 	}
 
-	public void setRegWef(String regWef) {
+	public void setRegWef(Date regWef) {
 		this.regWef = regWef;
 	}
 
-	public String getRegWet() {
+	public Date getRegWet() {
 		return regWet;
 	}
 
-	public void setRegWet(String regWet) {
+	public void setRegWet(Date regWet) {
 		this.regWet = regWet;
 	}
 

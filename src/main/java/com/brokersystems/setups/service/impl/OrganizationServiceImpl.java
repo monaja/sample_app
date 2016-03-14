@@ -29,6 +29,8 @@ import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.service.OrganizationService;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.NumberPath;
+
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,7 +145,7 @@ public class OrganizationServiceImpl
   
   @Modifying
   @Transactional(readOnly=false)
-  public void createOrgBranch(OrgBranch branch)
+  public void createRegionBranch(OrgBranch branch)
   {
     this.orgBranchrepo.save(branch);
   }
@@ -194,4 +196,21 @@ public class OrganizationServiceImpl
     term = "%" + StringUtils.defaultString(term) + "%";
     return this.currencyrepo.findByCurNameLikeIgnoreCase(term, pageable);
   }
+
+  @Modifying
+  @Transactional(readOnly=false)
+	public void createOrgRegion(OrgRegions region) {
+	     if(region.getRegWef().after(new Date())){
+	    	 throw new IllegalArgumentException("Wef Date cannot be greater than today");
+	     }
+		regionRepo.save(region);
+		
+	}
+
+    @Modifying
+    @Transactional(readOnly=false)
+	@Override
+	public void deleteOrgRegion(Long regCode) {
+		 regionRepo.delete(regCode);
+	}
 }

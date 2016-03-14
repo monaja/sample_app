@@ -154,7 +154,7 @@ This was replaced with Select drop downs
 						   <div id="errorId"></div>
 						</div>
 						<input type="hidden" class="form-control" id="brn-code" name="obId">
-						<input type="hidden" name="organization" id="branchOrgCode"/>
+						<input type="hidden" name="region" id="branchRegion"/>
 						<div class="form-group">
 							<label for="brn-id" class="col-md-3 control-label">Branch ID</label>
 
@@ -233,6 +233,87 @@ This was replaced with Select drop downs
 				</div>
 				<div class="modal-footer">
 					<button data-loading-text="Saving..." id="saveBankBtn"
+						type="button" class="btn btn-primary">
+						Save
+					</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						Cancel
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	 <div class="modal fade" id="regModal" tabindex="-1" role="dialog"
+		aria-labelledby="regModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="regModalLabel">
+						Edit/Add Region
+					</h4>
+				</div>
+				<div class="modal-body" id="region_model">
+					<form id="reg-form" class="form-horizontal">
+					    <div class="alert alert-error alert-dismissible errordiv" style="display: none;">
+						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						   <div id="errorId"></div>
+						</div>
+						<input type="hidden" class="form-control" id="reg-code" name="regCode">
+						<input type="hidden" name="organization" id="regOrgCode"/>
+						<div class="form-group">
+							<label for="reg-id" class="col-md-3 control-label">Region ID</label>
+
+							<div class="col-md-8">
+								<input type="text" class="form-control" id="reg-id"
+									name="shtDesc"  required>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="reg-name" class="col-md-3 control-label">Region Name</label>
+
+							<div class="col-md-8">
+								<input type="text" class="form-control" id="reg-name"
+									name="regDesc"  required>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="reg-wef" class="col-md-3 control-label">WEF</label>
+
+							<div class="col-md-8">
+							   <div class='input-group date datepicker-input'>
+				                    <input type='text' class="form-control" name="regWef" id="reg-wef" required/>
+				                    <span class="input-group-addon">
+				                        <span class="glyphicon glyphicon-calendar"></span>
+				                    </span>
+				                </div>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="reg-wet" class="col-md-3 control-label">WET</label>
+
+							<div class="col-md-8">
+							   <div class='input-group date datepicker-input'>
+				                    <input type='text' class="form-control" name="regWet" id="reg-wet"/>
+				                    <span class="input-group-addon">
+				                        <span class="glyphicon glyphicon-calendar"></span>
+				                    </span>
+				                </div>
+							</div>
+						</div>
+						
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button data-loading-text="Saving..." id="saveRegionBtn"
 						type="button" class="btn btn-primary">
 						Save
 					</button>

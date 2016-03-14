@@ -141,6 +141,19 @@ function openEditBranchModal(button){
 }
 
 
+function openEditRegionModal(button){
+	var branch = JSON.parse(decodeURI($(button).data("region")));	
+	$("#reg-id").val(branch["shtDesc"]);
+	$("#reg-name").val(branch["regDesc"]);
+	if(branch["regWef"])
+	$("#reg-wef").val(moment(branch["regWef"]).format('MM/DD/YYYY'));
+	if(branch["regWet"])
+	$("#reg-wet").val(moment(branch["regWet"]).format('MM/DD/YYYY'));
+	$("#reg-code").val(branch["regCode"]);
+	$('#regModal').modal('show');
+}
+
+
 function openEditBankModal(button){
 	var branch = JSON.parse(decodeURI($(button).data("bank")));	
 	$("#bank-code").val(branch["bankCode"]);
@@ -196,6 +209,31 @@ function confirmBankDelete(button){
 	
 }
 
+function confirmRegionDelete(button){
+	var branch = JSON.parse(decodeURI($(button).data("region")));
+	bootbox.confirm("Are you sure want to delete "+branch["regDesc"]+"?", function(result) {
+	      if(result){
+			 $.ajax({
+			        type: 'GET',
+			        url:  'deleteRegion/' + branch["regCode"],
+			        dataType: 'json',
+			        async: true,
+			        success: function(result) {
+			        	$('#orgRegion').DataTable().ajax.reload();
+			        },
+			        error: function(jqXHR, textStatus, errorThrown) {
+			        	bootbox.alert(jqXHR.responseText, function() {
+			        		
+			        	});
+			        }
+			    });
+	      }
+	});
+	
+}
+
+
+
 function createBankTable(){
 	var banksUrl = "banks/0";
 	  if ($("#orgCodepk").val() != ''){
@@ -237,7 +275,7 @@ function createRegionTable(){
 	  if ($("#orgCodepk").val() != ''){
 		  regionsUrl = "regions/"+$("#orgCodepk").val();
 		}
-	  var regionTable = $('#orgBranks').DataTable( {
+	  var regionTable = $('#orgRegion').DataTable( {
 			"processing": true,
 			"serverSide": true,
 			"ajax": regionsUrl,
@@ -245,34 +283,51 @@ function createRegionTable(){
 			pageLength: 5,
 			destroy: true,
 			"columns": [
-				{ "data": "ShtDesc" },
+				{ "data": "shtDesc" },
 				{ "data": "regDesc" },
 				{ "data": "regWef" },
 				{ "data": "regWet" },
 				{ 
 					"data": "regCode",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-bank='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="openEditRegionModal(this);"/>';
+						return '<input type="button" class="btn btn-primary" data-region='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="openEditRegionModal(this);"/>';
 					}
 
 				},
 				{ 
 					"data": "regCode",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-bank='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmRegionDelete(this);"/>';
+						return '<input type="button" class="btn btn-primary" data-region='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmRegionDelete(this);"/>';
 					}
 
 				},
 			]
 		} );
+	  
+	  $('#orgRegion tbody').on( 'click', 'tr', function () {
+			 
+			 $(this).addClass('info').siblings().removeClass('info');
+			
+			  var aData = regionTable.rows('.info').data();
+			  $("#selOrgReg").val(aData[0].regCode);
+			  createBranchTable();
+			  if($("#selOrgReg"))
+					$("#branchRegion").val($("#selOrgReg").val());
+		    
+	  } );
+	  
+	  
+	 
+	  
 	  return regionTable;
 }
 
 
 function createBranchTable(){
 	var branchesUrl = "branches/0";
-	  if ($("#orgCodepk").val() != ''){
-		  branchesUrl = "branches/"+$("#orgCodepk").val();
+	//console.log($("#selOrgReg").val());
+	  if ($("#selOrgReg").val() != ''){
+		  branchesUrl = "branches/"+$("#selOrgReg").val();
 		}
 	  var branchTable = $('#orgBranches').DataTable( {
 			"processing": true,
@@ -326,11 +381,74 @@ $(function(){
 				]
 			} );
 		  
+		  
+		  $(".datepicker-input").each(function() {
+			    $(this).datetimepicker({
+                    format: 'DD/MM/YYYY'
+                });
+			    
+			});
+		  
 		  createRegionTable();
 		  
 		   createBankTable();
 		  
 		   createBranchTable();
+		   
+		   
+		   
+		   var $regForm = $('#reg-form');
+		   var regvalidator = $regForm.validate();
+		   $('#regModal').on('hidden.bs.modal', function () {
+			   regvalidator.resetForm();
+			   $('#reg-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
+				if($("#orgCodepk"))
+					$("#regOrgCode").val($("#orgCodepk").val());
+	        });
+		   
+		   $('#saveRegionBtn').click(function(){
+				if (!$regForm.valid()) {
+					return;
+				}
+				var $btn = $(this).button('Saving');
+				if($("#reg-wet")){
+					if(Date.parse(from) > Date.parse(to)){
+						 $(".errordiv").show();
+						 $(".errordiv").html("Wef Date cannot be greater than Wet Date");
+					}
+					else{
+						 $(".errordiv").hide();
+					}
+				}
+				else{
+					$("#reg-wet").val(null);
+				}
+				var data = {};
+				$regForm.serializeArray().map(function(x){data[x.name] = x.value;});
+				var from = $("#reg-wef").val();
+				var to = $("#reg-wet").val();
+              
+				
+				console.log(data);
+				var url = "createRegion";
+	            var request = $.post(url, data );
+				request.success(function(){
+					$('#orgRegion').DataTable().ajax.reload();
+					branchvalidator.resetForm();
+					$('#reg-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
+					$('#regModal').modal('hide');
+				});
+
+				request.error(function(jqXHR, textStatus, errorThrown){
+					$(".errordiv").html(jqXHR.responseText);
+					$(".errordiv").show();
+				});
+				request.always(function(){
+					$btn.button('reset');
+	            });
+			});
+		   
+		   
 		  
 		  
 		  var $branchForm = $('#branch-form');
@@ -339,8 +457,8 @@ $(function(){
 			    branchvalidator.resetForm();
 			    $("#errorDiv").hide();
 				$('#branch-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
-				if($("#orgCodepk"))
-					$("#branchOrgCode").val($("#orgCodepk").val());
+				if($("#selOrgReg"))
+					$("#branchRegion").val($("#selOrgReg").val());
 	        });
 		  
 		  $('#saveBranchBtn').click(function(){
@@ -350,7 +468,7 @@ $(function(){
 				var $btn = $(this).button('Saving');
 				var data = {};
 				$branchForm.serializeArray().map(function(x){data[x.name] = x.value;});
-				var url = "createOrgBranch";
+				var url = "createRegionBranch";
 	            var request = $.post(url, data );
 				request.success(function(){
 					$('#orgBranches').DataTable().ajax.reload();
@@ -407,7 +525,7 @@ $(function(){
 		  rivets.bind($("#organization_model"), model);
 		  //10-March Update
 		  if($("#orgCodepk"))
-			  $("#branchOrgCode").val($("#orgCodepk").val());
+				$("#regOrgCode").val($("#orgCodepk").val());
 		  
 		  if($("#orgCodepk"))
 				$("#bankOrgCode").val($("#orgCodepk").val()); 

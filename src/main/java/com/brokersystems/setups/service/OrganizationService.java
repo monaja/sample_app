@@ -37,13 +37,17 @@ public abstract interface OrganizationService
   public abstract DataTablesResult<Bank> findOrgBanks(long paramLong, DataTablesRequest paramDataTablesRequest)
     throws IllegalAccessException;
   
-  public abstract void createOrgBranch(OrgBranch paramOrgBranch);
+  public abstract void createRegionBranch(OrgBranch paramOrgBranch);
   
   public abstract void createOrgBank(Bank paramBank);
+  
+  public abstract void createOrgRegion(OrgRegions region);
   
   public abstract void deleteOrgBranch(Long paramLong);
   
   public abstract void deleteOrgBank(Long paramLong);
+  
+  public abstract void deleteOrgRegion(Long regCode);
   
   public abstract Page<Country> findCountryForSelect(String paramString, Pageable paramPageable);
   
@@ -53,5 +57,5 @@ public abstract interface OrganizationService
   
   public abstract Page<Currencies> findCurrenciesForSelect(String paramString, Pageable paramPageable);
   
-  public DataTablesResult<OrgRegions> findOrgRegions(long orgCode, DataTablesRequest request);
+  public DataTablesResult<OrgRegions> findOrgRegions(long orgCode, DataTablesRequest request) throws IllegalAccessException;
 }
