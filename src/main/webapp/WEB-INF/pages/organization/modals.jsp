@@ -289,7 +289,7 @@ This was replaced with Select drop downs
 
 							<div class="col-md-8">
 							   <div class='input-group date datepicker-input'>
-				                    <input type='text' class="form-control" name="regWef" id="reg-wef" required/>
+				                    <input type='text' class="form-control" name="regWef" id="reg-wef"  required/>
 				                    <span class="input-group-addon">
 				                        <span class="glyphicon glyphicon-calendar"></span>
 				                    </span>
@@ -302,7 +302,7 @@ This was replaced with Select drop downs
 
 							<div class="col-md-8">
 							   <div class='input-group date datepicker-input'>
-				                    <input type='text' class="form-control" name="regWet" id="reg-wet"/>
+				                    <input type='text' class="form-control" name="regWet" id="reg-wet" />
 				                    <span class="input-group-addon">
 				                        <span class="glyphicon glyphicon-calendar"></span>
 				                    </span>

@@ -5,6 +5,7 @@ import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
 import com.brokersystems.server.utils.FileUploadValidator;
+import com.brokersystems.server.utils.ReportUtils;
 import com.brokersystems.server.validator.OrganizationValidator;
 import com.brokersystems.setups.model.Address;
 import com.brokersystems.setups.model.Bank;
@@ -16,12 +17,27 @@ import com.brokersystems.setups.model.OrgRegions;
 import com.brokersystems.setups.model.Organization;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.service.OrganizationService;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.util.JRLoader;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import javax.validation.Valid;
 
 import org.apache.commons.io.FileUtils;
@@ -38,6 +54,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -60,6 +77,9 @@ public class OrganizationController
   FileUploadValidator fileValidator;
   @Autowired
   OrganizationValidator organizationValidator;
+  
+  @Autowired
+  private DataSource datasource;
   
   @InitBinder({"organization"})
   protected void initBinder(WebDataBinder binder)
@@ -240,6 +260,32 @@ public class OrganizationController
   {
     this.orgService.deleteOrgRegion(regCode);
   }
+  
+  
+  @RequestMapping(value = "/generateReport", method = RequestMethod.GET)
+  public String generateReport(HttpServletRequest request,HttpServletResponse response){
+	  String reportFileName = "regions";
+	  try {
+		Connection conn = datasource.getConnection();
+		HashMap<String,Object> hmParams=new HashMap<String,Object>();
+		JasperReport jasperReport = ReportUtils.getCompiledFile(reportFileName, request);
+		ReportUtils.generateReportPDF(response, hmParams, jasperReport, conn,reportFileName); 
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (JRException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (NamingException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	  return null;
+  }
+  
   
   
   

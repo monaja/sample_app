@@ -401,6 +401,7 @@ $(function(){
 		   var regvalidator = $regForm.validate();
 		   $('#regModal').on('hidden.bs.modal', function () {
 			   regvalidator.resetForm();
+			   $(".errordiv").hide();
 			   $('#reg-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
 				if($("#orgCodepk"))
 					$("#regOrgCode").val($("#orgCodepk").val());

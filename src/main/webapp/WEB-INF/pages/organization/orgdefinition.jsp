@@ -114,6 +114,7 @@
                  
                  
                 </div>
+                    <a href="<c:url value="/protected/organization/generateReport"/>" class="btn btn-primary">Report</a>
                 </div>
                 </div>
                 
