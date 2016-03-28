@@ -15,6 +15,7 @@ import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.OrgRegions;
 import com.brokersystems.setups.model.Organization;
+import com.brokersystems.setups.model.ReportModel;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.service.OrganizationService;
 
@@ -91,6 +92,13 @@ public class OrganizationController
   public String organizationHome(Model model)
   {
     return "orgdefinition";
+  }
+  
+  
+  @ModelAttribute
+  public ReportModel getReportModel(){
+	  ReportModel reportModel = new ReportModel();
+	  return reportModel;
   }
   
   @ModelAttribute
@@ -262,28 +270,23 @@ public class OrganizationController
   }
   
   
-  @RequestMapping(value = "/generateReport", method = RequestMethod.GET)
-  public String generateReport(HttpServletRequest request,HttpServletResponse response){
-	  String reportFileName = "regions";
-	  try {
+  @RequestMapping(value = "/generateReport", method = RequestMethod.POST)
+  public void generateReport(HttpServletRequest request,HttpServletResponse response,@ModelAttribute ReportModel reportModel) throws SQLException, JRException, NamingException, IOException{
+	    String reportFileName = "regions";
 		Connection conn = datasource.getConnection();
 		HashMap<String,Object> hmParams=new HashMap<String,Object>();
 		JasperReport jasperReport = ReportUtils.getCompiledFile(reportFileName, request);
-		ReportUtils.generateReportPDF(response, hmParams, jasperReport, conn,reportFileName); 
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (JRException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (NamingException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	  return null;
+		if(reportModel.getReportFormat()==null || reportModel.getReportFormat().equalsIgnoreCase("pdf")){
+			ReportUtils.generateReportPDF(response, hmParams, jasperReport, conn,reportFileName); 
+		}
+		else if(reportModel.getReportFormat().equalsIgnoreCase("xls")){
+			ReportUtils.generateReportXls(response, hmParams, jasperReport, conn,reportFileName); 
+		}
+		else if(reportModel.getReportFormat().equalsIgnoreCase("doc")){
+			ReportUtils.generateReportWord(response, hmParams, jasperReport, conn,reportFileName); 
+		}
+		
+	
   }
   
   

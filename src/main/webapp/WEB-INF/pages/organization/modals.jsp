@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!--   
 
 This was replaced with Select drop downs 
@@ -325,5 +326,47 @@ This was replaced with Select drop downs
 		</div>
 	</div>
 	
+	
+	<div class="modal fade" id="reportModal" tabindex="-1" role="dialog"
+		aria-labelledby="reportModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		   <form:form id="report-form" class="form-horizontal" action="generateReport" modelAttribute="reportModel">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="reportModalLabel">
+						Report Format
+					</h4>
+				</div>
+				<div class="modal-body">
+					
+					     
+						<div class="form-group">
+							<label for="format-id" class="col-md-4 control-label">Report Format</label>
+							<div class="col-md-8">
+							<form:select class="form-control" path="reportFormat" id="report-format">
+								   <form:option value="pdf" label="Pdf"/>
+								    <form:option value="doc" label="Word"/>
+								     <form:option value="xls" label="Excel"/>
+								</form:select>
+							</div>
+						</div>
+						
+						
+					
+				</div>
+				<div class="modal-footer">
+				    <input type="submit" class="btn btn-primary">
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						Cancel
+					</button>
+				</div>
+			</div>
+			</form:form>
+		</div>
+	</div>
 	
 	

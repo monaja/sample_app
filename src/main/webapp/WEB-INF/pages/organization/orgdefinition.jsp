@@ -114,7 +114,8 @@
                  
                  
                 </div>
-                    <a href="<c:url value="/protected/organization/generateReport"/>" class="btn btn-primary">Report</a>
+                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#reportModal">Report</button>
+		                       
                 </div>
                 </div>
                 

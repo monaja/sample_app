@@ -498,6 +498,25 @@ $(function(){
 					$("#bankOrgCode").val($("#orgCodepk").val()); 
 		  });
 		  
+		  var $reportForm= $('#report-form');
+		  
+		  $('#printBtn').click(function(){
+			  console.log("here....");
+			     var data = {};
+				$reportForm.serializeArray().map(function(x){data[x.name] = x.value;});
+				var url = "generateReport";
+	            var request = $.post(url, data );
+	            request.success(function(){
+	            	console.log("Report printed successfully");
+	            });
+	            
+	            request.error(function(jqXHR, textStatus, errorThrown){
+					console.log(jqXHR.responseText);
+				//	$("#errorbankDiv").show();
+				});
+				request.always(function(){
+	            });
+		  });
 		  
 		  $('#saveBankBtn').click(function(){
 				if (!$bankForm.valid()) {

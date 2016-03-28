@@ -323,6 +323,12 @@
 			<version>6.0.0</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.14</version>
+		</dependency>
+
 		
 		 
 
@@ -363,9 +369,6 @@
                         <path>/archweb</path>
                         <port>8084</port>
                         <contextReloadable>true</contextReloadable>
-                          <systemProperties>
-						    <JAVA_OPTS>-Xms512m -Xmx1024m -XX:MaxPermSize=512m</JAVA_OPTS>
-						  </systemProperties>
                     </configuration>
                 </plugin>
 		</plugins>
