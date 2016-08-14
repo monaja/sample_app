@@ -58,16 +58,62 @@
 		                    </div>
 		                 </div>
 				        </div>
+				        <div class="form-group">
+				          
+				           <div class="col-md-6">
+		                 <label for="currencyName" class="control-label col-md-5">Date of Incorporation</label>
+		                    <div class="col-md-7">
+		                      <p class="form-control-static"> <c:out value="${organization.dateIncorp}"></c:out></p> 
+		                                    
+		                 </div>
+		                 </div>
+		                  <div class="col-md-6">
+		                 <label for="currencyName" class="control-label col-md-5">Certificate No.</label>
+		                    <div class="col-md-7">
+		                      <p class="form-control-static"> <c:out value="${organization.certNumber}"></c:out></p> 
+		                                    
+		                 </div>
+		                 </div>
+				           
+		                
+				        </div>
 				        
 				        <div class="form-group">
+				          
 				           <div class="col-md-6">
-		                    <label for="orgDesc" class="control-label col-md-5">Org. Description</label>
+		                 <label for="currencyName" class="control-label col-md-5">Currency</label>
 		                    <div class="col-md-7">
-		                     <p class="form-control-static"> <c:out value="${organization.orgDesc}"></c:out></p>                  
+		                      <p class="form-control-static"> <c:out value="${organization.currency.curName}"></c:out></p> 
+		                                    
 		                 </div>
 		                 </div>
-		                 <div class="col-md-6">
-		                 
+				           
+		                
+				        </div>
+				        <div class='spacer'></div>
+				        <h4>Bank Account Information</h4>
+				        
+				         
+				        
+				        <div class="form-group">
+				           
+				             <div class="col-md-6">
+		                    <label for="logo" class="control-label col-md-5">Bank Name</label>
+		                    <div class="col-md-7">
+		                    <p class="form-control-static"> <c:out value="${organization.bankName}"></c:out></p> 
+						      
+						    </div>
+		                 </div>
+				          
+				          </div>
+				          
+				          <div class="form-group">
+				            <div class="col-md-6">
+		                    <label for="logo" class="control-label col-md-5">Account Number</label>
+		                    <div class="col-md-7">
+						       
+						       <p class="form-control-static"> <c:out value="${organization.accountNumber}"></c:out></p>
+						    </div>
 		                 </div>
 		                 </div>
 				         <div class='spacer'></div>
@@ -123,18 +169,7 @@
 				         <div class='spacer'></div>
 				        <h4>Other Information</h4>
 				        
-				         <div class="form-group">
-				          
-				           <div class="col-md-6">
-		                 <label for="currencyName" class="control-label col-md-5">Currency</label>
-		                    <div class="col-md-7">
-		                      <p class="form-control-static"> <c:out value="${organization.currency.curName}"></c:out></p> 
-		                                    
-		                 </div>
-		                 </div>
-				           
-		                
-				        </div>
+				         
 				        
 				        <div class="form-group">
 				           

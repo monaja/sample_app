@@ -22,11 +22,17 @@ public class QOrganization extends EntityPathBase<Organization> {
 
     public static final QOrganization organization = new QOrganization("organization");
 
+    public final StringPath accountNumber = createString("accountNumber");
+
     public final QAddress address;
 
-    public final ListPath<Bank, QBank> banks = this.<Bank, QBank>createList("banks", Bank.class, QBank.class, PathInits.DIRECT2);
+    public final StringPath bankName = createString("bankName");
+
+    public final StringPath certNumber = createString("certNumber");
 
     public final QCurrencies currency;
+
+    public final DateTimePath<java.util.Date> dateIncorp = createDateTime("dateIncorp", java.util.Date.class);
 
     public final NumberPath<Long> orgCode = createNumber("orgCode", Long.class);
 

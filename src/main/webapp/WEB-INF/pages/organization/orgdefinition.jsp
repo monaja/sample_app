@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<script>
+    var action = '${organization.formAction}';
+</script>
 <script type="text/javascript"
 	src="<c:url value="/js/modules/organization/organization.js"/>"></script>
 
@@ -36,7 +38,7 @@
                     <div class="panel-heading">
                       <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                          Organization Regions and Banks
+                          Organization Regions
                         </a>
                       </h4>
                     </div>
@@ -44,7 +46,7 @@
                       <div class="panel-body">
                        <ul class="nav nav-tabs">
 			              <li class="active"><a href="#tab_1" data-toggle="tab">Regions</a></li>
-			              <li><a href="#tab_2" data-toggle="tab">Banks</a></li>
+			              
 			              <li class="pull-right"><i class="fa fa-gear"></i></li>
 			            </ul>
                         
@@ -52,7 +54,11 @@
                            <div class="tab-pane active" id="tab_1">
                                <h4>Region Details</h4>
 		                         <div class="spacer"></div>
+		                          <c:choose>
+						    <c:when test="${organization.formAction=='A'}">
 		                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#regModal">New</button>
+		                        </c:when>
+		                        </c:choose>
 		                        <input type="hidden" id="selOrgReg">
 		                         <hr>
 		                          <table id="orgRegion" class="table table-bordered table-striped dataTable"
@@ -72,7 +78,11 @@
 								<div class="spacer"></div>
 								 <h4>Branch Details</h4>
 		                         <div class="spacer"></div>
+		                          <c:choose>
+						    <c:when test="${organization.formAction=='A'}">
 		                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#branchModal">New</button>
+		                        </c:when>
+		                        </c:choose>
 		                        <hr>
 		                          <table id="orgBranches" class="table table-hover table-bordered"
 									>
@@ -81,29 +91,16 @@
 											
 											<th>Branch ID</th>
 											<th>Branch Name</th>
+											<th>Address</th>
+											<th>Tel. Number</th>
+											<th>Branch Manager</th>
 											<th width="5%"> </th>
 											<th width="5%"> </th>
 										</tr>
 									</thead>
 								</table>
                            </div>
-                           <div class="tab-pane" id="tab_2">
-                                <h4>Bank Details</h4>
-                          <div class="spacer"></div>
-                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#bankModal">New</button>
-                        <hr>
-                         <table id="orgBranks" class="table table-hover table-bordered"
-							cellspacing="0" width="100%">
-							<thead>
-								<tr>
-									<th>Bank ID</th>
-									<th>Bank Name</th>
-									<th width="5%"></th>
-									<th width="5%"></th>
-								</tr>
-							</thead>
-						</table>
-                           </div>
+                          
                           </div>
                       
                         

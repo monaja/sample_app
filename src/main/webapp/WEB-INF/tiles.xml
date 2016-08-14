@@ -29,12 +29,22 @@
     </definition>  
     
     <definition name="orgdefinition" extends="base.definition">  
-        <put-attribute name="title" value="Organization Details" />  
+        <put-attribute name="title" value="Company Details" />  
         <put-attribute name="body" value="/WEB-INF/pages/organization/orgdefinition.jsp" />  
     </definition>  
     
+    <definition name="currency" extends="base.definition">  
+        <put-attribute name="title" value="Currency Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/currencies.jsp" />  
+    </definition> 
+    
+    <definition name="countries" extends="base.definition">  
+        <put-attribute name="title" value="Countries/Counties/Towns Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/countries.jsp" />  
+    </definition> 
+    
      <definition name="orgSetupScreen" extends="base.definition">  
-        <put-attribute name="title" value="Organization Set Up" />  
+        <put-attribute name="title" value="Company Set Up" />  
         <put-attribute name="body" value="/WEB-INF/pages/submenus/orgSetupScreen.jsp" />  
     </definition>  
     

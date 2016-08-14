@@ -20,7 +20,7 @@ public class FileUploadValidator implements Validator {
 		 
 		Organization holder = (Organization)obj;
 		if(holder.getFile()!=null){
-			if(holder.getFile().getSize()> 4000){
+			if(holder.getFile().getSize()> 10000){
 				errors.rejectValue("file", "file.toobig");
 			}
 		}

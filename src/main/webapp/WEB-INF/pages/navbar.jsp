@@ -14,13 +14,13 @@
             
              <li>
               <a href="<c:url value="/protected/home/orgsetups"/>">
-                <i class="fa fa-cog"></i> <span>Org Set Ups</span> <i class="pull-right"></i>
+                <i class="fa fa-cog"></i> <span>Company Setups</span> <i class="pull-right"></i>
               </a>
             </li>
             
              <li>
               <a href="<c:url value="/protected/home/setups"/>">
-                <i class="fa fa-cog"></i> <span>U/W Set Ups</span> <i class="pull-right"></i>
+                <i class="fa fa-cog"></i> <span>Units Set Ups</span> <i class="pull-right"></i>
               </a>
               
             </li>

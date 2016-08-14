@@ -10,6 +10,8 @@ import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.OrgRegions;
 import com.brokersystems.setups.model.Organization;
 import com.brokersystems.setups.model.Town;
+import com.brokersystems.setups.model.User;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -30,6 +32,8 @@ public abstract interface OrganizationService
   
   public abstract DataTablesResult<Currencies> findCurrencies(DataTablesRequest paramDataTablesRequest)
     throws IllegalAccessException;
+  
+  public Page<User> findUsersForSelect(String term, Pageable pageable);
   
   public abstract DataTablesResult<OrgBranch> findOrgBranches(long paramLong, DataTablesRequest paramDataTablesRequest)
     throws IllegalAccessException;

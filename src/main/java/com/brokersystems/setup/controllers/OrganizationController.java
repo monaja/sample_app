@@ -17,6 +17,7 @@ import com.brokersystems.setups.model.OrgRegions;
 import com.brokersystems.setups.model.Organization;
 import com.brokersystems.setups.model.ReportModel;
 import com.brokersystems.setups.model.Town;
+import com.brokersystems.setups.model.User;
 import com.brokersystems.setups.service.OrganizationService;
 
 import net.sf.jasperreports.engine.JRException;
@@ -30,6 +31,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +46,7 @@ import javax.validation.Valid;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -86,6 +90,9 @@ public class OrganizationController
   protected void initBinder(WebDataBinder binder)
   {
     binder.setValidator(this.fileValidator);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    dateFormat.setLenient(false);
+    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
   }
   
   @RequestMapping(method={org.springframework.web.bind.annotation.RequestMethod.GET})
@@ -187,6 +194,15 @@ public class OrganizationController
     throws IllegalAccessException
   {
     return this.orgService.findCurrenciesForSelect(term, pageable);
+  }
+  
+  
+  @RequestMapping(value={"managers"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+  @ResponseBody
+  public Page<User> branchManagers(@RequestParam(value="term", required=false) String term, Pageable pageable)
+    throws IllegalAccessException
+  {
+    return this.orgService.findUsersForSelect(term, pageable);
   }
   
   @RequestMapping(value={"branches/{regCode}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})

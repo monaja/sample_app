@@ -35,6 +35,21 @@ public class OrgBranch implements Serializable {
 	@JoinColumn(name="ob_reg_code")
 	private OrgRegions region;
 	
+	@Column(name="ob_address")
+	private String address;
+	
+	@Column(name="ob_tel_number")
+	private String telNumber;
+	
+	@XmlTransient
+	 @JsonIgnore
+	@ManyToOne
+	@JoinColumn(name="ob_user_code")
+	private User branchManager;
+	
+	@Transient
+	private String branchUser;
+	
 	
 
 	public OrgBranch() {
@@ -70,6 +85,38 @@ public class OrgBranch implements Serializable {
 
 	public void setRegion(OrgRegions region) {
 		this.region = region;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getTelNumber() {
+		return telNumber;
+	}
+
+	public void setTelNumber(String telNumber) {
+		this.telNumber = telNumber;
+	}
+
+	public User getBranchManager() {
+		return branchManager;
+	}
+
+	public void setBranchManager(User branchManager) {
+		this.branchManager = branchManager;
+	}
+
+	public String getBranchUser() {
+		return branchUser;
+	}
+
+	public void setBranchUser(String branchUser) {
+		this.branchUser = branchUser;
 	}
 
 

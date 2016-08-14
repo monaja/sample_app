@@ -10,6 +10,7 @@ import com.brokersystems.setup.repository.OrgBranchRepository;
 import com.brokersystems.setup.repository.OrganizationRepository;
 import com.brokersystems.setup.repository.RegionRepository;
 import com.brokersystems.setup.repository.TownRepository;
+import com.brokersystems.setup.repository.UserRepository;
 import com.brokersystems.setups.model.Bank;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
@@ -25,7 +26,9 @@ import com.brokersystems.setups.model.QOrgBranch;
 import com.brokersystems.setups.model.QOrgRegions;
 import com.brokersystems.setups.model.QOrganization;
 import com.brokersystems.setups.model.QTown;
+import com.brokersystems.setups.model.QUser;
 import com.brokersystems.setups.model.Town;
+import com.brokersystems.setups.model.User;
 import com.brokersystems.setups.service.OrganizationService;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.NumberPath;
@@ -60,6 +63,9 @@ public class OrganizationServiceImpl
   private OrgBranchRepository orgBranchrepo;
   @Autowired
   private RegionRepository regionRepo;
+  
+  @Autowired
+  private UserRepository userRepo;
   
   @Transactional(readOnly=true)
   public Organization getOrganizationDetails()
@@ -194,7 +200,7 @@ public class OrganizationServiceImpl
   public Page<Currencies> findCurrenciesForSelect(String term, Pageable pageable)
   {
     term = "%" + StringUtils.defaultString(term) + "%";
-    return this.currencyrepo.findByCurNameLikeIgnoreCase(term, pageable);
+    return this.currencyrepo.findByCurNameLikeIgnoreCaseAndEnabled(term, pageable,true);
   }
 
   @Modifying
@@ -213,4 +219,14 @@ public class OrganizationServiceImpl
 	public void deleteOrgRegion(Long regCode) {
 		 regionRepo.delete(regCode);
 	}
+    
+    
+    public Page<User> findUsersForSelect(String term, Pageable pageable)
+    {
+      term = "%" + StringUtils.defaultString(term) + "%";
+      return userRepo.findByUsernameLikeIgnoreCaseAndEnabled(term, pageable, "1");
+    }
+    
+
+	
 }

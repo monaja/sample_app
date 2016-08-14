@@ -26,6 +26,12 @@ public class QCurrencies extends EntityPathBase<Currencies> {
 
     public final StringPath curName = createString("curName");
 
+    public final BooleanPath enabled = createBoolean("enabled");
+
+    public final StringPath fraction = createString("fraction");
+
+    public final NumberPath<Integer> fractionUnits = createNumber("fractionUnits", Integer.class);
+
     public final ListPath<Organization, QOrganization> organizations = this.<Organization, QOrganization>createList("organizations", Organization.class, QOrganization.class, PathInits.DIRECT2);
 
     public QCurrencies(String variable) {

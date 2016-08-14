@@ -17,7 +17,6 @@ import java.util.List;
  */
 @Entity
 @Table(name="countries")
-//@NamedQuery(name="Country.findAll", query="SELECT c FROM Country c")
 public class Country implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -26,11 +25,12 @@ public class Country implements Serializable {
 	@Column(name="cou_code")
 	private Long couCode;
 
-	@Column(name="cou_name")
+	@Column(name="cou_name",unique=true)
 	private String couName;
 
-	@Column(name="cou_sht_desc")
+	@Column(name="cou_sht_desc",unique=true)
 	private String couShtDesc;
+	
 
 	
 

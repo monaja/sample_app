@@ -1,139 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<!--   
-
-This was replaced with Select drop downs 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-<div class="modal fade" id="countryModal" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Select Country</h4>
-			</div>
-			<div class="modal-body">
-				<div class="alert alert-danger alert-dismissible" role="alert"
-					id="errorDiv" style="display: none;">
-					<button type="button" class="close" data-dismiss="alert">
-						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-					</button>
-				</div>
-
-
-				<table id="country" class="table table-hover table-bordered"
-					cellspacing="0" width="100%">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>Country</th>
-							<th></th>
-						</tr>
-					</thead>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="modal fade" id="countyModal" role="dialog">
-	<div class="modal-dialog">
-
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Select County/State</h4>
-			</div>
-			<div class="modal-body">
-				<div class="alert alert-danger alert-dismissible" role="alert"
-					id="errorDiv" style="display: none;">
-					<button type="button" class="close" data-dismiss="alert">
-						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-					</button>
-				</div>
-
-
-				<table id="county" class="table table-hover table-bordered"
-					cellspacing="0" width="100%">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>County/State</th>
-							<th></th>
-						</tr>
-					</thead>
-				</table>
-			</div>
-			
-		</div>
-	</div>
-</div>
-
-<div class="modal fade" id="townModal" role="dialog">
-	<div class="modal-dialog">
-
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Select Town</h4>
-			</div>
-			<div class="modal-body">
-				<div class="alert alert-danger alert-dismissible" role="alert"
-					id="errorDiv" style="display: none;">
-					<button type="button" class="close" data-dismiss="alert">
-						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-					</button>
-				</div>
-
-
-				<table id="town" class="table table-hover table-bordered"
-					cellspacing="0" width="100%">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>Town</th>
-							<th>Code</th>
-						</tr>
-					</thead>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="modal fade" id="currencyModal" role="dialog">
-	<div class="modal-dialog">
-
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Select Currency</h4>
-			</div>
-			<div class="modal-body">
-				<div class="alert alert-danger alert-dismissible" role="alert"
-					id="errorDiv" style="display: none;">
-					<button type="button" class="close" data-dismiss="alert">
-						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-					</button>
-				</div>
-
-
-				<table id="currencies" class="table table-hover table-bordered"
-					cellspacing="0" width="100%">
-					<thead>
-						<tr>
-							
-							<th>ISO Code</th>
-							<th>Currency</th>
-							<th>Code</th>
-						</tr>
-					</thead>
-				</table>
-			</div>
-			
-		</div>
-	</div>
-</div>
- -->
 
  <div class="modal fade" id="branchModal" tabindex="-1" role="dialog"
 		aria-labelledby="branchModalLabel" aria-hidden="true">
@@ -173,6 +41,38 @@ This was replaced with Select drop downs
 									required>
 							</div>
 						</div>
+						<div class="form-group">
+							<label for="brn-name" class="col-md-3 control-label">Address</label>
+
+							<div class="col-md-8">
+								<textarea rows="3" cols="20" class="editUserCntrls form-control"
+								id="brn-addresss" name="address" 
+									required>
+								</textarea> 
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="brn-name" class="col-md-3 control-label">Tel. Number</label>
+
+							<div class="col-md-8">
+								<input type="text" class="editUserCntrls form-control"
+									id="brn-telNumber" name="telNumber" 
+									required>
+							</div>
+						</div>
+						<div class="form-group">
+		                 <label for="brn-user" class="control-label col-md-3">Branch User</label>
+		                    <div class="col-md-8">
+		                     <input type="hidden" name="username" class="form-control"/>
+		                     <input type="hidden" name="userCod" class="form-control"/>
+		                     <input type="hidden" id="branchManager" rv-value="organization.user.id"/>
+		                     
+		                        <div id="branch-user" class="form-control" 
+				                                 select2-url="<c:url value="/protected/organization/managers"/>" >
+				                                 
+				               </div>                
+		                 </div>
+		                 </div>
 						
 					</form>
 				</div>

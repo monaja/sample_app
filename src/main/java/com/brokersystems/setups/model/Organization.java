@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -61,6 +62,18 @@ public class Organization implements Serializable {
 	@Transient
 	private String formAction;
 	
+	@Column(name="org_bank_name")
+	private String bankName;
+	
+	@Column(name="org_acc_number")
+	private String accountNumber;
+	
+	@Column(name="org_date_incorp")
+	private Date dateIncorp;
+	
+	@Column(name="org_cert_number")
+	private String certNumber;
+	
 
 	
 
@@ -82,10 +95,7 @@ public class Organization implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="org_locale_id")
 	private SysLocale sysLocale;
-	
-//bi-directional many-to-one association to Bank
-	@OneToMany(mappedBy="organization")
-	private List<Bank> banks;
+
 
 	//bi-directional many-to-one association to OrgBranch
 	@OneToMany(mappedBy="organization")
@@ -190,15 +200,6 @@ public class Organization implements Serializable {
 		this.sysLocale = sysLocale;
 	}
 
-	public List<Bank> getBanks() {
-		return banks;
-	}
-
-	public void setBanks(List<Bank> banks) {
-		this.banks = banks;
-	}
-
-
 	public List<OrgRegions> getOrgRegions() {
 		return orgRegions;
 	}
@@ -222,6 +223,38 @@ public class Organization implements Serializable {
 
 	public void setFormAction(String formAction) {
 		this.formAction = formAction;
+	}
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+
+	public Date getDateIncorp() {
+		return dateIncorp;
+	}
+
+	public void setDateIncorp(Date dateIncorp) {
+		this.dateIncorp = dateIncorp;
+	}
+
+	public String getCertNumber() {
+		return certNumber;
+	}
+
+	public void setCertNumber(String certNumber) {
+		this.certNumber = certNumber;
 	}
 
 

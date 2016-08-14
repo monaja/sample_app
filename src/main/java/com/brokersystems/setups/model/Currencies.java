@@ -23,11 +23,21 @@ public class Currencies implements Serializable {
 	@Column(name="cur_code")
 	private Long curCode;
 
-	@Column(name="cur_iso_code")
+	@Column(name="cur_iso_code",unique=true)
 	private String curIsoCode;
 
 	@Column(name="cur_name")
 	private String curName;
+	
+	@Column(name="cur_enabled")
+	private Boolean enabled;
+	
+	@Column(name="cur_fraction")
+	private String fraction;
+	
+	@Column(name="cur_fraction_units")
+	private Integer fractionUnits;
+	
 
 	//bi-directional many-to-one association to Organization
 	 @XmlTransient
@@ -83,5 +93,31 @@ public class Currencies implements Serializable {
 
 		return organization;
 	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public String getFraction() {
+		return fraction;
+	}
+
+	public void setFraction(String fraction) {
+		this.fraction = fraction;
+	}
+
+	public Integer getFractionUnits() {
+		return fractionUnits;
+	}
+
+	public void setFractionUnits(Integer fractionUnits) {
+		this.fractionUnits = fractionUnits;
+	}
+	
+	
 
 }

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 
 public abstract interface CurrencyRepository
-  extends JpaRepository<Currencies, Integer>, QueryDslPredicateExecutor<Currencies>
+  extends JpaRepository<Currencies, Long>, QueryDslPredicateExecutor<Currencies>
 {
-  public  Page<Currencies> findByCurNameLikeIgnoreCase(String paramString, Pageable paramPageable);
+  public  Page<Currencies> findByCurNameLikeIgnoreCaseAndEnabled(String paramString, Pageable paramPageable,boolean enabled);
 }

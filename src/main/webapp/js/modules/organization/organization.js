@@ -24,119 +24,14 @@ function getContextPath() {
 			.indexOf("/", 2));
 }
 
-//function to display country details from the database
-//This is based on Jquery Datatables framework 
-/*
-function showCountryModal(){
-	var dataTableUrl = "countries";
-    var usersTable = $('#country').DataTable( {
-		"processing": true,
-		"serverSide": true,
-		destroy: true,
-		"ajax": dataTableUrl,
-		"columns": [
-			{ "data": "couShtDesc" },
-			{ "data": "couName" },
-			{
-				"data": "couCode",
-				 "render": function ( data, type, full, meta ) {
-						return '<a href="javascript:void(0)" data-country='+encodeURI(JSON.stringify(full)) + ' onclick="selectCountry(this);">Select</a>';
-			    }
-
-			},
-		]
-	} );
-    $('#countryModal').modal('show');
-}
-
-//Function to populate selected 
-function selectCountry(button){
-	var country = JSON.parse(decodeURI($(button).data("country")));	
-	$("#countryCode").val(country["couCode"]);
-	$("#countryName").val(country["couName"]);
-	$('#countryModal').modal('hide');
-}
-
-function showCountyModal(){
-	 var countyUrl = "counties/0"
-	if ($("#countryCode").val() != ''){
-		 countyUrl = "counties/"+$("#countryCode").val();
-	}
-     var usersTable = $('#county').DataTable( {
-			"processing": true,
-			"serverSide": true,
-			"ajax": countyUrl,
-			destroy: true,
-			"columns": [
-				{ "data": "countyCode" },
-				{ "data": "countyName" },
-				{
-					"data": "countyId",
-					 "render": function ( data, type, full, meta ) {
-							return '<a href="javascript:void(0)" data-county='+encodeURI(JSON.stringify(full)) + ' onclick="selectCounty(this);">Select</a>';
-				    }
-
-				},
-			]
-		} );
-	$('#countyModal').modal('show');
-}
-
-
-function selectCounty(button){
-	var country = JSON.parse(decodeURI($(button).data("county")));	
-	$("#txtcountyCode").val(country["countyId"]);
-	$("#txtcounty").val(country["countyName"]);
-	$('#countyModal').modal('hide');
-}
-
-
-function showTownModal(){
-	 var countyUrl = "towns/0"
-	if ($("#txtcountyCode").val() != ''){
-		 countyUrl = "towns/"+model.organization.country.couCode;
-	}
-    var usersTable = $('#town').DataTable( {
-			"processing": true,
-			"serverSide": true,
-			"ajax": countyUrl,
-			destroy: true,
-			"columns": [
-				{ "data": "ctShtDesc" },
-				{ "data": "ctName" },
-				{
-					"data": "ctCode",
-					 "render": function ( data, type, full, meta ) {
-							return '<a href="javascript:void(0)" data-town='+encodeURI(JSON.stringify(full)) + ' onclick="selectTown(this);">Select</a>';
-				    }
-
-				},
-			]
-		} );
-	$('#townModal').modal('show');
-}
-
-
-function selectTown(button){
-	var country = JSON.parse(decodeURI($(button).data("town")));	
-	$("#txtCityCode").val(country["ctCode"]);
-	$("#txtCity").val(country["ctName"]);
-	$('#townModal').modal('hide');
-}
-
-
-function selectCurrency(button){
-	var country = JSON.parse(decodeURI($(button).data("currency")));	
-	$("#txtCurrency").val(country["curName"]);
-	$("#txtCurCode").val(country["curCode"]);
-	$('#currencyModal').modal('hide');
-}
-*/
 function openEditBranchModal(button){
 	var branch = JSON.parse(decodeURI($(button).data("branch")));	
 	$("#brn-code").val(branch["obId"]);
 	$("#brn-id").val(branch["obShtDesc"]);
 	$("#brn-name").val(branch["obName"]);
+	$("#brn-addresss").val(branch["address"]);
+	$("#brn-telNumber").val(branch["telNumber"]);
+	$("#brn-manager").val(branch["branchUser"]);
 	$('#branchModal').modal('show');
 }
 
@@ -290,14 +185,26 @@ function createRegionTable(){
 				{ 
 					"data": "regCode",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-region='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="openEditRegionModal(this);"/>';
+						if(action =="A"){
+							return '<input type="button" class="btn btn-primary" data-region='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="openEditRegionModal(this);"/>';
+						}
+						else{
+							return '<input type="button" class="btn btn-primary" data-region='+encodeURI(JSON.stringify(full)) + ' value="Edit"  onclick="openEditRegionModal(this);" disabled/>';
+						}
+						
 					}
 
 				},
 				{ 
 					"data": "regCode",
 					"render": function ( data, type, full, meta ) {
+						if(action =="A"){
 						return '<input type="button" class="btn btn-primary" data-region='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmRegionDelete(this);"/>';
+						}
+						else{
+							return '<input type="button" class="btn btn-primary" data-region='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmRegionDelete(this);" disabled/>';
+								
+						}
 					}
 
 				},
@@ -306,9 +213,9 @@ function createRegionTable(){
 	  
 	  $('#orgRegion tbody').on( 'click', 'tr', function () {
 			 
-			 $(this).addClass('info').siblings().removeClass('info');
+			 $(this).addClass('bg-light-blue-active').siblings().removeClass('bg-light-blue-active');
 			
-			  var aData = regionTable.rows('.info').data();
+			  var aData = regionTable.rows('.bg-light-blue-active').data();
 			  $("#selOrgReg").val(aData[0].regCode);
 			  createBranchTable();
 			  if($("#selOrgReg"))
@@ -339,17 +246,33 @@ function createBranchTable(){
 			"columns": [
 				{ "data": "obShtDesc" },
 				{ "data": "obName" },
+				{ "data": "address" },
+				{ "data": "telNumber" },
+				{ "data": "branchUser" },
 				{ 
 					"data": "obId",
 					"render": function ( data, type, full, meta ) {
+						if(action =="A"){
 						return '<input type="button" class="btn btn-primary" data-branch='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="openEditBranchModal(this);"/>';
+						}
+						else{
+							return '<input type="button" class="btn btn-primary" data-branch='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="openEditBranchModal(this);" disabled/>';
+								
+						}
 					}
 
 				},
 				{ 
 					"data": "obId",
 					"render": function ( data, type, full, meta ) {
+						if(action =="A"){
 						return '<input type="button" class="btn btn-primary" data-branch='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmBranchDelete(this);"/>';
+						}
+						else{
+							return '<input type="button" class="btn btn-primary" data-branch='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmBranchDelete(this);" disabled/>';
+								
+						}
+						
 					}
 
 				},
@@ -361,6 +284,7 @@ function createBranchTable(){
 $(function(){
 
 	$(document).ready(function() {
+		
 
 		  orgDetails();
 		  var dataTableUrl = "currencies";
@@ -430,7 +354,6 @@ $(function(){
 				var to = $("#reg-wet").val();
               
 				
-				console.log(data);
 				var url = "createRegion";
 	            var request = $.post(url, data );
 				request.success(function(){
@@ -568,13 +491,16 @@ $(function(){
 	                      var countryCode = $("#countryCode").val();
 	                      var countryName = $("#countryName").val();
 		            	 model.organization.country.couCode = countryCode;
+		            	 model.organization.country.county.countyId = -2000;
 		            	var data = {couName:countryName,couCode:countryCode};
 	                    callback(data);
 	                }, 
 		            id: "couCode",
 		            width:"200px"
 		        });
-			  
+		  }
+		  if($("#county").filter("div").html() != undefined)
+		  {
 			  Select2Builder.initAjaxSelect2({
 		            containerId : "county",
 		            sort : 'countyName',
@@ -601,7 +527,10 @@ $(function(){
 		            }}
 		        });
 			  
-			  
+		  }
+		  
+		  if($("#town").filter("div").html() != undefined)
+		  {
 			  Select2Builder.initAjaxSelect2({
 		            containerId : "town",
 		            sort : 'ctName',
@@ -627,8 +556,9 @@ $(function(){
 		            	return model.organization.country.county.countyId;
 		            }}
 		        });
-			  
-			  
+		  }
+		  if($("#town").filter("div").html() != undefined)
+		  {
 			  Select2Builder.initAjaxSelect2({
 		            containerId : "currency",
 		            sort : 'curName',
@@ -651,20 +581,52 @@ $(function(){
 		            id: "curCode",
 		            width:"200px"
 		        });
+		  }
 			  
+			  
+	
+		  if($("#branch-user").filter("div").html() != undefined)
+		  { 
+		  Select2Builder.initAjaxSelect2({
+	            containerId : "branch-user",
+	            sort : 'username',
+	            change: userChanged,
+	            formatResult : function(a)
+	            {
+	            	return a.username
+	            },
+	            formatSelection : function(a)
+	            {
+	            	return a.username
+	            },
+	            initSelection: function (element, callback) {
+                /*var currCode = $("#txtCurrencyCode").val();
+                var currName = $("#txtCurrency").val();
+	              model.organization.currency.curCode = currCode;
+	              var data = {curName:currName,curCode:currCode};
+                callback(data);*/
+          },
+	            id: "username",
+	            width:"200px"
+	        });
 		  }
 		  
 		  
 		  function currencyChanged(e, a, v) {
 	            model.organization.currency = e.added || {};
 	        }
+		  function userChanged(e, a, v) {
+	            model.organization.user = e.added || {};
+	        }
 		  function countryChanged(e, a, v) {
 	            model.organization.country = e.added || {};
+	            countyChanged(e, a, v);
 	        }
 		  function countyChanged(e, a, v) {
 	            model.organization.country.county = e.added || {};
 	        }
 		  function townChanged(e, a, v) {
+			  $("#zipCode").val(e.added.ctPostalCode);
 	            model.organization.country.county.town = e.added || {};
 	        }
 	});
@@ -685,6 +647,9 @@ var model = {
 			},
 			currency:{
 				curCode:"",
+			},
+			user:{
+				id:"",
 			}
 	    }
 	    /////////////////////////////

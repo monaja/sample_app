@@ -22,6 +22,10 @@ public class QOrgBranch extends EntityPathBase<OrgBranch> {
 
     public static final QOrgBranch orgBranch = new QOrgBranch("orgBranch");
 
+    public final StringPath address = createString("address");
+
+    public final QUser branchManager;
+
     public final NumberPath<Long> obId = createNumber("obId", Long.class);
 
     public final StringPath obName = createString("obName");
@@ -29,6 +33,8 @@ public class QOrgBranch extends EntityPathBase<OrgBranch> {
     public final StringPath obShtDesc = createString("obShtDesc");
 
     public final QOrgRegions region;
+
+    public final StringPath telNumber = createString("telNumber");
 
     public QOrgBranch(String variable) {
         this(OrgBranch.class, forVariable(variable), INITS);
@@ -48,6 +54,7 @@ public class QOrgBranch extends EntityPathBase<OrgBranch> {
 
     public QOrgBranch(Class<? extends OrgBranch> type, PathMetadata<?> metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.branchManager = inits.isInitialized("branchManager") ? new QUser(forProperty("branchManager")) : null;
         this.region = inits.isInitialized("region") ? new QOrgRegions(forProperty("region"), inits.get("region")) : null;
     }
 

@@ -34,7 +34,7 @@ public class County implements Serializable {
 	 @XmlTransient
 	 @JsonIgnore
 	@ManyToOne
-	@JoinColumn(name="county_cou_code")
+	@JoinColumn(name="county_cou_code",nullable=false)
 	private Country country;
 
 	//bi-directional many-to-one association to Town
