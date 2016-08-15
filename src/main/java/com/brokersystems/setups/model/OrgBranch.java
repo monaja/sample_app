@@ -42,7 +42,7 @@ public class OrgBranch implements Serializable {
 	private String telNumber;
 	
 	@XmlTransient
-	 @JsonIgnore
+	// @JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="ob_user_code")
 	private User branchManager;

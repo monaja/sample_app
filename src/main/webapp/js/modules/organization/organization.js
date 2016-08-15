@@ -248,7 +248,15 @@ function createBranchTable(){
 				{ "data": "obName" },
 				{ "data": "address" },
 				{ "data": "telNumber" },
-				{ "data": "branchUser" },
+				{ "data": "branchManager",
+				  "render": function ( data, type, full, meta ) {
+					  if(full.branchManager)
+					  return full.branchManager.name;
+					  else{
+						  return "";
+					  }
+				  }
+				},
 				{ 
 					"data": "obId",
 					"render": function ( data, type, full, meta ) {

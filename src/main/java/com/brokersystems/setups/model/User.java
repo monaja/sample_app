@@ -109,6 +109,11 @@ public class User  implements Serializable {
 	public void setUserRoles(List<UserRole> userRoles) {
 		this.userRoles = userRoles;
 	}
+
+	@Override
+	public String toString() {
+		return username;
+	}
 	
 	
 }
