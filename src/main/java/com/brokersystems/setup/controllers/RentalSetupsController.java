@@ -15,6 +15,7 @@ import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.RateTypes;
+import com.brokersystems.setups.model.UnitTypes;
 import com.brokersystems.setups.service.SetupsService;
 
 @Controller
@@ -56,6 +57,29 @@ public class RentalSetupsController {
 	  public void deleteRateType(@PathVariable Long rateTypeCode)
 	  {
 	    setupsService.deleteRateType(rateTypeCode);
+	  }
+	 
+	 @RequestMapping(value={"allunittypes"}, method={RequestMethod.GET})
+		@ResponseBody
+		public DataTablesResult<UnitTypes> getUnitTypes(@DataTable DataTablesRequest pageable)
+		    throws IllegalAccessException
+		{
+		    return setupsService.findAllUnitTypes(pageable);
+		}
+	 
+	 @RequestMapping(value={"createUnitType"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+	  @ResponseStatus(HttpStatus.CREATED)
+	  public void saveOrUpdateUnitType(UnitTypes unitType)
+	    throws IllegalAccessException
+	  {
+	    setupsService.defineUnitType(unitType);
+	  }
+	 
+	 @RequestMapping(value={"deleteUnitType/{unitTypeCode}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	  @ResponseStatus(HttpStatus.NO_CONTENT)
+	  public void deleteUnitType(@PathVariable Long unitTypeCode)
+	  {
+	    setupsService.deleteUnitType(unitTypeCode);
 	  }
 	
 }

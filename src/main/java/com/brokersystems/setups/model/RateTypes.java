@@ -20,7 +20,7 @@ public class RateTypes {
 	@Column(name="rt_id")
 	private Long rateId;
 	
-	@Column(name="rate_type",nullable=false)
+	@Column(name="rate_type",nullable=false,unique=true)
 	private String rateType;
 	
 	@Column(name="rate_desc")

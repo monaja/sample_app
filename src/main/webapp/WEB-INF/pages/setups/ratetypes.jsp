@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<script type="text/javascript" src="<c:url value="/js/modules/setups/ratetype.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/modules/setups/rentalsetups.js"/>"></script>
 <div class="box box-info">
   <form id="rate-form" class="form-horizontal">
   <div class="box-body">
@@ -25,7 +25,7 @@
 			</div>
   </div>
   <div class="box-footer">
-  <button type="button" class="btn btn-default" id="new-rate-type">New</button>
+  <button type="button" class="btn btn-default" id="new-btn">New</button>
 			<button data-loading-text="Saving..." id="save-rate-type"
 				type="button" class="btn btn-primary">Save</button>
   </div>

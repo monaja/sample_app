@@ -5,9 +5,12 @@ $(function(){
 		createRateTypeTable();
 		saveUpdateRateType();
 		
-		$("#new-rate-type").on("click", function(){
+		$("#new-btn").on("click", function(){
 			$('#rate-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden],input[type=number], textarea").val("");		
 		});	
+		
+		createUnitTypeTable();
+		saveUpdateUnitType();
 		
 	});
 	
@@ -46,6 +49,39 @@ function createRateTypeTable(){
 	  return currTable;
 }
 
+function createUnitTypeTable(){
+	var url = "allunittypes";
+	  var currTable = $('#unittypeList').DataTable( {
+			"processing": true,
+			"serverSide": true,
+			"ajax": url,
+			lengthMenu: [ [5, 10], [5, 10] ],
+			pageLength: 5,
+			destroy: true,
+			"columns": [
+				{ "data": "unitName" },
+				{ "data": "unitDescription" },
+				{ 
+					"data": "unitId",
+					"render": function ( data, type, full, meta ) {
+						return '<input type="button" class="btn btn-primary" data-rates='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editRateType(this);"/>';
+					}
+
+				},
+				{ 
+					"data": "unitId",
+					"render": function ( data, type, full, meta ) {
+						return '<input type="button" class="btn btn-primary" data-rates='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmRateTypeDel(this);"/>';
+					}
+
+				},
+			]
+		} );
+	  return currTable;
+}
+
+
+
 
 
 function saveUpdateRateType(){
@@ -63,6 +99,35 @@ function saveUpdateRateType(){
         request.success(function(){
         	bootbox.alert("Record created/updated Successfully");
 			$('#ratetypeList').DataTable().ajax.reload();
+			currValidator.resetForm();
+			$('#rate-form').find("input[type=text],input[type=mobileNumber],input[type=number],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
+
+		});
+        request.error(function(jqXHR, textStatus, errorThrown){
+        	bootbox.alert(jqXHR.responseText);
+		});
+		request.always(function(){
+			$btn.button('reset');
+        });
+	});
+}
+
+
+function saveUpdateUnitType(){
+	var $currForm = $('#rate-form');
+	var currValidator = $currForm.validate();
+	$('#save-unit-type').click(function(){
+		if (!$currForm.valid()) {
+			return;
+		}
+		var $btn = $(this).button('Saving');
+		var data = {};
+		$currForm.serializeArray().map(function(x){data[x.name] = x.value;});
+		var url = "createUnitType";
+        var request = $.post(url, data );
+        request.success(function(){
+        	bootbox.alert("Record created/updated Successfully");
+			$('#unittypeList').DataTable().ajax.reload();
 			currValidator.resetForm();
 			$('#rate-form').find("input[type=text],input[type=mobileNumber],input[type=number],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
 

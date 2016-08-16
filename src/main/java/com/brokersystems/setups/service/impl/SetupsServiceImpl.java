@@ -14,6 +14,7 @@ import com.brokersystems.setup.repository.CountyRepository;
 import com.brokersystems.setup.repository.CurrencyRepository;
 import com.brokersystems.setup.repository.RateTypeRepository;
 import com.brokersystems.setup.repository.TownRepository;
+import com.brokersystems.setup.repository.UnitTypeRepository;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
@@ -24,8 +25,10 @@ import com.brokersystems.setups.model.QCurrencies;
 import com.brokersystems.setups.model.QOrgRegions;
 import com.brokersystems.setups.model.QRateTypes;
 import com.brokersystems.setups.model.QTown;
+import com.brokersystems.setups.model.QUnitTypes;
 import com.brokersystems.setups.model.RateTypes;
 import com.brokersystems.setups.model.Town;
+import com.brokersystems.setups.model.UnitTypes;
 import com.brokersystems.setups.service.SetupsService;
 import com.mysema.query.types.expr.BooleanExpression;
 
@@ -46,6 +49,9 @@ public class SetupsServiceImpl implements SetupsService {
 	
 	@Autowired
 	private RateTypeRepository rateTypeRepo;
+	
+	@Autowired
+	private UnitTypeRepository unitTypeRepo;
 
 	@Override
 	@Transactional(readOnly=true)
@@ -139,6 +145,24 @@ public class SetupsServiceImpl implements SetupsService {
 	@Override
 	public void deleteRateType(Long rateTypeCode) {
 		rateTypeRepo.delete(rateTypeCode);
+		
+	}
+
+	@Override
+	public DataTablesResult<UnitTypes> findAllUnitTypes(DataTablesRequest request) throws IllegalAccessException {
+		Page<UnitTypes> page = unitTypeRepo.findAll(request.searchPredicate(QUnitTypes.unitTypes), request);
+		return new DataTablesResult<>(request, page);
+	}
+
+	@Override
+	public void defineUnitType(UnitTypes unitType) {
+		unitTypeRepo.save(unitType);
+		
+	}
+
+	@Override
+	public void deleteUnitType(Long unitCode) {
+		unitTypeRepo.delete(unitCode);
 		
 	}
 

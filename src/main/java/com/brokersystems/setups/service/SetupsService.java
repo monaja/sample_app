@@ -7,6 +7,7 @@ import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.RateTypes;
 import com.brokersystems.setups.model.Town;
+import com.brokersystems.setups.model.UnitTypes;
 
 /**
  * This  is used to maintain crud and query services of several setups screens
@@ -46,6 +47,12 @@ public interface SetupsService {
 	void defineRateType(RateTypes rateType);
 	
 	void deleteRateType(Long rateTypeCode);
+	
+	DataTablesResult<UnitTypes> findAllUnitTypes(DataTablesRequest request)  throws IllegalAccessException;
+	
+    void defineUnitType(UnitTypes unitType);
+	
+	void deleteUnitType(Long unitCode);
 	
 	
 	
