@@ -63,9 +63,9 @@
 						<div class="form-group">
 		                 <label for="brn-user" class="control-label col-md-3">Branch User</label>
 		                    <div class="col-md-8">
-		                     <input type="hidden" name="username" class="form-control"/>
-		                     <input type="hidden" name="userCod" class="form-control"/>
-		                     <input type="hidden" id="branchManager" rv-value="organization.user.id"/>
+		                     <input type="hidden" id="username" class="form-control"/>
+		                     <input type="hidden" id="userCod" class="form-control"/>
+		                     <input type="hidden" id="id" name="branchManager.id" rv-value="organization.user.id"/>
 		                     
 		                        <div id="branch-user" class="form-control" 
 				                                 select2-url="<c:url value="/protected/organization/managers"/>" >

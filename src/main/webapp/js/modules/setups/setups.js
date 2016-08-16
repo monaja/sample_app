@@ -2,9 +2,6 @@
 $(function(){
 
 	$(document).ready(function() {
-		
-		console.log(requestContextPath);
-		
 		createCurrencyTable();	
 		createCountryTable();
 		$("#newCurrency").on("click", function(){

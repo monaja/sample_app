@@ -31,8 +31,45 @@ function openEditBranchModal(button){
 	$("#brn-name").val(branch["obName"]);
 	$("#brn-addresss").val(branch["address"]);
 	$("#brn-telNumber").val(branch["telNumber"]);
-	$("#brn-manager").val(branch["branchUser"]);
+	if(branch["branchManager"]){
+	    $("#userCod").val(branch["branchManager"].id);
+	    $("#username").val(branch["branchManager"].username);
+	}
+	
+	if($("#branch-user").filter("div").html() != undefined)
+	  { 
+	  Select2Builder.initAjaxSelect2({
+          containerId : "branch-user",
+          sort : 'username',
+          change: function(){
+        	  
+          },
+          formatResult : function(a)
+          {
+          	return a.username
+          },
+          formatSelection : function(a)
+          {
+          	return a.username
+          },
+          initSelection: function (element, callback) {
+        	  var usercode;
+        	  var username;
+          if(branch["branchManager"]){
+             usercode = branch["branchManager"].id;
+             username = branch["branchManager"].username;
+          }
+            model.organization.user.id = usercode;
+            var data = {username:username,id:usercode};
+            callback(data);
+         },
+          id: "id",
+          width:"200px"
+      });
+	  }
+	
 	$('#branchModal').modal('show');
+	
 }
 
 
@@ -250,12 +287,12 @@ function createBranchTable(){
 				{ "data": "telNumber" },
 				{ "data": "branchManager",
 				  "render": function ( data, type, full, meta ) {
-					  if(full.branchManager)
+					   if(full.branchManager)
 					  return full.branchManager.name;
 					  else{
 						  return "";
 					  }
-				  }
+					}	
 				},
 				{ 
 					"data": "obId",
@@ -608,13 +645,15 @@ $(function(){
 	            	return a.username
 	            },
 	            initSelection: function (element, callback) {
-                /*var currCode = $("#txtCurrencyCode").val();
-                var currName = $("#txtCurrency").val();
-	              model.organization.currency.curCode = currCode;
-	              var data = {curName:currName,curCode:currCode};
-                callback(data);*/
-          },
-	            id: "username",
+	            	
+                var usercode = $("#userCod").val();
+                var username = $("#username").val();
+                console.log("User is "+$("#username").val());
+	              model.organization.user.id = usercode;
+	              var data = {username:username,id:usercode};
+                  callback(data);
+               },
+	            id: "id",
 	            width:"200px"
 	        });
 		  }
@@ -625,6 +664,7 @@ $(function(){
 	        }
 		  function userChanged(e, a, v) {
 	            model.organization.user = e.added || {};
+	            $("#id").val(e.added.id);
 	        }
 		  function countryChanged(e, a, v) {
 	            model.organization.country = e.added || {};

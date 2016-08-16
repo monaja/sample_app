@@ -5,6 +5,7 @@ import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
+import com.brokersystems.setups.model.RateTypes;
 import com.brokersystems.setups.model.Town;
 
 /**
@@ -39,5 +40,14 @@ public interface SetupsService {
     void defineTown(Town town);
 	
 	void deleteTown(Long townCode);
+	
+	DataTablesResult<RateTypes> findAllRateTypes(DataTablesRequest request)  throws IllegalAccessException;
+	
+	void defineRateType(RateTypes rateType);
+	
+	void deleteRateType(Long rateTypeCode);
+	
+	
+	
 
 }

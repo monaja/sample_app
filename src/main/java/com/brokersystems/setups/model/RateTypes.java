@@ -18,7 +18,7 @@ public class RateTypes {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="rt_id")
-	private Long rate_id;
+	private Long rateId;
 	
 	@Column(name="rate_type",nullable=false)
 	private String rateType;
@@ -26,12 +26,12 @@ public class RateTypes {
 	@Column(name="rate_desc")
 	private String rateDesc;
 
-	public Long getRate_id() {
-		return rate_id;
+	public Long getRateId() {
+		return rateId;
 	}
 
-	public void setRate_id(Long rate_id) {
-		this.rate_id = rate_id;
+	public void setRateId(Long rateId) {
+		this.rateId = rateId;
 	}
 
 	public String getRateType() {

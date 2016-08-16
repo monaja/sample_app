@@ -38,6 +38,16 @@
         <put-attribute name="body" value="/WEB-INF/pages/setups/currencies.jsp" />  
     </definition> 
     
+     <definition name="ratetypes" extends="base.definition">  
+        <put-attribute name="title" value="Rate Type Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/ratetypes.jsp" />  
+    </definition> 
+    
+    <definition name="unittypes" extends="base.definition">  
+        <put-attribute name="title" value="Unit Type Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/unittype.jsp" />  
+    </definition> 
+    
     <definition name="countries" extends="base.definition">  
         <put-attribute name="title" value="Countries/Counties/Towns Definition" />  
         <put-attribute name="body" value="/WEB-INF/pages/setups/countries.jsp" />  

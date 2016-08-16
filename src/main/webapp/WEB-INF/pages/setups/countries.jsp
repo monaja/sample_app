@@ -2,8 +2,7 @@
 <script>
     var requestContextPath = '${pageContext.request.contextPath}';
 </script>
-<script type="text/javascript"
-	src="<c:url value="/js/modules/setups/setups.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/modules/setups/setups.js"/>"></script>
 <div class="box box-info">
 <div class="box-body">
 	<h4>Country Details</h4>

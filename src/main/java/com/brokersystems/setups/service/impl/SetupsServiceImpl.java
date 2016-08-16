@@ -12,6 +12,7 @@ import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.setup.repository.CountryRepository;
 import com.brokersystems.setup.repository.CountyRepository;
 import com.brokersystems.setup.repository.CurrencyRepository;
+import com.brokersystems.setup.repository.RateTypeRepository;
 import com.brokersystems.setup.repository.TownRepository;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
@@ -21,7 +22,9 @@ import com.brokersystems.setups.model.QCountry;
 import com.brokersystems.setups.model.QCounty;
 import com.brokersystems.setups.model.QCurrencies;
 import com.brokersystems.setups.model.QOrgRegions;
+import com.brokersystems.setups.model.QRateTypes;
 import com.brokersystems.setups.model.QTown;
+import com.brokersystems.setups.model.RateTypes;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.service.SetupsService;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -40,6 +43,9 @@ public class SetupsServiceImpl implements SetupsService {
 	
 	@Autowired
 	private TownRepository townRepo;
+	
+	@Autowired
+	private RateTypeRepository rateTypeRepo;
 
 	@Override
 	@Transactional(readOnly=true)
@@ -50,6 +56,7 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	public void defineCurrency(Currencies currency) {
+		
 		currRepo.save(currency);
 		
 	}
@@ -115,6 +122,24 @@ public class SetupsServiceImpl implements SetupsService {
 	@Override
 	public void deleteTown(Long townCode) {
 		townRepo.delete(townCode);
+	}
+
+	@Override
+	public DataTablesResult<RateTypes> findAllRateTypes(DataTablesRequest request) throws IllegalAccessException {
+		 Page<RateTypes> page = rateTypeRepo.findAll(request.searchPredicate(QRateTypes.rateTypes), request);
+		return new DataTablesResult<>(request, page);
+	}
+
+	@Override
+	public void defineRateType(RateTypes rateType) {
+		rateTypeRepo.save(rateType);
+		
+	}
+
+	@Override
+	public void deleteRateType(Long rateTypeCode) {
+		rateTypeRepo.delete(rateTypeCode);
+		
 	}
 
 }

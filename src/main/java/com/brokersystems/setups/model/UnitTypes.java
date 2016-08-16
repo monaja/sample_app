@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="entity_types")
+@Table(name="unit_types")
 public class UnitTypes implements Serializable {
 	
 	 public UnitTypes() {
