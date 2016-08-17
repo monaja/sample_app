@@ -69,7 +69,7 @@
            <span class="info-box-number">
            <small class="text-muted">Define Rental Structures</small>
            </span>
-            <a href="<c:url value="/protected/setups/countries"/>" class="btn btn-primary">Define</a>
+            <a href="<c:url value="/protected/rental/setups/rentalstruct"/>" class="btn btn-primary">Define</a>
          </div><!-- /.info-box-content -->
        </div><!-- /.info-box -->
      </div>

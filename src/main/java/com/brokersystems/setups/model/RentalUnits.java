@@ -38,32 +38,6 @@ public class RentalUnits {
 	@JoinColumn(name="ren_unit_type",nullable=false)
 	private UnitTypes unitType;
 	
-	@XmlTransient
-	// @JsonIgnore
-	@OneToOne
-	@JoinColumn(name="ren_rate_type",nullable=false)
-	private RateTypes rateType;
-	
-	@Column(name="ren_rate_amount",nullable=false)
-	private BigDecimal rateAmount;
-	
-	@Column(name="ren_frequency",nullable=false)
-	private String frequency;
-	
-	@Column(name="ren_tax_appl")
-	private String taxApplicable;
-	
-	@Column(name="ren_tax_type")
-	private String taxType;
-	
-	@Column(name="ren_tax_value",nullable=false)
-	private BigDecimal taxValue;
-	
-	@Column(name="ren_wef",nullable=false)
-	private Date wef;
-	
-	@Column(name="ren_wet")
-	private Date wet;
 	
 	@XmlTransient
 	 @JsonIgnore
@@ -94,71 +68,6 @@ public class RentalUnits {
 	public void setUnitType(UnitTypes unitType) {
 		this.unitType = unitType;
 	}
-
-	public RateTypes getRateType() {
-		return rateType;
-	}
-
-	public void setRateType(RateTypes rateType) {
-		this.rateType = rateType;
-	}
-
-	public BigDecimal getRateAmount() {
-		return rateAmount;
-	}
-
-	public void setRateAmount(BigDecimal rateAmount) {
-		this.rateAmount = rateAmount;
-	}
-
-	public String getFrequency() {
-		return frequency;
-	}
-
-	public void setFrequency(String frequency) {
-		this.frequency = frequency;
-	}
-
-	public String getTaxApplicable() {
-		return taxApplicable;
-	}
-
-	public void setTaxApplicable(String taxApplicable) {
-		this.taxApplicable = taxApplicable;
-	}
-
-	public String getTaxType() {
-		return taxType;
-	}
-
-	public void setTaxType(String taxType) {
-		this.taxType = taxType;
-	}
-
-	public BigDecimal getTaxValue() {
-		return taxValue;
-	}
-
-	public void setTaxValue(BigDecimal taxValue) {
-		this.taxValue = taxValue;
-	}
-
-	public Date getWef() {
-		return wef;
-	}
-
-	public void setWef(Date wef) {
-		this.wef = wef;
-	}
-
-	public Date getWet() {
-		return wet;
-	}
-
-	public void setWet(Date wet) {
-		this.wet = wet;
-	}
-	
 	
 
 }

@@ -6,6 +6,8 @@ import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.RateTypes;
+import com.brokersystems.setups.model.RentalStructure;
+import com.brokersystems.setups.model.RentalUnits;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.model.UnitTypes;
 
@@ -53,6 +55,12 @@ public interface SetupsService {
     void defineUnitType(UnitTypes unitType);
 	
 	void deleteUnitType(Long unitCode);
+	
+	DataTablesResult<RentalStructure> findAllStructures(DataTablesRequest request)  throws IllegalAccessException;
+	
+	DataTablesResult<RentalUnits> findAllRentalUnits(long rentalId,DataTablesRequest request)  throws IllegalAccessException;
+	
+	
 	
 	
 	

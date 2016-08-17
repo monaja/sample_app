@@ -34,6 +34,8 @@ public class QOrgBranch extends EntityPathBase<OrgBranch> {
 
     public final QOrgRegions region;
 
+    public final ListPath<RentalStructure, QRentalStructure> rentalStructures = this.<RentalStructure, QRentalStructure>createList("rentalStructures", RentalStructure.class, QRentalStructure.class, PathInits.DIRECT2);
+
     public final StringPath telNumber = createString("telNumber");
 
     public QOrgBranch(String variable) {

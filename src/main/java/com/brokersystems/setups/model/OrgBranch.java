@@ -1,6 +1,8 @@
 package com.brokersystems.setups.model;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -47,8 +49,12 @@ public class OrgBranch implements Serializable {
 	@JoinColumn(name="ob_user_code")
 	private User branchManager;
 	
-	@Transient
-	private String branchUser;
+	
+	@XmlTransient
+	 @JsonIgnore
+	@OneToMany(mappedBy="branch")
+	private List<RentalStructure> rentalStructures;
+	
 	
 	
 
@@ -111,13 +117,14 @@ public class OrgBranch implements Serializable {
 		this.branchManager = branchManager;
 	}
 
-	public String getBranchUser() {
-		return branchUser;
+	public List<RentalStructure> getRentalStructures() {
+		return rentalStructures;
 	}
 
-	public void setBranchUser(String branchUser) {
-		this.branchUser = branchUser;
+	public void setRentalStructures(List<RentalStructure> rentalStructures) {
+		this.rentalStructures = rentalStructures;
 	}
+
 
 
 

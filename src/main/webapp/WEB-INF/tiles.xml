@@ -43,6 +43,16 @@
         <put-attribute name="body" value="/WEB-INF/pages/setups/ratetypes.jsp" />  
     </definition> 
     
+    <definition name="rentalstruct" extends="base.definition">  
+        <put-attribute name="title" value="Rental Structures" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/rentalstructures.jsp" />  
+    </definition> 
+    
+     <definition name="rentalform" extends="base.definition">  
+        <put-attribute name="title" value="Enter Rental Structure Details" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/rentalstructform.jsp" />  
+    </definition> 
+    
     <definition name="unittypes" extends="base.definition">  
         <put-attribute name="title" value="Unit Type Definition" />  
         <put-attribute name="body" value="/WEB-INF/pages/setups/unittype.jsp" />  

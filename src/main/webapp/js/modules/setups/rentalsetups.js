@@ -49,6 +49,35 @@ function createRateTypeTable(){
 	  return currTable;
 }
 
+function editUnitType(button){
+	var unit = JSON.parse(decodeURI($(button).data("units")));
+	$("#unit-code").val(unit["unitId"]);
+	$("#unit-name").val(unit["unitName"]);
+	$("#unit-desc").val(unit["unitDescription"]);
+}
+
+function confirmUnitTypeDel(button){
+	var country = JSON.parse(decodeURI($(button).data("units")));
+	bootbox.confirm("Are you sure want to delete "+country["unitName"]+"?", function(result) {
+		 if(result){
+	    	  $.ajax({
+			        type: 'GET',
+			        url:  'deleteUnitType/' + country["unitId"],
+			        dataType: 'json',
+			        async: true,
+			        success: function(result) {
+			        	bootbox.alert("Record deleted Successfully");
+			        	$('#unittypeList').DataTable().ajax.reload();
+			        },
+			        error: function(jqXHR, textStatus, errorThrown) {
+                        bootbox.alert(jqXHR.responseText);
+			        }
+			    });
+	      }
+		
+	});
+}
+
 function createUnitTypeTable(){
 	var url = "allunittypes";
 	  var currTable = $('#unittypeList').DataTable( {
@@ -64,14 +93,14 @@ function createUnitTypeTable(){
 				{ 
 					"data": "unitId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-rates='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editRateType(this);"/>';
+						return '<input type="button" class="btn btn-primary" data-units='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editUnitType(this);"/>';
 					}
 
 				},
 				{ 
 					"data": "unitId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-rates='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmRateTypeDel(this);"/>';
+						return '<input type="button" class="btn btn-primary" data-units='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmUnitTypeDel(this);"/>';
 					}
 
 				},
