@@ -1,5 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <script type="text/javascript"
 	src="<c:url value="/js/modules/setups/rentalstructures.js"/>"></script>
 <div class="box box-info">
@@ -8,6 +9,12 @@
 		action="createRentalStruct" id="rentalForm"
 		enctype="multipart/form-data">
 		<div class="box-body" id="rental_form_model">
+		      <spring:hasBindErrors name="rentalForm">
+				      <div class="alert alert-error alert-dismissible">
+						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						  <form:errors path="*" cssClass="help-inline"/>
+						</div>
+			  </spring:hasBindErrors>
 		    <form:hidden path="rentalId" id="rental-struct-pk"/>
 			<div class="form-group form-required">
 				<div class="col-md-6">

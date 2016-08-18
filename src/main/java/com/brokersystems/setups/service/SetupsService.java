@@ -58,7 +58,15 @@ public interface SetupsService {
 	
 	DataTablesResult<RentalStructure> findAllStructures(DataTablesRequest request)  throws IllegalAccessException;
 	
+    void defineRentalStruct(RentalStructure struct);
+	
+	void deleteRentalStruct(Long structId);
+	
 	DataTablesResult<RentalUnits> findAllRentalUnits(long rentalId,DataTablesRequest request)  throws IllegalAccessException;
+	
+    void defineRentalUnits(RentalUnits unit);
+	
+	void deleteRentalUnit(Long unitId);
 	
 	
 	

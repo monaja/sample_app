@@ -32,9 +32,6 @@ public class FileUploadValidator implements Validator {
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors,"address.county.countyId", "missing.orgcounty");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors,"address.town.ctCode", "missing.orgtown");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors,"address.addAddress", "missing.address");
-		
-		
-		
 	}
 
 }

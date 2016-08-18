@@ -194,4 +194,28 @@ public class SetupsServiceImpl implements SetupsService {
 		 return new DataTablesResult(request, page);
 	}
 
+	@Override
+	public void defineRentalStruct(RentalStructure struct) {
+		rentalStructRepo.save(struct);
+		
+	}
+
+	@Override
+	public void deleteRentalStruct(Long structId) {
+		rentalStructRepo.delete(structId);
+		
+	}
+
+	@Override
+	public void defineRentalUnits(RentalUnits unit) {
+		rentalUnitRepo.save(unit);
+		
+	}
+
+	@Override
+	public void deleteRentalUnit(Long unitId) {
+		rentalUnitRepo.delete(unitId);
+		
+	}
+
 }

@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,8 @@ import com.brokersystems.server.datatables.DataTable;
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
+import com.brokersystems.server.utils.FileUploadValidator;
+import com.brokersystems.server.validator.RentalStructValidator;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.Organization;
 import com.brokersystems.setups.model.RateTypes;
@@ -38,6 +42,15 @@ public class RentalSetupsController {
 	
 	@Autowired
 	private SetupsService setupsService;
+	
+	  @Autowired
+	  RentalStructValidator validator;
+	  
+	  @InitBinder({"rentalForm"})
+	  protected void initBinder(WebDataBinder binder)
+	  {
+	    binder.setValidator(this.validator);   
+	  } 
 	
 	@ModelAttribute
 	  public RentalStructure createRentalForm()
@@ -130,12 +143,25 @@ public class RentalSetupsController {
 		}
 	 
 	 @RequestMapping(value={"/createRentalStruct"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
-	  public String createRentalStruct(@Valid @ModelAttribute Organization organization,BindingResult result,
+	  public String createRentalStruct(@Valid @ModelAttribute RentalStructure rentalForm,BindingResult result,
 	          RedirectAttributes redirectAttrs
 	          )
 	    throws IOException, BadRequestException
 	  {
-		 return "rentalstruct";
+		 System.out.println("Result has errors "+result.hasErrors());
+		 if(result.hasErrors())
+		  {
+			  redirectAttrs.addFlashAttribute("org.springframework.validation.BindingResult.organization", result);
+			  redirectAttrs.addFlashAttribute("rentalForm", rentalForm);
+			  return  "redirect:/protected/rental/setups/rentalform";
+		  }
+		 
+		 if ((rentalForm.getFile() != null) && 
+			      (!rentalForm.getFile().isEmpty())) {
+			 rentalForm.setHouse_image(rentalForm.getFile().getBytes());
+	     	}
+		 setupsService.defineRentalStruct(rentalForm);
+		 return "rentalform";
 	  }
 	 
 	 
@@ -146,5 +172,8 @@ public class RentalSetupsController {
 		 response.getOutputStream().write(rentalForm.getHouse_image());
 		 response.getOutputStream().close();
 	  }
+	 
+	 
+	 
 	
 }
