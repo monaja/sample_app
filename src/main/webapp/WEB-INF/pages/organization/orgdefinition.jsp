@@ -5,7 +5,7 @@
 <script type="text/javascript"
 	src="<c:url value="/js/modules/organization/organization.js"/>"></script>
 
-                <div class="box box-solid">
+                <div class="box box-solid" id="organization_model">
                 
                 <div class="box-body">
                   <div class="box-group" id="accordion">

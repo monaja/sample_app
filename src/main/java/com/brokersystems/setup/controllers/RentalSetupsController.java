@@ -46,7 +46,7 @@ public class RentalSetupsController {
 	  @Autowired
 	  RentalStructValidator validator;
 	  
-	  @InitBinder({"rentalForm"})
+	  @InitBinder({"rentalStructure"})
 	  protected void initBinder(WebDataBinder binder)
 	  {
 	    binder.setValidator(this.validator);   
@@ -148,12 +148,11 @@ public class RentalSetupsController {
 	          )
 	    throws IOException, BadRequestException
 	  {
-		 System.out.println("Result has errors "+result.hasErrors());
 		 if(result.hasErrors())
 		  {
-			  redirectAttrs.addFlashAttribute("org.springframework.validation.BindingResult.organization", result);
+			  redirectAttrs.addFlashAttribute("org.springframework.validation.BindingResult.rentalStructure", result);
 			  redirectAttrs.addFlashAttribute("rentalForm", rentalForm);
-			  return  "redirect:/protected/rental/setups/rentalform";
+			  return  "rentalform";
 		  }
 		 
 		 if ((rentalForm.getFile() != null) && 

@@ -661,7 +661,7 @@ $(function(){
 		  
 		  function currencyChanged(e, a, v) {
 	            model.organization.currency = e.added || {};
-	        }
+	      }
 		  function userChanged(e, a, v) {
 	            model.organization.user = e.added || {};
 	            $("#id").val(e.added.id);

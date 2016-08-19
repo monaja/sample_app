@@ -6,7 +6,7 @@
 <form:form class="form-horizontal" role="form"  modelAttribute="organization"
                        method="post" action="createOrganization" id="orgForm"
                        enctype="multipart/form-data">
-                   <div class="box-body" id="organization_model">
+                   <div class="box-body">
 				          <div class="spacer"></div>
 				        <input type="submit"  class="btn btn-info" value="Save" >
 				        <hr>

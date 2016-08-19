@@ -9,7 +9,7 @@
 		action="createRentalStruct" id="rentalForm"
 		enctype="multipart/form-data">
 		<div class="box-body" id="rental_form_model">
-		      <spring:hasBindErrors name="rentalForm">
+		      <spring:hasBindErrors name="rentalStructure">
 				      <div class="alert alert-error alert-dismissible">
 						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						  <form:errors path="*" cssClass="help-inline"/>
@@ -58,8 +58,8 @@
 
 			<div class="form-group">
 
-				<div class="col-md-6">
-					<label for="logo" class="control-label col-md-5">House
+				<div class="col-md-6 form-required">
+					<label for="file" class="control-label col-md-5">House
 						Image</label>
 					<div class="col-md-7">
 						<div class="kv-avatar center-block" style="width: 200px">

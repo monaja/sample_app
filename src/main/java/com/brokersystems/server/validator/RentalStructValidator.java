@@ -17,6 +17,9 @@ public class RentalStructValidator implements Validator {
 	@Override
 	public void validate(Object obj, Errors errors) {
 		RentalStructure holder = (RentalStructure)obj;
+		if(holder.getFile()==null){
+			errors.rejectValue("file", "file.toobig");
+		}
 		if(holder.getFile()!=null){
 			if(holder.getFile().getSize()> 20000){
 				errors.rejectValue("file", "file.toobig");

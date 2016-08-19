@@ -32,9 +32,23 @@ $(function(){
 		createStructureTable();
 		createRentalUnits();
 		
+		rivets.bind($("#rental_model"), model);
+		
+		function branchChanged(e, a, v) {
+            model.rental.branch = e.added || {};
+        }
+		
 	});
 	
 });
+
+var model = {
+		rental: {
+			branch:{
+				brnCode:"",
+			},
+	    }
+	};
 
 
 function createStructureTable(){
