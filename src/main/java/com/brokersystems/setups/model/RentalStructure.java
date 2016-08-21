@@ -52,6 +52,9 @@ public class RentalStructure implements Serializable {
 	@JoinColumn(name="ob_brn_code")
 	private OrgBranch branch;
 	
+	@Transient
+	private Long branchCode;
+	
 	
 	@XmlTransient
 	 @JsonIgnore
@@ -148,6 +151,16 @@ public class RentalStructure implements Serializable {
 
 	public void setFile(MultipartFile file) {
 		this.file = file;
+	}
+
+
+	public Long getBranchCode() {
+		return branchCode;
+	}
+
+
+	public void setBranchCode(Long branchCode) {
+		this.branchCode = branchCode;
 	}
 	
 	

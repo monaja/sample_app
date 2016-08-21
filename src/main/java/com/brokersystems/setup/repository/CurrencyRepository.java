@@ -9,5 +9,7 @@ import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 public abstract interface CurrencyRepository
   extends JpaRepository<Currencies, Long>, QueryDslPredicateExecutor<Currencies>
 {
+	
   public  Page<Currencies> findByCurNameLikeIgnoreCaseAndEnabled(String paramString, Pageable paramPageable,boolean enabled);
+
 }

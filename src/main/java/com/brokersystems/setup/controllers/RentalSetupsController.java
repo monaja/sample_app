@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -28,6 +31,7 @@ import com.brokersystems.server.exception.BadRequestException;
 import com.brokersystems.server.utils.FileUploadValidator;
 import com.brokersystems.server.validator.RentalStructValidator;
 import com.brokersystems.setups.model.Currencies;
+import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.Organization;
 import com.brokersystems.setups.model.RateTypes;
 import com.brokersystems.setups.model.RentalStructure;
@@ -126,12 +130,12 @@ public class RentalSetupsController {
 	    setupsService.deleteUnitType(unitTypeCode);
 	  }
 	 
-	 @RequestMapping(value={"rentalstructures"}, method={RequestMethod.GET})
+	 @RequestMapping(value={"rentalstructures/{branchId}"}, method={RequestMethod.GET})
 		@ResponseBody
-		public DataTablesResult<RentalStructure> getRentalStruct(@DataTable DataTablesRequest pageable)
+		public DataTablesResult<RentalStructure> getRentalStruct(@DataTable DataTablesRequest pageable,@PathVariable Long branchId)
 		    throws IllegalAccessException
 		{
-		    return setupsService.findAllStructures(pageable);
+		    return setupsService.findAllStructures(branchId,pageable);
 		}
 	 
 	    @RequestMapping(value={"rentalUnits/{rentalId}"}, method={RequestMethod.GET})
@@ -142,25 +146,14 @@ public class RentalSetupsController {
 		    return setupsService.findAllRentalUnits(rentalId, pageable);
 		}
 	 
-	 @RequestMapping(value={"/createRentalStruct"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
-	  public String createRentalStruct(@Valid @ModelAttribute RentalStructure rentalForm,BindingResult result,
-	          RedirectAttributes redirectAttrs
+	 @RequestMapping(value={"createRentalStruct"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+	  public void createRentalStruct(RentalStructure rentalForm
 	          )
-	    throws IOException, BadRequestException
+	    throws IllegalAccessException
 	  {
-		 if(result.hasErrors())
-		  {
-			  redirectAttrs.addFlashAttribute("org.springframework.validation.BindingResult.rentalStructure", result);
-			  redirectAttrs.addFlashAttribute("rentalForm", rentalForm);
-			  return  "rentalform";
-		  }
-		 
-		 if ((rentalForm.getFile() != null) && 
-			      (!rentalForm.getFile().isEmpty())) {
-			 rentalForm.setHouse_image(rentalForm.getFile().getBytes());
-	     	}
+		 //System.out.println(rentalForm.getHouseName());
 		 setupsService.defineRentalStruct(rentalForm);
-		 return "rentalform";
+		
 	  }
 	 
 	 
@@ -170,6 +163,14 @@ public class RentalSetupsController {
 		 response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
 		 response.getOutputStream().write(rentalForm.getHouse_image());
 		 response.getOutputStream().close();
+	  }
+	 
+	 @RequestMapping(value={"branches"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	  @ResponseBody
+	  public Page<OrgBranch> orgBranches(@RequestParam(value="term", required=false) String term, Pageable pageable)
+	    throws IllegalAccessException
+	  {
+	    return setupsService.findBranchForSelect(term, pageable);
 	  }
 	 
 	 

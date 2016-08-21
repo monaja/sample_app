@@ -2,8 +2,10 @@ package com.brokersystems.setups.service.impl;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.action.internal.QueuedOperationCollectionAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,7 @@ import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.setup.repository.CountryRepository;
 import com.brokersystems.setup.repository.CountyRepository;
 import com.brokersystems.setup.repository.CurrencyRepository;
+import com.brokersystems.setup.repository.OrgBranchRepository;
 import com.brokersystems.setup.repository.RateTypeRepository;
 import com.brokersystems.setup.repository.RentalStructRepository;
 import com.brokersystems.setup.repository.RentalUnitsRepository;
@@ -20,10 +23,12 @@ import com.brokersystems.setup.repository.UnitTypeRepository;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
+import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.OrgRegions;
 import com.brokersystems.setups.model.QCountry;
 import com.brokersystems.setups.model.QCounty;
 import com.brokersystems.setups.model.QCurrencies;
+import com.brokersystems.setups.model.QOrgBranch;
 import com.brokersystems.setups.model.QOrgRegions;
 import com.brokersystems.setups.model.QRateTypes;
 import com.brokersystems.setups.model.QRentalStructure;
@@ -36,6 +41,7 @@ import com.brokersystems.setups.model.RentalUnits;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.model.UnitTypes;
 import com.brokersystems.setups.service.SetupsService;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
 
 @Service
@@ -64,6 +70,9 @@ public class SetupsServiceImpl implements SetupsService {
 	
 	@Autowired
 	private RentalUnitsRepository rentalUnitRepo;
+	
+	@Autowired
+	private OrgBranchRepository branchRepo;
 
 	@Override
 	@Transactional(readOnly=true)
@@ -179,9 +188,11 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
-	public DataTablesResult<RentalStructure> findAllStructures(DataTablesRequest request)
+	public DataTablesResult<RentalStructure> findAllStructures(long branchId,DataTablesRequest request)
 			throws IllegalAccessException {
-		Page<RentalStructure> page = rentalStructRepo.findAll(request.searchPredicate(QRentalStructure.rentalStructure), request);
+		QOrgBranch orgbranch = QRentalStructure.rentalStructure.branch;
+		BooleanExpression pred = orgbranch.obId.eq(branchId);
+		Page<RentalStructure> page = rentalStructRepo.findAll(pred.and(request.searchPredicate(QRentalStructure.rentalStructure)), request);
 		return new DataTablesResult<>(request, page);
 	}
 
@@ -216,6 +227,18 @@ public class SetupsServiceImpl implements SetupsService {
 	public void deleteRentalUnit(Long unitId) {
 		rentalUnitRepo.delete(unitId);
 		
+	}
+
+	@Override
+	public Page<OrgBranch> findBranchForSelect(String paramString, Pageable paramPageable) {
+		Predicate pred = null;
+		if(paramString==null || StringUtils.isBlank(paramString)){
+			pred = QOrgBranch.orgBranch.isNotNull();
+		}
+		else{
+			pred = QOrgBranch.orgBranch.obName.containsIgnoreCase(paramString);
+		}
+		return branchRepo.findAll(pred,paramPageable);
 	}
 
 }

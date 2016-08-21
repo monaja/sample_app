@@ -24,6 +24,33 @@ function getContextPath() {
 			.indexOf("/", 2));
 }
 
+function createStructure(){
+	var $structForm = $('#struct-form');
+	 var branchvalidator = $structForm.validate();
+	 $('#saveStructBtn').click(function(){
+			if (!$structForm.valid()) {
+				return;
+			}
+			var $btn = $(this).button('Saving');
+			var data = {};
+			$structForm.serializeArray().map(function(x){data[x.name] = x.value;});
+			var url = "createRentalStruct";
+            var request = $.post(url, data );
+            request.success(function(){
+            	bootbox.alert("Record created/updated Successfully");
+            });
+            request.error(function(jqXHR, textStatus, errorThrown){
+            	console.log(jqXHR);
+            	console.log(textStatus);
+            	console.log(errorThrown);
+            	bootbox.alert(jqXHR.responseText);
+    		});
+    		request.always(function(){
+    			$btn.button('reset');
+            });
+	 });
+}
+
 
 $(function(){
 
@@ -31,11 +58,60 @@ $(function(){
 		houseImage();
 		createStructureTable();
 		createRentalUnits();
+		createStructure();
 		
 		rivets.bind($("#rental_model"), model);
 		
+		 if($("#rent-branch").filter("div").html() != undefined)
+		  {
+			  Select2Builder.initAjaxSelect2({
+		            containerId : "rent-branch",
+		            sort : 'obName',
+		            change: branchChanged,
+		            formatResult : function(a)
+		            {
+		            	return a.obName
+		            },
+		            formatSelection : function(a)
+		            {
+		            	return a.obName
+		            },
+		            initSelection: function (element, callback) {
+	                 /*   */
+	                },
+		            id: "obId",
+		            width:"200px"
+		        });
+		  }
+		 
+		 if($("#branch").filter("div").html() != undefined)
+		  {
+			  Select2Builder.initAjaxSelect2({
+		            containerId : "branch",
+		            sort : 'obName',
+		            change: function(e,a,v){
+		            	 $("#obId").val(e.added.obId);
+		            },
+		            formatResult : function(a)
+		            {
+		            	return a.obName
+		            },
+		            formatSelection : function(a)
+		            {
+		            	return a.obName
+		            },
+		            initSelection: function (element, callback) {
+	                 /*   */
+	                },
+		            id: "obId",
+		            width:"200px"
+		        });
+		  }
+		
 		function branchChanged(e, a, v) {
             model.rental.branch = e.added || {};
+            $("#obId").val(e.added.obId);
+            createStructureTable();
         }
 		
 	});
@@ -52,7 +128,11 @@ var model = {
 
 
 function createStructureTable(){
-	var url = "rentalstructures";
+	var url = "rentalstructures/0";
+	  if ($("#obId").val() != ''){
+		  url = "rentalstructures/"+$("#obId").val();
+		}
+	  console.log(url);
 	  var currTable = $('#rentstruct').DataTable( {
 			"processing": true,
 			"serverSide": true,

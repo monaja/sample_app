@@ -12,8 +12,5 @@ import com.brokersystems.setups.model.Country;
 public interface CountryRepository extends PagingAndSortingRepository<Country, Long>, QueryDslPredicateExecutor<Country> {
 	
 	Page<Country> findByCouNameLikeIgnoreCase(String countryName,Pageable pageable);
-	
-
-	
 
 }

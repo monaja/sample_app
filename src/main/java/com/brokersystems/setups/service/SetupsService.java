@@ -1,10 +1,14 @@
 package com.brokersystems.setups.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
+import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.RateTypes;
 import com.brokersystems.setups.model.RentalStructure;
 import com.brokersystems.setups.model.RentalUnits;
@@ -56,7 +60,7 @@ public interface SetupsService {
 	
 	void deleteUnitType(Long unitCode);
 	
-	DataTablesResult<RentalStructure> findAllStructures(DataTablesRequest request)  throws IllegalAccessException;
+	DataTablesResult<RentalStructure> findAllStructures(long branchId,DataTablesRequest request)  throws IllegalAccessException;
 	
     void defineRentalStruct(RentalStructure struct);
 	
@@ -68,7 +72,7 @@ public interface SetupsService {
 	
 	void deleteRentalUnit(Long unitId);
 	
-	
+	 Page<OrgBranch> findBranchForSelect(String paramString, Pageable paramPageable);
 	
 	
 	

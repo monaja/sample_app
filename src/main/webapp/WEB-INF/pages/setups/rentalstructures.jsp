@@ -13,12 +13,10 @@
 					Branch</label>
 
 				<div class="col-md-4">
-					 <input type="hidden" id="username" class="form-control"/>
-		                     <input type="hidden" id="userCod" class="form-control"/>
-		                     <input type="hidden" id="id" name="branchManager.id" rv-value="organization.user.id"/>
+		                     <input type="hidden" id="obId" name="obId" rv-value="rental.branch.brnCode"/>
 		                     
-		                        <div id="branch-user" class="form-control" 
-				                                 select2-url="<c:url value="/protected/organization/managers"/>" >
+		                        <div id="rent-branch" class="form-control" 
+				                                 select2-url="<c:url value="/protected/rental/setups/branches"/>" >
 				                                 
 				               </div> 
 				</div>
