@@ -11,6 +11,7 @@ import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.RateTypes;
 import com.brokersystems.setups.model.RentalStructure;
+import com.brokersystems.setups.model.RentalUnitCharges;
 import com.brokersystems.setups.model.RentalUnits;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.model.UnitTypes;
@@ -62,7 +63,7 @@ public interface SetupsService {
 	
 	DataTablesResult<RentalStructure> findAllStructures(long branchId,DataTablesRequest request)  throws IllegalAccessException;
 	
-    void defineRentalStruct(RentalStructure struct);
+	RentalStructure defineRentalStruct(RentalStructure struct);
 	
 	void deleteRentalStruct(Long structId);
 	
@@ -73,6 +74,18 @@ public interface SetupsService {
 	void deleteRentalUnit(Long unitId);
 	
 	 Page<OrgBranch> findBranchForSelect(String paramString, Pageable paramPageable);
+	 
+	 Page<UnitTypes> findUnitsForSelect(String paramString, Pageable paramPageable);
+	 
+	 RentalStructure getStructureDetails(Long rentalId);
+	 
+	 DataTablesResult<RentalUnitCharges> findRentalUnitCharges(long renId,DataTablesRequest request)  throws IllegalAccessException;
+	 
+	 void defineRentalCharges(RentalUnitCharges charge);
+		
+     void deleteRentalCharge(Long chargeId);
+     
+     Page<RateTypes> findRatesForSelect(String paramString, Pageable paramPageable);
 	
 	
 	

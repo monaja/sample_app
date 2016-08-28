@@ -2,6 +2,7 @@
 <script type="text/javascript" src="<c:url value="/js/modules/utils/select2builder.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/libs/rivets/rivets.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/modules/setups/rentalstructures.js"/>"></script>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <div class="box box-info" id="rental_model">
 <div class="box-body">
@@ -26,6 +27,8 @@
 	<div class="spacer"></div>
 	 <a href="<c:url value='/protected/rental/setups/rentalform'/> " class="btn btn-info pull-right">New</a>
 	<h4>Rental Structures List</h4>
+	
+	
 	
 	<div class="spacer"></div>
 	<table id="rentstruct" class="table table-hover table-bordered">

@@ -2,6 +2,7 @@ package com.brokersystems.setups.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
@@ -29,7 +31,7 @@ public class RentalUnits {
 	@Column(name="ren_id")
 	private Long renId;
 	
-	@Column(name="ren_unit_name",nullable=false)
+	@Column(name="ren_unit_name",nullable=false,unique=true)
 	private String unitName;
 	
 	@XmlTransient
@@ -40,10 +42,15 @@ public class RentalUnits {
 	
 	
 	@XmlTransient
-	 @JsonIgnore
+	//@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="ren_rental_code",nullable=false)
 	private RentalStructure rentalStruct;
+	
+	@XmlTransient
+	 @JsonIgnore
+	@OneToMany(mappedBy="unit")
+	private List<RentalUnitCharges> unitChages;
 
 	public Long getRenId() {
 		return renId;
@@ -68,6 +75,16 @@ public class RentalUnits {
 	public void setUnitType(UnitTypes unitType) {
 		this.unitType = unitType;
 	}
+
+	public RentalStructure getRentalStruct() {
+		return rentalStruct;
+	}
+
+	public void setRentalStruct(RentalStructure rentalStruct) {
+		this.rentalStruct = rentalStruct;
+	}
+	
+	
 	
 
 }

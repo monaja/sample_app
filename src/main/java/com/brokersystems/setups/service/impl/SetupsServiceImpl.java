@@ -17,6 +17,7 @@ import com.brokersystems.setup.repository.CurrencyRepository;
 import com.brokersystems.setup.repository.OrgBranchRepository;
 import com.brokersystems.setup.repository.RateTypeRepository;
 import com.brokersystems.setup.repository.RentalStructRepository;
+import com.brokersystems.setup.repository.RentalUnitChargeRepo;
 import com.brokersystems.setup.repository.RentalUnitsRepository;
 import com.brokersystems.setup.repository.TownRepository;
 import com.brokersystems.setup.repository.UnitTypeRepository;
@@ -32,11 +33,13 @@ import com.brokersystems.setups.model.QOrgBranch;
 import com.brokersystems.setups.model.QOrgRegions;
 import com.brokersystems.setups.model.QRateTypes;
 import com.brokersystems.setups.model.QRentalStructure;
+import com.brokersystems.setups.model.QRentalUnitCharges;
 import com.brokersystems.setups.model.QRentalUnits;
 import com.brokersystems.setups.model.QTown;
 import com.brokersystems.setups.model.QUnitTypes;
 import com.brokersystems.setups.model.RateTypes;
 import com.brokersystems.setups.model.RentalStructure;
+import com.brokersystems.setups.model.RentalUnitCharges;
 import com.brokersystems.setups.model.RentalUnits;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.model.UnitTypes;
@@ -73,6 +76,9 @@ public class SetupsServiceImpl implements SetupsService {
 	
 	@Autowired
 	private OrgBranchRepository branchRepo;
+	
+	@Autowired
+	private RentalUnitChargeRepo unitChargeRepo;
 
 	@Override
 	@Transactional(readOnly=true)
@@ -206,8 +212,9 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
-	public void defineRentalStruct(RentalStructure struct) {
-		rentalStructRepo.save(struct);
+	public RentalStructure defineRentalStruct(RentalStructure struct) {
+		RentalStructure s = rentalStructRepo.save(struct);
+		return s;
 		
 	}
 
@@ -239,6 +246,56 @@ public class SetupsServiceImpl implements SetupsService {
 			pred = QOrgBranch.orgBranch.obName.containsIgnoreCase(paramString);
 		}
 		return branchRepo.findAll(pred,paramPageable);
+	}
+
+	@Override
+	public Page<UnitTypes> findUnitsForSelect(String paramString, Pageable paramPageable) {
+		Predicate pred = null;
+		if(paramString==null || StringUtils.isBlank(paramString)){
+			pred = QUnitTypes.unitTypes.isNotNull();
+		}
+		else{
+			pred = QUnitTypes.unitTypes.unitName.containsIgnoreCase(paramString);
+		}
+		return unitTypeRepo.findAll(pred,paramPageable);
+	}
+
+	@Override
+	public RentalStructure getStructureDetails(Long rentalId) {
+		return rentalStructRepo.findOne(rentalId);
+	}
+
+	@Override
+	public DataTablesResult<RentalUnitCharges> findRentalUnitCharges(long renId, DataTablesRequest request)
+			throws IllegalAccessException {
+		 QRentalUnits unitCharges = QRentalUnitCharges.rentalUnitCharges.unit;
+		 BooleanExpression pred = unitCharges.renId.eq(renId);
+		 Page<RentalUnitCharges> page = unitChargeRepo.findAll(pred.and(request.searchPredicate(QRentalUnitCharges.rentalUnitCharges)), request);
+		 return new DataTablesResult(request, page);
+	}
+
+	@Override
+	public void defineRentalCharges(RentalUnitCharges charge) {
+		unitChargeRepo.save(charge);
+		
+	}
+
+	@Override
+	public void deleteRentalCharge(Long chargeId) {
+		unitChargeRepo.delete(chargeId);
+		
+	}
+
+	@Override
+	public Page<RateTypes> findRatesForSelect(String paramString, Pageable paramPageable) {
+		Predicate pred = null;
+		if(paramString==null || StringUtils.isBlank(paramString)){
+			pred = QRateTypes.rateTypes.isNotNull();
+		}
+		else{
+			pred = QRateTypes.rateTypes.rateType.containsIgnoreCase(paramString);
+		}
+		return rateTypeRepo.findAll(pred,paramPageable);
 	}
 
 }

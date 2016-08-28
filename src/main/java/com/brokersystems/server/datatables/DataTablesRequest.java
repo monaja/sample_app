@@ -1,6 +1,7 @@
 package com.brokersystems.server.datatables;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Sort;
 
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.path.DateTimePath;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
@@ -73,16 +75,47 @@ public class DataTablesRequest extends PageRequest {
                 } else {
                     predicate = predicate.or(ob.like(search));
                 }
-            } else {
-                if (field.get(entity) instanceof NumberPath) {
+            } else  if (field.get(entity) instanceof NumberPath) {
+                
                     NumberPath ob = (NumberPath) field.get(entity);
-                    if (predicate == null) {
-                        predicate = ob.eq(search);
-                    } else {
-                        predicate.or(ob.eq(search));
+                    Class t = null;
+                     try {
+						 t  = Class.forName(ob.getType().getName());
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    if(t.isAssignableFrom(BigDecimal.class)){
+                    	try{
+                    	if (predicate == null) {
+	                        predicate = ob.eq(new BigDecimal(value));
+	                    } else {
+	                        predicate.or(ob.eq(new BigDecimal(value)));
+	                    }
+                    	}
+                    	catch(Exception e){
+                    		
+                    	}
                     }
-                }
+                    else{
+	                    if (predicate == null) {
+	                        predicate = ob.eq(value);
+	                    } else {
+	                        predicate.or(ob.eq(value));
+	                    }
+                    }
+                
             }
+            else  if (field.get(entity) instanceof DateTimePath) {
+                
+            	DateTimePath ob = (DateTimePath) field.get(entity);
+                if (predicate == null) {
+                    predicate = ob.eq(value);
+                } else {
+                    predicate.or(ob.eq(value));
+                }
+            
+        }
         }
         return predicate;
     }

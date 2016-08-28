@@ -5,6 +5,9 @@
 <script type="text/javascript" src="<c:url value="/libs/rivets/rivets.js"/>"></script>
 <script type="text/javascript"
 	src="<c:url value="/js/modules/setups/rentalstructures.js"/>"></script>
+	<script type="text/javascript">
+		var rentalId = ${rentalId};
+	</script>
 <div class="box box-info">
     <input type="hidden" id="brnCode" name="branchCode">
 	<form id="struct-form" class="form-horizontal" enctype="multipart/form-data">
@@ -15,7 +18,7 @@
 					<label for="houseId" class="control-label col-md-5">House
 						Id</label>
 					<div class="col-md-7">
-						<input type="text" name="houseId" class="form-control"
+						<input type="text" name="houseId" id="house-id" class="form-control"
 							placeholder="House Id" required>
 					</div>
 				</div>
@@ -23,7 +26,7 @@
 					<label for="houseName" class="control-label col-md-5">House
 						Name</label>
 					<div class="col-md-7">
-						<input type="text" name="houseName" class="form-control"
+						<input type="text" name="houseName" id="house-name" class="form-control"
 							placeholder="House Name" required>
 					</div>
 				</div>
@@ -33,7 +36,7 @@
 					<label for="houseId" class="control-label col-md-5">No of
 						Floors</label>
 					<div class="col-md-7">
-						<input type="number" name="noOfFloors" class="form-control"
+						<input type="number" name="noOfFloors" id="no-of-floors" class="form-control"
 							placeholder="No of Floors" required/>
 					</div>
 				</div>
@@ -41,7 +44,7 @@
 					<label for="noOfUnits" class="control-label col-md-5">No of
 						Units</label>
 					<div class="col-md-7">
-						<input type="number" name="noOfUnits" class="form-control"
+						<input type="number" name="noOfUnits" id="no-of-units" class="form-control"
 							placeholder="No of Units" required/>
 					</div>
 				</div>
@@ -50,12 +53,10 @@
 				<div class="col-md-6">
 					<label for="branchId" class="control-label col-md-5">Branch</label>
 					<div class="col-md-7">
+					      <input type="hidden" id="b-name">
 						  <input type="hidden" id="obId" name="branch.obId" rv-value="rental.branch.brnCode"/>
-		                   
 		                        <div id="branch" class="form-control" 
-				                                 select2-url="<c:url value="/protected/rental/setups/branches"/>" 
-				                                 >
-				                                 
+				                                 select2-url="<c:url value="/protected/rental/setups/branches"/>" >			                          
 				               </div> 
 					</div>
 				</div>
@@ -84,29 +85,33 @@
 
 		</div>
 <div class="box-footer">
-     <button data-loading-text="Saving..." id="saveStructBtn"
-						type="button" class="btn btn-info pull-left" style="margin-right: 10px;">
-						Save
-					</button>
+     
+     <input type="submit" class="btn btn-info pull-left" style="margin-right: 10px;" value="Save">
 	 <a href="<c:url value='/protected/rental/setups/rentalstruct'/> " class="btn btn-info pull-left">Cancel</a>
 	 </div>
 	</form>
-	<div class="box-body">
+	<div class="box-body with-border">
 		<div class="spacer"></div>
 		<h4>Units</h4>
-		<div class="spacer"></div>
+		<button type="button" class="btn btn-info" id="btn-add-unit">New</button>
+	<div class="spacer"></div>
 		<table id="rentalUnits" class="table table-hover table-bordered">
 		<thead>
 			<tr>
 
 				<th>Unit Name</th>
 				<th>Unit Type</th>
-				<th width="5%"></th>
-				<th width="5%"></th>
+				<th></th>
+				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 	</table>
 	<div class="spacer"></div>
 	
 	</div>
+	
+	<jsp:include page="rentalmodals/modals.jsp"></jsp:include>
+	
+	
 </div>

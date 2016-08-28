@@ -7,7 +7,7 @@
 <html>
 <tiles:insertAttribute name="header"></tiles:insertAttribute>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="skin-blue sidebar-mini">
 
       <div class="wrapper">
          <tiles:insertAttribute name="head" />
@@ -24,7 +24,11 @@
 
         <!-- Main content -->
         <section class="content">
+          <div class="row">
+            <div class="col-md-12">
             <tiles:insertAttribute name="body" />
+            </div>
+            </div>
         </section>
         </div>
       </div>

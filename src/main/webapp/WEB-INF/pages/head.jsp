@@ -54,6 +54,16 @@
 	 <script type="text/javascript" src="<c:url value="/libs/bootstrap/select/js/bootstrap-select.min.js"/>"></script>
 	 <script src="<c:url value="/libs/select2/select2.js"/>"></script>
 	 <script type="text/javascript" src="<c:url value="/libs/rivets/rivets.js"/>"></script>
+	 <style type="text/css">
+	   body { padding-right: 0 !important }
+	   body .modal-lg {
+		  width:80%; /* desired relative width */
+		  left: 5%; /* (100%-width)/2 */
+		  /* place center */
+		  margin-left:auto;
+		  margin-right:auto; 
+		}
+	 </style>
 	 
 	
 </head>

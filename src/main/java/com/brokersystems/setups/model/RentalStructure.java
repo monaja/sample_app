@@ -47,7 +47,6 @@ public class RentalStructure implements Serializable {
 	private byte[] house_image;
 	
 	@XmlTransient
-	 @JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="ob_brn_code")
 	private OrgBranch branch;
