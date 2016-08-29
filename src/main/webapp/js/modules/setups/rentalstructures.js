@@ -56,7 +56,7 @@ function createRentalUnit(){
 			var $btn = $(this).button('Saving');
 			var data = {};
 			$unitForm.serializeArray().map(function(x){data[x.name] = x.value;});
-			//console.log(data);
+			console.log(data);
 			var url = "createRentalUnit";
          var request = $.post(url, data );
 			request.success(function(){
@@ -187,12 +187,11 @@ function populateRateDiv(){
 	            	return a.rateType
 	            },
 	            initSelection: function (element, callback) {
-	            	
-	            	/*var branchCode = $("#obId").val();
-                    var branchName = $("#b-name").val();
-	            	model.rental.branch.brnCode = branchCode;
-	            	var data = {obName:branchName,obId:branchCode};
-                    callback(data);*/
+	            	var rateId = $("#rateId").val();
+                    var rateName = $("#rate-type-name").val();
+	            	model.rental.ratetype.rateId = rateId;
+	            	var data = {rateType:rateName,rateId:rateId};
+                    callback(data);
               },
 	            id: "rateId",
 	            width:"200px"
@@ -234,8 +233,11 @@ function populateBranchDiv(){
 
 function addUnitCharges(){
 	$("#btn-add-charges").click(function(){
-		$('#charge-form').find("input[type=text],input[type=number],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
+		$('#charge-form').find("input[type=text],input[type=number],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea,select").val("");
 		populateRateDiv();
+		var $chargeForm = $('#charge-form');
+		var validator = $chargeForm.validate();
+		validator.resetForm();  
 		$("#unit-id-pk").val($("#chargeid").val());
 		$('#unitsChargesModal').modal({
 			  backdrop: 'static',
@@ -255,24 +257,55 @@ function createRentalUnitCharges(){
 			var $btn = $(this).button('Saving');
 			var data = {};
 			$chargeForm.serializeArray().map(function(x){data[x.name] = x.value;});
-			//console.log(data);
 			var url = "createRentalCharge";
          var request = $.post(url, data );
 			request.success(function(){
 				bootbox.alert("Record created/updated Successfully");
 				$('#unitCharges').DataTable().ajax.reload();				
 				validator.resetForm();
-				$('#charge-form').find("input[type=text],input[type=number],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
+				$('#charge-form').find("input[type=text],input[type=number],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea,select").val("");
 				$('#unitsChargesModal').modal('hide');
 			});
 
 			request.error(function(jqXHR, textStatus, errorThrown){
+				console.log(jqXHR);
 				bootbox.alert(jqXHR.responseText);
 			});
 			request.always(function(){
 				$btn.button('reset');
          });
 		});
+}
+
+function refreshTaxes()
+{
+	if($('#chk-taxable').prop('checked')) {
+  	  $("#sel2").removeAttr('disabled');
+  	  $("#sel3").removeAttr('disabled');
+  	  $("#tax-amount").removeAttr('disabled');
+  	  $("#sel2").prop("required", true);
+  	  $("#sel3").prop("required", true);
+  	  $("#tax-amount").prop("required", true);
+	   } 
+	   else{
+		   $("#sel2").val("");
+		   $("#sel3").val("");
+		   $("#tax-amount").val("");
+		   $("#sel2").prop("disabled", true);
+		   $("#sel3").prop("disabled", true);
+		   $("#tax-amount").prop("disabled", true);
+		   $("#sel2").removeAttr('required');
+	       $("#sel3").removeAttr('required');
+	       $("#tax-amount").removeAttr('required');
+		  
+	  }
+
+}
+
+function checkUnitCharges(){
+	$('#chk-taxable').click(function() {
+		refreshTaxes();
+	});
 }
 
 
@@ -291,7 +324,7 @@ $(function(){
 		createRentalUnit();
 		addUnitCharges();
 		createRentalUnitCharges();
-		
+		checkUnitCharges();
 		
 		
 		$(".datepicker-input").each(function() {
@@ -390,10 +423,12 @@ function createStructureTable(){
 
 function showChargesModal(button){
 	var unit = JSON.parse(decodeURI($(button).data("units")));
+	var $chargeForm = $('#charge-form');
 	createUnitCharges(unit["renId"]);
     $("#charge-unit-name").text(unit["unitName"]);
     $("#chargeid").val(unit["renId"]);
 	$("#unitsRatesModalLabel").text("Charges for Unit: "+unit["unitName"]+" ("+unit["unitType"].unitName+")");
+	
 	$('#unitRatesModal').modal({
 		  backdrop: 'static',
 		  keyboard: true
@@ -462,9 +497,28 @@ function createUnitCharges(renId){
 
 function editUnitCharge(button){
 	var charge = JSON.parse(decodeURI($(button).data("charges")));
+	var $chargeForm = $('#charge-form');
+	var validator = $chargeForm.validate();
+	validator.resetForm();  
 	$("#charge-id").val(charge["chargeId"]);
+	$("#rate-type-name").val(charge["rateType"].rateType);
+	$("#rateId").val(charge["rateType"].rateId);
 	populateRateDiv();
 	$("#unit-id-pk").val($("#chargeid").val());
+	$("#unit-amount").val(charge["amount"]);
+	$("#sel1").val(charge["frequency"]);
+	if(charge["taxable"])
+		$("#chk-taxable").prop("checked", charge["taxable"]);
+	else
+		$("#chk-taxable").prop("checked", false);
+	refreshTaxes();
+	$("#sel2").val(charge["taxType"]);
+	$("#sel3").val(charge["taxRateType"]);
+	$("#tax-amount").val(charge["taxValue"]);
+	$("#wef-date").val(moment(charge["wefDate"]).format('DD/MM/YYYY'));
+	if(charge["wetDate"])
+	$("#wet-date").val(moment(charge["wetDate"]).format('DD/MM/YYYY'));
+	
 	$('#unitsChargesModal').modal({
 		  backdrop: 'static',
 		  keyboard: true
@@ -602,5 +656,4 @@ function confirmStuctDel(button){
 		
 	});
 }
-
 

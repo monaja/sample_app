@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.brokersystems.server.exception.BadRequestException;
+
 @ControllerAdvice
 public class GeneralExceptionHandler {
 	
@@ -24,6 +26,13 @@ public class GeneralExceptionHandler {
 	    ResponseEntity handle(Exception   e) {
 	        return new ResponseEntity(e.getCause().getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 	    }
+	
+	@SuppressWarnings("unchecked")
+	@ExceptionHandler(BadRequestException.class)
+    ResponseEntity handleError(BadRequestException   e) {
+		System.out.println("Error passed here...."+e.getMessage());
+        return new ResponseEntity(e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
 	
 	
 	@ExceptionHandler(IllegalArgumentException.class)

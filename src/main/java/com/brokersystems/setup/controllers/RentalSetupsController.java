@@ -227,7 +227,7 @@ public class RentalSetupsController {
 	@RequestMapping(value = { "createRentalUnit" }, method = {
 			org.springframework.web.bind.annotation.RequestMethod.POST })
 	@ResponseStatus(HttpStatus.CREATED)
-	public void saveOrUpdateRentalUnit(RentalUnits unit) throws IllegalAccessException {
+	public void saveOrUpdateRentalUnit(RentalUnits unit)  throws BadRequestException {
 		setupsService.defineRentalUnits(unit);
 	}
 	
@@ -248,7 +248,7 @@ public class RentalSetupsController {
 	@RequestMapping(value = { "createRentalCharge" }, method = {
 			org.springframework.web.bind.annotation.RequestMethod.POST })
 	@ResponseStatus(HttpStatus.CREATED)
-	public void saveOrUpdateRentalCharge(RentalUnitCharges charge) throws IllegalAccessException {
+	public void saveOrUpdateRentalCharge(RentalUnitCharges charge) throws BadRequestException {
 		setupsService.defineRentalCharges(charge);
 	}
 	

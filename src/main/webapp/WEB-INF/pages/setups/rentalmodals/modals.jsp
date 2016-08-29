@@ -139,12 +139,13 @@
 						<div class="form-group  form-required">
 							<label for="sel1" class="col-md-3 control-label">Frequency</label>
 							<div class="col-md-8">
-							      <select class="form-control" id="sel1" name="frequency">
-							        <option value="O">One-Off</option>
-								    <option value="M">Monthly</option>
-								    <option value="Q">Quarterly</option>
-								    <option value="S">Semi-Annually</option>
-								    <option value="A">Annually</option>
+							      <select class="form-control" id="sel1" name="frequency" required>
+							       <option value="">Select Frequency</option>
+							        <option value="One-Off">One-Off</option>
+								    <option value="Monthly">Monthly</option>
+								    <option value="Quarterly">Quarterly</option>
+								    <option value="Semi-Annually">Semi-Annually</option>
+								    <option value="Annually">Annually</option>
 								  </select>
 							</div>
 						</div>
@@ -159,9 +160,20 @@
 						<div class="form-group">
 							<label for="sel2" class="col-md-3 control-label">Tax Type</label>
 							<div class="col-md-8">
-							      <select class="form-control" id="sel2" name="taxType">
-							        <option value="V">VAT</option>
-								    <option value="W">WHTX</option>
+							      <select class="form-control" id="sel2" name="taxType" disabled>
+							        <option value="">Select Tax Type</option>
+							        <option value="VAT">VAT</option>
+								    <option value="WHTX">WHTX</option>
+								  </select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="sel3" class="col-md-3 control-label">Tax Rate Type</label>
+							<div class="col-md-8">
+							      <select class="form-control" id="sel3" name="taxRateType" disabled>
+							        <option value="">Select Rate Type</option>
+							        <option value="P">Percentage</option>
+								    <option value="A">Amount</option>
 								  </select>
 							</div>
 						</div>
@@ -169,7 +181,7 @@
 							<label for="tax-amount" class="col-md-3 control-label">Tax Amount</label>
 							<div class="col-md-8">
 							     <input type="number" class="form-control" id="tax-amount"
-									name="taxValue"  required>
+									name="taxValue" disabled  required>
 							</div>
 						</div>
 						<div class="form-group  form-required">
@@ -190,7 +202,7 @@
 
 							<div class="col-md-8">
 							   <div class='input-group date datepicker-input'>
-				                    <input type='text' class="form-control" name="wetDate" id="wef-date" />
+				                    <input type='text' class="form-control" name="wetDate" id="wet-date" />
 				                    <span class="input-group-addon">
 				                        <span class="glyphicon glyphicon-calendar"></span>
 				                    </span>

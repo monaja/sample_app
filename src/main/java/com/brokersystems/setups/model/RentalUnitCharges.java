@@ -46,16 +46,19 @@ public class RentalUnitCharges {
 	@Column(name="charge_amount", nullable=false)
 	private BigDecimal amount;
 	
-	@Column(name="charge_freq", nullable=false,length=1)
+	@Column(name="charge_freq", nullable=false,length=20)
 	private String frequency;
 	
 	@Column(name="charge_taxable")
 	private boolean taxable;
 	
-	@Column(name="charge_tax_type",length=1)
+	@Column(name="charge_tax_rate_type",length=1)
+	private String taxRateType;
+	
+	@Column(name="charge_tax_type",length=5)
 	private String taxType;
 	
-	@Column(name="charge_tax_value", nullable=false)
+	@Column(name="charge_tax_value")
 	private BigDecimal taxValue;
 	
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -74,6 +77,14 @@ public class RentalUnitCharges {
 
 	public void setChargeId(Long chargeId) {
 		this.chargeId = chargeId;
+	}
+
+	public String getTaxRateType() {
+		return taxRateType;
+	}
+
+	public void setTaxRateType(String taxRateType) {
+		this.taxRateType = taxRateType;
 	}
 
 	public RentalUnits getUnit() {

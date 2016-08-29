@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
+import com.brokersystems.server.exception.BadRequestException;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
@@ -69,7 +70,7 @@ public interface SetupsService {
 	
 	DataTablesResult<RentalUnits> findAllRentalUnits(long rentalId,DataTablesRequest request)  throws IllegalAccessException;
 	
-    void defineRentalUnits(RentalUnits unit);
+    void defineRentalUnits(RentalUnits unit) throws BadRequestException;
 	
 	void deleteRentalUnit(Long unitId);
 	
@@ -81,7 +82,7 @@ public interface SetupsService {
 	 
 	 DataTablesResult<RentalUnitCharges> findRentalUnitCharges(long renId,DataTablesRequest request)  throws IllegalAccessException;
 	 
-	 void defineRentalCharges(RentalUnitCharges charge);
+	 void defineRentalCharges(RentalUnitCharges charge) throws BadRequestException ;
 		
      void deleteRentalCharge(Long chargeId);
      
