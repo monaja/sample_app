@@ -2,6 +2,7 @@ package com.brokersystems.setups.service.impl;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Iterator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.action.internal.QueuedOperationCollectionAction;
@@ -324,6 +325,15 @@ public class SetupsServiceImpl implements SetupsService {
 			if (size > 1) {
 				throw new BadRequestException("Charges for Selected period already exists...");
 			}
+		}
+		
+		BooleanExpression nullDates = unitCharges.wetDate.isNull();
+		
+		Iterator<RentalUnitCharges> it = unitChargeRepo.findAll(nullDates).iterator();
+		while(it.hasNext()){
+			RentalUnitCharges unitCharge = (RentalUnitCharges)it.next();
+			unitCharge.setWetDate(new Date());
+			unitChargeRepo.save(unitCharge);
 		}
 
 		unitChargeRepo.save(charge);
