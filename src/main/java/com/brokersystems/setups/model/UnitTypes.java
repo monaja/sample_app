@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="unit_types")
-public class UnitTypes implements Serializable {
+public class UnitTypes extends AuditBaseEntity implements Serializable {
 	
 	 public UnitTypes() {
 		// TODO Auto-generated constructor stub

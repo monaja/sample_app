@@ -22,9 +22,23 @@ public class QOrgBranch extends EntityPathBase<OrgBranch> {
 
     public static final QOrgBranch orgBranch = new QOrgBranch("orgBranch");
 
+    public final QAuditBaseEntity _super = new QAuditBaseEntity(this);
+
     public final StringPath address = createString("address");
 
     public final QUser branchManager;
+
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> createdDate = _super.createdDate;
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> modifiedDate = _super.modifiedDate;
 
     public final NumberPath<Long> obId = createNumber("obId", Long.class);
 

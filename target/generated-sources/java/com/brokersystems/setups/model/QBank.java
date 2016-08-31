@@ -22,11 +22,25 @@ public class QBank extends EntityPathBase<Bank> {
 
     public static final QBank bank = new QBank("bank");
 
+    public final QAuditBaseEntity _super = new QAuditBaseEntity(this);
+
     public final NumberPath<Long> bankCode = createNumber("bankCode", Long.class);
 
     public final StringPath bankName = createString("bankName");
 
     public final StringPath bankShtDesc = createString("bankShtDesc");
+
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> createdDate = _super.createdDate;
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> modifiedDate = _super.modifiedDate;
 
     public final QOrganization organization;
 

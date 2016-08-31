@@ -22,7 +22,15 @@ public class QTown extends EntityPathBase<Town> {
 
     public static final QTown town = new QTown("town");
 
+    public final QAuditBaseEntity _super = new QAuditBaseEntity(this);
+
     public final QCounty county;
+
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> createdDate = _super.createdDate;
 
     public final NumberPath<Long> ctCode = createNumber("ctCode", Long.class);
 
@@ -31,6 +39,12 @@ public class QTown extends EntityPathBase<Town> {
     public final StringPath ctPostalCode = createString("ctPostalCode");
 
     public final StringPath ctShtDesc = createString("ctShtDesc");
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> modifiedDate = _super.modifiedDate;
 
     public QTown(String variable) {
         this(Town.class, forVariable(variable), INITS);

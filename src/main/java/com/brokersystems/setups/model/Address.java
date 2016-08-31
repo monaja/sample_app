@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Embeddable
-public class Address implements Serializable {
+public class Address extends AuditBaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 

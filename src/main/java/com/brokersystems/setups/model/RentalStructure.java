@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="org_rental_structs")
-public class RentalStructure implements Serializable {
+public class RentalStructure extends AuditBaseEntity implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

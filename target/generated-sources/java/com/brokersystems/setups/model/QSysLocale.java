@@ -20,11 +20,25 @@ public class QSysLocale extends EntityPathBase<SysLocale> {
 
     public static final QSysLocale sysLocale = new QSysLocale("sysLocale");
 
+    public final QAuditBaseEntity _super = new QAuditBaseEntity(this);
+
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> createdDate = _super.createdDate;
+
     public final StringPath locDesc = createString("locDesc");
 
     public final NumberPath<Long> locId = createNumber("locId", Long.class);
 
     public final StringPath locName = createString("locName");
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> modifiedDate = _super.modifiedDate;
 
     public final ListPath<Organization, QOrganization> organizations = this.<Organization, QOrganization>createList("organizations", Organization.class, QOrganization.class, PathInits.DIRECT2);
 

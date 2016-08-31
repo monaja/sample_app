@@ -22,6 +22,20 @@ public class QUserRole extends EntityPathBase<UserRole> {
 
     public static final QUserRole userRole = new QUserRole("userRole");
 
+    public final QAuditBaseEntity _super = new QAuditBaseEntity(this);
+
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> createdDate = _super.createdDate;
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> modifiedDate = _super.modifiedDate;
+
     public final StringPath role = createString("role");
 
     public final QUser user;

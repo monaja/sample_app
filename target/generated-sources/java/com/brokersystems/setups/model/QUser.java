@@ -20,9 +20,23 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
+    public final QAuditBaseEntity _super = new QAuditBaseEntity(this);
+
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> createdDate = _super.createdDate;
+
     public final StringPath enabled = createString("enabled");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> modifiedDate = _super.modifiedDate;
 
     public final StringPath name = createString("name");
 

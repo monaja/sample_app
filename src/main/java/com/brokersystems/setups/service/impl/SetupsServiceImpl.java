@@ -327,7 +327,7 @@ public class SetupsServiceImpl implements SetupsService {
 			}
 		}
 		
-		BooleanExpression nullDates = unitCharges.wetDate.isNull();
+		BooleanExpression nullDates = unitCharges.rateType.eq(charge.getRateType()).and(unitCharges.wetDate.isNull());
 		
 		Iterator<RentalUnitCharges> it = unitChargeRepo.findAll(nullDates).iterator();
 		while(it.hasNext()){

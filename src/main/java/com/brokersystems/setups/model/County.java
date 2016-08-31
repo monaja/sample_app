@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 @Table(name="counties")
 //@NamedQuery(name="County.findAll", query="SELECT c FROM County c")
-public class County implements Serializable {
+public class County extends AuditBaseEntity  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

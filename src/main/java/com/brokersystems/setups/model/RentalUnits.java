@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="rental_units")
-public class RentalUnits {
+public class RentalUnits extends AuditBaseEntity {
 	
 	public RentalUnits() {
 		// TODO Auto-generated constructor stub

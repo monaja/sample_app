@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name ="g7_users")
-public class User  implements Serializable {
+public class User extends AuditBaseEntity  implements Serializable {
 
     /**
 	 * 

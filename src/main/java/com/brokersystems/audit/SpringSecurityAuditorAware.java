@@ -7,9 +7,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.brokersystems.setups.model.User;
 
-public class SpringSecurityAuditorAware implements AuditorAware<User> {
+public class SpringSecurityAuditorAware implements AuditorAware<String> {
 
-    public User getCurrentAuditor() {
+    public String getCurrentAuditor() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -18,6 +18,6 @@ public class SpringSecurityAuditorAware implements AuditorAware<User> {
             return null;
         }
 
-        return (User) authentication.getPrincipal();
+        return ((User) authentication.getPrincipal()).getUsername();
     }
 }

@@ -22,6 +22,8 @@ public class QAddress extends BeanPath<Address> {
 
     public static final QAddress address = new QAddress("address");
 
+    public final QAuditBaseEntity _super = new QAuditBaseEntity(this);
+
     public final StringPath addAddress = createString("addAddress");
 
     public final StringPath addZipCode = createString("addZipCode");
@@ -29,6 +31,18 @@ public class QAddress extends BeanPath<Address> {
     public final QCountry country;
 
     public final QCounty county;
+
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> createdDate = _super.createdDate;
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> modifiedDate = _super.modifiedDate;
 
     public final QTown town;
 

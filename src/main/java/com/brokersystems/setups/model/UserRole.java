@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name ="g7_user_roles")
-public class UserRole {
+public class UserRole extends AuditBaseEntity {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)    

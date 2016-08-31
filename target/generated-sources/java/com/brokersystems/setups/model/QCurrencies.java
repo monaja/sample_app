@@ -20,6 +20,14 @@ public class QCurrencies extends EntityPathBase<Currencies> {
 
     public static final QCurrencies currencies = new QCurrencies("currencies");
 
+    public final QAuditBaseEntity _super = new QAuditBaseEntity(this);
+
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> createdDate = _super.createdDate;
+
     public final NumberPath<Long> curCode = createNumber("curCode", Long.class);
 
     public final StringPath curIsoCode = createString("curIsoCode");
@@ -31,6 +39,12 @@ public class QCurrencies extends EntityPathBase<Currencies> {
     public final StringPath fraction = createString("fraction");
 
     public final NumberPath<Integer> fractionUnits = createNumber("fractionUnits", Integer.class);
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> modifiedDate = _super.modifiedDate;
 
     public final ListPath<Organization, QOrganization> organizations = this.<Organization, QOrganization>createList("organizations", Organization.class, QOrganization.class, PathInits.DIRECT2);
 

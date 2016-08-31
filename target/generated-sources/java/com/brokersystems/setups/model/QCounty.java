@@ -22,6 +22,8 @@ public class QCounty extends EntityPathBase<County> {
 
     public static final QCounty county = new QCounty("county");
 
+    public final QAuditBaseEntity _super = new QAuditBaseEntity(this);
+
     public final QCountry country;
 
     public final StringPath countyCode = createString("countyCode");
@@ -29,6 +31,18 @@ public class QCounty extends EntityPathBase<County> {
     public final NumberPath<Long> countyId = createNumber("countyId", Long.class);
 
     public final StringPath countyName = createString("countyName");
+
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> createdDate = _super.createdDate;
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
+
+    //inherited
+    public final DateTimePath<java.util.Date> modifiedDate = _super.modifiedDate;
 
     public final ListPath<Town, QTown> towns = this.<Town, QTown>createList("towns", Town.class, QTown.class, PathInits.DIRECT2);
 

@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="regions",uniqueConstraints={@UniqueConstraint(columnNames={"sht_desc","reg_org_code"})})
-public class OrgRegions implements Serializable {
+public class OrgRegions extends AuditBaseEntity implements Serializable {
 	
 	/**
 	 * 

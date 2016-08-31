@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="countries")
-public class Country implements Serializable {
+public class Country extends AuditBaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

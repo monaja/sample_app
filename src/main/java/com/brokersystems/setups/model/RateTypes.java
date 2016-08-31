@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="rate_types")
-public class RateTypes {
+public class RateTypes extends AuditBaseEntity {
 	
 	public RateTypes() {
 		// TODO Auto-generated constructor stub
