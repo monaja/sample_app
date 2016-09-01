@@ -43,7 +43,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<div class="col-md-6">
+				<div class="col-md-6 form-required">
 					<label for="noOfUnits" class="control-label col-md-5">Tel No</label>
 					<div class="col-md-7">
 						<input type="text" name="telNo" id="tel-no" class="form-control"

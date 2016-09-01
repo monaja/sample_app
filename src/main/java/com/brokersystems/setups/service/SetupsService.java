@@ -10,6 +10,7 @@ import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
+import com.brokersystems.setups.model.PaymentModes;
 import com.brokersystems.setups.model.RateTypes;
 import com.brokersystems.setups.model.RentalStructure;
 import com.brokersystems.setups.model.RentalUnitCharges;
@@ -88,7 +89,10 @@ public interface SetupsService {
      
      Page<RateTypes> findRatesForSelect(String paramString, Pageable paramPageable);
 	
-	
-	
+     DataTablesResult<PaymentModes> findAllPaymentModes(DataTablesRequest request)  throws IllegalAccessException;
+ 	
+     void definePaymentMode(PaymentModes mode) throws BadRequestException;
+ 	
+ 	void deletePaymentMode(Long pmId);
 
 }

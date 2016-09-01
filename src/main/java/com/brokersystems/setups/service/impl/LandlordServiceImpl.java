@@ -8,10 +8,13 @@ import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
 import com.brokersystems.setup.repository.LandlordRepository;
+import com.brokersystems.setup.repository.PaymentModeRepo;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.QCurrencies;
 import com.brokersystems.setups.model.QLandlord;
+import com.brokersystems.setups.model.QPaymentModes;
 import com.brokersystems.setups.model.Landlord;
+import com.brokersystems.setups.model.PaymentModes;
 import com.brokersystems.setups.service.LandlordService;
 
 @Service
@@ -19,6 +22,8 @@ public class LandlordServiceImpl implements LandlordService{
 	
 	@Autowired
 	private LandlordRepository tenantRepo;
+	
+	
 
 	@Override
 	public DataTablesResult<Landlord> findAllLandlords(DataTablesRequest request) throws IllegalAccessException {
@@ -45,5 +50,7 @@ public class LandlordServiceImpl implements LandlordService{
 	public Landlord getLandlordDetails(Long tenantId) {
 		return tenantRepo.findOne(tenantId);
 	}
+
+	
 
 }

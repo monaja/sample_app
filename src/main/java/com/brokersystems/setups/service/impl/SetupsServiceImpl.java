@@ -20,6 +20,7 @@ import com.brokersystems.setup.repository.CountryRepository;
 import com.brokersystems.setup.repository.CountyRepository;
 import com.brokersystems.setup.repository.CurrencyRepository;
 import com.brokersystems.setup.repository.OrgBranchRepository;
+import com.brokersystems.setup.repository.PaymentModeRepo;
 import com.brokersystems.setup.repository.RateTypeRepository;
 import com.brokersystems.setup.repository.RentalStructRepository;
 import com.brokersystems.setup.repository.RentalUnitChargeRepo;
@@ -31,11 +32,13 @@ import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.OrgRegions;
+import com.brokersystems.setups.model.PaymentModes;
 import com.brokersystems.setups.model.QCountry;
 import com.brokersystems.setups.model.QCounty;
 import com.brokersystems.setups.model.QCurrencies;
 import com.brokersystems.setups.model.QOrgBranch;
 import com.brokersystems.setups.model.QOrgRegions;
+import com.brokersystems.setups.model.QPaymentModes;
 import com.brokersystems.setups.model.QRateTypes;
 import com.brokersystems.setups.model.QRentalStructure;
 import com.brokersystems.setups.model.QRentalUnitCharges;
@@ -84,6 +87,9 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Autowired
 	private RentalUnitChargeRepo unitChargeRepo;
+	
+	@Autowired
+	private PaymentModeRepo payRepo;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -359,6 +365,27 @@ public class SetupsServiceImpl implements SetupsService {
 			pred = QRateTypes.rateTypes.rateType.containsIgnoreCase(paramString);
 		}
 		return rateTypeRepo.findAll(pred, paramPageable);
+	}
+	
+	@Override
+	public DataTablesResult<PaymentModes> findAllPaymentModes(DataTablesRequest request) throws IllegalAccessException  {
+		Page<PaymentModes> page = payRepo.findAll(request.searchPredicate(QPaymentModes.paymentModes), request);
+		return new DataTablesResult<>(request, page);
+	}
+
+	@Override
+	public void definePaymentMode(PaymentModes mode) throws BadRequestException {
+		if(mode.getPmMaxValue().compareTo(mode.getPmMinValue()) ==-1){
+			throw new BadRequestException("Max Value cannot be less than min Value");
+		}
+		payRepo.save(mode);
+		
+	}
+
+	@Override
+	public void deletePaymentMode(Long pmId) {
+		payRepo.delete(pmId);
+		
 	}
 
 }

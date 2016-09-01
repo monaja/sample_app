@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.brokersystems.server.datatables.DataTable;
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
+import com.brokersystems.server.exception.BadRequestException;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
+import com.brokersystems.setups.model.PaymentModes;
 import com.brokersystems.setups.model.Landlord;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.service.SetupsService;
@@ -30,6 +32,7 @@ public class SetupsController {
 	private SetupsService setupsService;
 	
 	
+	
 	@RequestMapping(value="currency",method = RequestMethod.GET)
 	public String currencyHome(Model model){
 		return "currency";
@@ -38,6 +41,11 @@ public class SetupsController {
 	@RequestMapping(value="countries",method = RequestMethod.GET)
 	public String countryHome(Model model){
 		return "countries";
+	}
+	
+	@RequestMapping(value="paymentmodes",method = RequestMethod.GET)
+	public String paymentModesHome(Model model){
+		return "paymodesList";
 	}
 	
 	@RequestMapping(value={"currencies"}, method={RequestMethod.GET})
@@ -132,6 +140,19 @@ public class SetupsController {
 	    setupsService.deleteTown(townCode);
 	  }
 	 
+	 @RequestMapping(value={"allpaymentModes"}, method={RequestMethod.GET})
+		@ResponseBody
+		public DataTablesResult<PaymentModes> getPayemtModes(@DataTable DataTablesRequest pageable)
+		    throws IllegalAccessException
+		{
+		    return setupsService.findAllPaymentModes(pageable);
+		}
 	 
+	 @RequestMapping(value={"createPaymentModes"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+	  @ResponseStatus(HttpStatus.CREATED)
+	  public void saveOrUpdatePaymentModes(PaymentModes mode) throws BadRequestException
+	  {
+	    setupsService.definePaymentMode(mode);
+	  }
 
 }

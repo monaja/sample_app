@@ -52,7 +52,12 @@
         <put-attribute name="title" value="Landlord Details" />  
         <put-attribute name="body" value="/WEB-INF/pages/setups/tenantdef.jsp" />  
     </definition> 
-    
+
+
+      <definition name="paymodesList" extends="base.definition">  
+        <put-attribute name="title" value="Payment Modes List" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/paymentmodes.jsp" />  
+    </definition>
     
      <definition name="tenantform" extends="base.definition">  
         <put-attribute name="title" value="Landlord Details" />  
