@@ -91,59 +91,6 @@
 	
 	
     
-    
-    <div class="modal fade" id="bankModal" tabindex="-1" role="dialog"
-		aria-labelledby="bankModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title" id="bankModalLabel">
-						Edit/Add Bank
-					</h4>
-				</div>
-				<div class="modal-body">
-					<form id="bank-form" class="form-horizontal">
-					     <div class="alert alert-error alert-dismissible" id="errorbankDiv" style="display: none;">
-						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						   <div id="errorbankId"></div>
-						</div>
-						<input type="hidden" class="form-control" id="bank-code" name="bankCode">
-						<input type="hidden" name="organization" id="bankOrgCode"/>
-						<div class="form-group">
-							<label for="bank-id" class="col-md-3 control-label">Bank ID</label>
-							<div class="col-md-8">
-								<input type="text" class="form-control" id="bank-id"
-									name="bankShtDesc"  required>
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="brn-name" class="col-md-3 control-label">Bank Name</label>
-
-							<div class="col-md-8">
-								<input type="text" class="editUserCntrls form-control"
-									id="bank-name" name="bankName" 
-									required>
-							</div>
-						</div>
-						
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button data-loading-text="Saving..." id="saveBankBtn"
-						type="button" class="btn btn-primary">
-						Save
-					</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">
-						Cancel
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
 	
 	
 	 <div class="modal fade" id="regModal" tabindex="-1" role="dialog"

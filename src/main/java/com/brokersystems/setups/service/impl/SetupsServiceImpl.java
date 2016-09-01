@@ -1,6 +1,7 @@
 package com.brokersystems.setups.service.impl;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -332,7 +333,10 @@ public class SetupsServiceImpl implements SetupsService {
 		Iterator<RentalUnitCharges> it = unitChargeRepo.findAll(nullDates).iterator();
 		while(it.hasNext()){
 			RentalUnitCharges unitCharge = (RentalUnitCharges)it.next();
-			unitCharge.setWetDate(new Date());
+			Calendar cal  = Calendar.getInstance();
+			cal.setTime(new Date());
+			cal.add(Calendar.DAY_OF_YEAR, -1);
+			unitCharge.setWetDate(cal.getTime());
 			unitChargeRepo.save(unitCharge);
 		}
 

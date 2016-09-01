@@ -86,14 +86,6 @@ function openEditRegionModal(button){
 }
 
 
-function openEditBankModal(button){
-	var branch = JSON.parse(decodeURI($(button).data("bank")));	
-	$("#bank-code").val(branch["bankCode"]);
-	$("#bank-id").val(branch["bankShtDesc"]);
-	$("#bank-name").val(branch["bankName"]);
-	$('#bankModal').modal('show');
-}
-
 function confirmBranchDelete(button){
 	var branch = JSON.parse(decodeURI($(button).data("branch")));
 	bootbox.confirm("Are you sure want to delete "+branch["obName"]+"?", function(result) {
@@ -118,28 +110,6 @@ function confirmBranchDelete(button){
 	
 }
 
-function confirmBankDelete(button){
-	var branch = JSON.parse(decodeURI($(button).data("bank")));
-	bootbox.confirm("Are you sure want to delete "+branch["bankName"]+"?", function(result) {
-	      if(result){
-			 $.ajax({
-			        type: 'GET',
-			        url:  'deleteBank/' + branch["bankCode"],
-			        dataType: 'json',
-			        async: true,
-			        success: function(result) {
-			        	$('#orgBranks').DataTable().ajax.reload();
-			        },
-			        error: function(jqXHR, textStatus, errorThrown) {
-			        	bootbox.alert(jqXHR.responseText, function() {
-			        		
-			        	});
-			        }
-			    });
-	      }
-	});
-	
-}
 
 function confirmRegionDelete(button){
 	var branch = JSON.parse(decodeURI($(button).data("region")));
@@ -163,44 +133,6 @@ function confirmRegionDelete(button){
 	});
 	
 }
-
-
-
-function createBankTable(){
-	var banksUrl = "banks/0";
-	  if ($("#orgCodepk").val() != ''){
-		  banksUrl = "banks/"+$("#orgCodepk").val();
-		}
-	  var banksTable = $('#orgBranks').DataTable( {
-			"processing": true,
-			"serverSide": true,
-			"ajax": banksUrl,
-			lengthMenu: [ [5, 10, 15], [5, 10, 15] ],
-			pageLength: 5,
-			destroy: true,
-			"columns": [
-				{ "data": "bankShtDesc" },
-				{ "data": "bankName" },
-				{ 
-					"data": "bankCode",
-					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-bank='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="openEditBankModal(this);"/>';
-					}
-
-				},
-				{ 
-					"data": "bankCode",
-					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-bank='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmBankDelete(this);"/>';
-					}
-
-				},
-			]
-		} );
-	  return banksTable;
-}
-
-
 
 function createRegionTable(){
 	var regionsUrl = "regions/0";
@@ -360,7 +292,6 @@ $(function(){
 		  
 		  createRegionTable();
 		  
-		   createBankTable();
 		  
 		   createBranchTable();
 		   
@@ -456,15 +387,7 @@ $(function(){
 			});
 		  
 		  
-		  var $bankForm = $('#bank-form');
-		  var bankvalidator = $bankForm.validate();
-		  $('#bankModal').on('hidden.bs.modal', function () {
-			  bankvalidator.resetForm();
-			  $("#errorbankDiv").hide();
-				$('#bank-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
-				if($("#orgCodepk"))
-					$("#bankOrgCode").val($("#orgCodepk").val()); 
-		  });
+		 
 		  
 		  var $reportForm= $('#report-form');
 		  
@@ -486,37 +409,12 @@ $(function(){
 	            });
 		  });
 		  
-		  $('#saveBankBtn').click(function(){
-				if (!$bankForm.valid()) {
-					return;
-				}
-				var $btn = $(this).button('Saving');
-				var data = {};
-				$bankForm.serializeArray().map(function(x){data[x.name] = x.value;});
-				var url = "createOrgBank";
-	            var request = $.post(url, data );
-				request.success(function(){
-					$('#orgBranks').DataTable().ajax.reload();
-					bankvalidator.resetForm();
-					$('#bank-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
-					$('#bankModal').modal('hide');
-				});
-
-				request.error(function(jqXHR, textStatus, errorThrown){
-					$("#errorbankId").html(jqXHR.responseText);
-					$("#errorbankDiv").show();
-				});
-				request.always(function(){
-	            });
-			});
 		  //01-March Update
 		  rivets.bind($("#organization_model"), model);
 		  //10-March Update
 		  if($("#orgCodepk"))
 				$("#regOrgCode").val($("#orgCodepk").val());
 		  
-		  if($("#orgCodepk"))
-				$("#bankOrgCode").val($("#orgCodepk").val()); 
 		  
 		  if($("#country").filter("div").html() != undefined)
 		  {

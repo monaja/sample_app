@@ -17,8 +17,10 @@ import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
+import com.brokersystems.setups.model.Landlord;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.service.SetupsService;
+import com.brokersystems.setups.service.LandlordService;
 
 @Controller
 @RequestMapping({"/protected/setups"})
@@ -26,6 +28,7 @@ public class SetupsController {
 	
 	@Autowired
 	private SetupsService setupsService;
+	
 	
 	@RequestMapping(value="currency",method = RequestMethod.GET)
 	public String currencyHome(Model model){
@@ -128,5 +131,7 @@ public class SetupsController {
 	  {
 	    setupsService.deleteTown(townCode);
 	  }
+	 
+	 
 
 }

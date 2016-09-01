@@ -8,7 +8,6 @@ import com.brokersystems.server.utils.FileUploadValidator;
 import com.brokersystems.server.utils.ReportUtils;
 import com.brokersystems.server.validator.OrganizationValidator;
 import com.brokersystems.setups.model.Address;
-import com.brokersystems.setups.model.Bank;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
@@ -223,13 +222,7 @@ public class OrganizationController
   }
   
   
-  @RequestMapping(value={"banks/{orgCode}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-  @ResponseBody
-  public DataTablesResult<Bank> orgBanks(@DataTable DataTablesRequest pageable, @PathVariable Long orgCode)
-    throws IllegalAccessException
-  {
-    return this.orgService.findOrgBanks(orgCode.longValue(), pageable);
-  }
+ 
   
   @RequestMapping(value={"createRegionBranch"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
   @ResponseStatus(HttpStatus.CREATED)
@@ -254,28 +247,11 @@ public class OrganizationController
     this.orgService.createOrgRegion(region);
   }
   
-  @RequestMapping(value={"createOrgBank"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
-  @ResponseStatus(HttpStatus.CREATED)
-  public void saveOrUpdateBank(Bank bank)
-  {
-    if (bank.getOrganization() == null) {
-      throw new IllegalArgumentException("Cannot create bank without Organization");
-    }
-    this.orgService.createOrgBank(bank);
-  }
-  
   @RequestMapping(value={"deleteBranch/{branchCode}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteRegionBranch(@PathVariable Long branchCode)
   {
     this.orgService.deleteOrgBranch(branchCode);
-  }
-  
-  @RequestMapping(value={"deleteBank/{bankCode}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteOrgBank(@PathVariable Long bankCode)
-  {
-    this.orgService.deleteOrgBank(bankCode);
   }
   
   @RequestMapping(value={"deleteRegion/{regCode}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})

@@ -2,7 +2,6 @@ package com.brokersystems.setups.service;
 
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
-import com.brokersystems.setups.model.Bank;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
@@ -38,18 +37,13 @@ public abstract interface OrganizationService
   public abstract DataTablesResult<OrgBranch> findOrgBranches(long paramLong, DataTablesRequest paramDataTablesRequest)
     throws IllegalAccessException;
   
-  public abstract DataTablesResult<Bank> findOrgBanks(long paramLong, DataTablesRequest paramDataTablesRequest)
-    throws IllegalAccessException;
   
   public abstract void createRegionBranch(OrgBranch paramOrgBranch);
   
-  public abstract void createOrgBank(Bank paramBank);
   
   public abstract void createOrgRegion(OrgRegions region);
   
   public abstract void deleteOrgBranch(Long paramLong);
-  
-  public abstract void deleteOrgBank(Long paramLong);
   
   public abstract void deleteOrgRegion(Long regCode);
   

@@ -5,20 +5,17 @@ import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.setup.repository.CountryRepository;
 import com.brokersystems.setup.repository.CountyRepository;
 import com.brokersystems.setup.repository.CurrencyRepository;
-import com.brokersystems.setup.repository.OrgBankRepository;
 import com.brokersystems.setup.repository.OrgBranchRepository;
 import com.brokersystems.setup.repository.OrganizationRepository;
 import com.brokersystems.setup.repository.RegionRepository;
 import com.brokersystems.setup.repository.TownRepository;
 import com.brokersystems.setup.repository.UserRepository;
-import com.brokersystems.setups.model.Bank;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.OrgRegions;
 import com.brokersystems.setups.model.Organization;
-import com.brokersystems.setups.model.QBank;
 import com.brokersystems.setups.model.QCountry;
 import com.brokersystems.setups.model.QCounty;
 import com.brokersystems.setups.model.QCurrencies;
@@ -26,13 +23,10 @@ import com.brokersystems.setups.model.QOrgBranch;
 import com.brokersystems.setups.model.QOrgRegions;
 import com.brokersystems.setups.model.QOrganization;
 import com.brokersystems.setups.model.QTown;
-import com.brokersystems.setups.model.QUser;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.model.User;
 import com.brokersystems.setups.service.OrganizationService;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.path.NumberPath;
-
 import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -57,8 +51,6 @@ public class OrganizationServiceImpl
   private TownRepository townRepo;
   @Autowired
   private CurrencyRepository currencyrepo;
-  @Autowired
-  private OrgBankRepository orgBankrepo;
   @Autowired
   private OrgBranchRepository orgBranchrepo;
   @Autowired
@@ -139,16 +131,7 @@ public class OrganizationServiceImpl
     return new DataTablesResult(request, page);
   }
   
-  @Transactional(readOnly=true)
-  public DataTablesResult<Bank> findOrgBanks(long orgCode, DataTablesRequest request)
-    throws IllegalAccessException
-  {
-    QOrganization org = QBank.bank.organization;
-    BooleanExpression pred = org.orgCode.eq(Long.valueOf(orgCode));
-    Page<Bank> page = this.orgBankrepo.findAll(pred.and(request.searchPredicate(QBank.bank)), request);
-    return new DataTablesResult(request, page);
-  }
-  
+
   @Modifying
   @Transactional(readOnly=false)
   public void createRegionBranch(OrgBranch branch)
@@ -158,24 +141,11 @@ public class OrganizationServiceImpl
   
   @Modifying
   @Transactional(readOnly=false)
-  public void createOrgBank(Bank bank)
-  {
-    this.orgBankrepo.save(bank);
-  }
-  
-  @Modifying
-  @Transactional(readOnly=false)
   public void deleteOrgBranch(Long branchCode)
   {
     this.orgBranchrepo.delete(branchCode);
   }
   
-  @Modifying
-  @Transactional(readOnly=false)
-  public void deleteOrgBank(Long bankCode)
-  {
-    this.orgBankrepo.delete(bankCode);
-  }
   
   public Page<Country> findCountryForSelect(String term, Pageable pageable)
   {
@@ -226,6 +196,7 @@ public class OrganizationServiceImpl
       term = "%" + StringUtils.defaultString(term) + "%";
       return userRepo.findByUsernameLikeIgnoreCaseAndEnabled(term, pageable, "1");
     }
+
     
 
 	

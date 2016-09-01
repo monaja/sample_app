@@ -43,9 +43,11 @@ import com.brokersystems.setups.model.RentalStructForm;
 import com.brokersystems.setups.model.RentalStructure;
 import com.brokersystems.setups.model.RentalUnitCharges;
 import com.brokersystems.setups.model.RentalUnits;
+import com.brokersystems.setups.model.Landlord;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.model.UnitTypes;
 import com.brokersystems.setups.service.SetupsService;
+import com.brokersystems.setups.service.LandlordService;
 
 @Controller
 @RequestMapping({ "/protected/rental/setups" })
@@ -56,6 +58,9 @@ public class RentalSetupsController {
 
 	@Autowired
 	RentalStructValidator validator;
+	
+	@Autowired
+	private LandlordService tenantService;
 
 	@InitBinder({ "rentalStructure" })
 	protected void initBinder(WebDataBinder binder) {
@@ -94,6 +99,17 @@ public class RentalSetupsController {
 	public String rentalStructuresEntry(Model model) {
 		model.addAttribute("rentalId", -2000);
 		return "rentalform";
+	}
+	
+	@RequestMapping(value = "tenantForm", method = RequestMethod.GET)
+	public String tenantsForm(Model model) {
+		model.addAttribute("tenantId", -2000);
+		return "tenantform";
+	}
+	
+	@RequestMapping(value = "tenantList", method = RequestMethod.GET)
+	public String tenantsHome(Model model) {
+		return "tenantList";
 	}
 
 	@RequestMapping(value = { "allratetypes" }, method = { RequestMethod.GET })
@@ -265,5 +281,43 @@ public class RentalSetupsController {
 			throws IllegalAccessException {
 		return setupsService.findRatesForSelect(term, pageable);
 	}
+	
+
+	 @RequestMapping(value={"tenants"}, method={RequestMethod.GET})
+		@ResponseBody
+		public DataTablesResult<Landlord> getTenants(@DataTable DataTablesRequest pageable)
+		    throws IllegalAccessException
+		{
+		    return tenantService.findAllLandlords(pageable);
+		}
+	 
+	 @RequestMapping(value = { "createTenant" }, method = {
+				org.springframework.web.bind.annotation.RequestMethod.POST })
+		@ResponseStatus(HttpStatus.CREATED)
+		public void saveTenants(Landlord tenant) throws BadRequestException {
+		       tenantService.defineLandlord(tenant);
+		}
+	 
+	 @RequestMapping(value = "/editTenantForm", method = RequestMethod.POST)
+		public String editTenantForm(@Valid @ModelAttribute Landlord tenant, Model model) {
+			model.addAttribute("tenantId", tenant.getTenantId());
+			return "tenantform";
+		}
+	 
+	 
+	    @RequestMapping(value = { "tenantDetails/{tenantId}" }, method = { RequestMethod.GET })
+		@ResponseBody
+		public Landlord getTenantDetails(@PathVariable Long tenantId) throws IllegalAccessException {
+			return tenantService.getLandlordDetails(tenantId);
+		}
+	    
+	    
+	    @RequestMapping(value = { "deleteTenant/{tenantId}" }, method = {
+				org.springframework.web.bind.annotation.RequestMethod.GET })
+		@ResponseStatus(HttpStatus.NO_CONTENT)
+		public void deleteTenant(@PathVariable Long tenantId) {
+	    	tenantService.deleteLandlord(tenantId);
+		}
+		
 
 }

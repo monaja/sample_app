@@ -56,7 +56,6 @@ function createRentalUnit(){
 			var $btn = $(this).button('Saving');
 			var data = {};
 			$unitForm.serializeArray().map(function(x){data[x.name] = x.value;});
-			console.log(data);
 			var url = "createRentalUnit";
          var request = $.post(url, data );
 			request.success(function(){
