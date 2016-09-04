@@ -19,3 +19,7 @@ function changeLocale(url) {
         location.reload()
     });
 }
+
+function hey(){
+	console.log("hello workd");
+}

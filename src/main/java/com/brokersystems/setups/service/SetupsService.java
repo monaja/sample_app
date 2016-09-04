@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
+import com.brokersystems.setups.model.AccountTypes;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
@@ -93,6 +94,12 @@ public interface SetupsService {
  	
      void definePaymentMode(PaymentModes mode) throws BadRequestException;
  	
- 	void deletePaymentMode(Long pmId);
+ 	 void deletePaymentMode(Long pmId);
+ 	
+ 	 DataTablesResult<AccountTypes> findAllAccountTypes(DataTablesRequest request)  throws IllegalAccessException;
+ 	 
+ 	void defineAccountType(AccountTypes accType) throws BadRequestException;
+ 	
+	void deleteAccountType(Long acctId);
 
 }

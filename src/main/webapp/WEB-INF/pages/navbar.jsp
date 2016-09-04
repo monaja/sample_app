@@ -6,7 +6,7 @@
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">SYSTEM NAVIGATION</li>
-            <li class="active">
+            <li>
               <a href="<c:url value="/protected/home"/>">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="pull-right"></i>
               </a>
@@ -20,7 +20,13 @@
             
              <li>
               <a href="<c:url value="/protected/home/setups"/>">
-                <i class="fa fa-cog"></i> <span>Units Set Ups</span> <i class="pull-right"></i>
+                <i class="fa fa-cog"></i> <span>Tenant/Account Setups</span> <i class="pull-right"></i>
+              </a>
+              
+            </li>
+            <li>
+              <a href="<c:url value="/protected/home/setups"/>">
+                <i class="fa fa-cog"></i> <span>Tenant Transactions</span> <i class="pull-right"></i>
               </a>
               
             </li>

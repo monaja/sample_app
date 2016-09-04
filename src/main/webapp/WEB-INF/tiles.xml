@@ -84,24 +84,15 @@
         <put-attribute name="body" value="/WEB-INF/pages/submenus/orgSetupScreen.jsp" />  
     </definition>  
     
-     <definition name="uwsetups" extends="base.definition">  
-        <put-attribute name="title" value="Underwriting Parameters" />  
+     <definition name="tensetups" extends="base.definition">  
+        <put-attribute name="title" value="Accounts/Tenants Setups" />  
         <put-attribute name="body" value="/WEB-INF/pages/submenus/setupScreen.jsp" />  
     </definition>  
     
-     <definition name="productsdefinition" extends="base.definition">  
-        <put-attribute name="title" value="Products" />  
-        <put-attribute name="body" value="/WEB-INF/pages/products/products.jsp" />  
-    </definition>  
-    
-    <definition name="entities" extends="base.definition">  
-        <put-attribute name="title" value="Entities Search" />  
-        <put-attribute name="body" value="/WEB-INF/pages/entities/entities.jsp" />  
-    </definition>  
-    
-     <definition name="createentity" extends="base.definition">  
-        <put-attribute name="title" value="Entities Details" />  
-        <put-attribute name="body" value="/WEB-INF/pages/entities/entityform.jsp" />  
-    </definition>  
+     <definition name="accounttypes" extends="base.definition">  
+        <put-attribute name="title" value="Account Types Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/accountsetups/acctypes.jsp" />  
+    </definition> 
+     
     
 </tiles-definitions> 

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script type="text/javascript" src="<c:url value="/js/modules/setups/utilitysetups.js"/>"></script>
 <div class="box box-info">
 <div class="box-body">
@@ -37,7 +38,7 @@
 				</div>
 				<div class="modal-body" id="branch_model">
 					<form id="pay-modes-form" class="form-horizontal">
-						<input type="hidden" class="form-control" id="ren-id" name="pmId">
+						<input type="hidden" class="form-control" id="pm-id" name="pmId">
 						<div class="form-group">
 							<label for="brn-id" class="col-md-3 control-label">Sht Desc</label>
 
@@ -58,15 +59,15 @@
 							<label for="unit-id" class="col-md-3 control-label">Min Value</label>
 
 							<div class="col-md-8">
-							    <input type="number" class="form-control" id="min-val"
-									name="pmMinValue"  required>
+							    <input type="text" class="form-control number" id="min-val"
+									name="pmMinValue" required>
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="unit-id" class="col-md-3 control-label">Max Value</label>
 
 							<div class="col-md-8">
-							    <input type="number" class="form-control" id="max-val"
+							    <input type="text" class="form-control" id="max-val"
 									name="pmMaxValue"  required>
 							</div>
 						</div>

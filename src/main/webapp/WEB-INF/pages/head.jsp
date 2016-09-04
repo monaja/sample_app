@@ -54,6 +54,7 @@
 	 <script type="text/javascript" src="<c:url value="/libs/bootstrap/select/js/bootstrap-select.min.js"/>"></script>
 	 <script src="<c:url value="/libs/select2/select2.js"/>"></script>
 	 <script type="text/javascript" src="<c:url value="/libs/rivets/rivets.js"/>"></script>
+	 <script type="text/javascript" src="<c:url value="/libs/js/jquery.number.min.js"/>"></script>
 	 <style type="text/css">
 	   body { padding-right: 0 !important }
 	   body .modal-lg {

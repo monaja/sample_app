@@ -4,6 +4,7 @@ $(function(){
 		createPaymentModes();
 		newPaymentModes();
 		savePaymentModes();
+		$('#min-val,#max-val').number( true, 2 );
 	})
 	
 });
@@ -49,6 +50,10 @@ function newPaymentModes(){
 	});
 }
 
+function currencyFormat (num) {
+    return  num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+}
+
 function createPaymentModes(){
 	var url = "allpaymentModes";
 	  var table = $('#paymodetbl').DataTable( {
@@ -61,23 +66,64 @@ function createPaymentModes(){
 			"columns": [
 				{ "data": "pmShtDesc" },
 				{ "data": "pmDesc" },
-				{ "data": "pmMinValue" },
-				{ "data": "pmMaxValue" },
+				{ "data": "pmMinValue",
+				  "render":function(data,type,full,meta){
+					  return currencyFormat(full.pmMinValue);
+				  }
+				},
+				{ "data": "pmMaxValue",
+				  "render":function(data,type,full,meta){
+					  return currencyFormat(full.pmMaxValue);
+				  }
+				},
 				{ 
 					"data": "pmId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-tenant='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editPaymentModes(this);"/>';
+						return '<input type="button" class="btn btn-primary" data-modes='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editPaymentModes(this);"/>';
 					}
 
 				},
 				{ 
 					"data": "pmId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-tenant='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmTenantDel(this);"/>';
+						return '<input type="button" class="btn btn-primary" data-modes='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmModesDel(this);"/>';
 					}
 
 				},
 			]
 		} );
 	  return table;
+}
+
+
+function editPaymentModes(button){
+	var modes = JSON.parse(decodeURI($(button).data("modes")));
+	$("#sht-desc").val(modes["pmShtDesc"]);
+	$("#pm-id").val(modes["pmId"]);
+	$("#description").val(modes["pmDesc"]);
+	$("#min-val").val(modes["pmMinValue"]);
+	$("#max-val").val(modes["pmMaxValue"]);
+	$('#paymentModesModal').modal('show');
+}
+
+function confirmModesDel(button){
+	var modes = JSON.parse(decodeURI($(button).data("modes")));
+	bootbox.confirm("Are you sure want to delete "+modes["pmShtDesc"]+"?", function(result) {
+		 if(result){
+	    	  $.ajax({
+			        type: 'GET',
+			        url:  'deletePayMode/' + modes["pmId"],
+			        dataType: 'json',
+			        async: true,
+			        success: function(result) {
+			        	bootbox.alert("Record deleted Successfully");
+			        	$('#paymodetbl').DataTable().ajax.reload();
+			        },
+			        error: function(jqXHR, textStatus, errorThrown) {
+                       bootbox.alert(jqXHR.responseText);
+			        }
+			    });
+	      }
+		
+	});
 }

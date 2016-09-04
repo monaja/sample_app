@@ -24,7 +24,7 @@ public class NavigationController {
 	  */
 	 @RequestMapping(value="/setups",method = RequestMethod.GET)
 	    public ModelAndView uwsetups() {
-	        return new ModelAndView("uwsetups");
+	        return new ModelAndView("tensetups");
 	    }
 	 
 	

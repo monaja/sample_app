@@ -4,72 +4,33 @@
        <div class="info-box">
          <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
          <div class="info-box-content">
-           <span class="info-box-text">Sequences</span>
+           <span class="info-box-text">Account Types</span>
            <span class="info-box-number">
-           <small class="text-muted">Define Sequences for Various transactions in the system</small>
+           <small class="text-muted">Define Account Types</small>
            </span>
-            <a href="<c:url value="/protected/organization/"/>" class="btn btn-primary">Define</a>
+            <a href="<c:url value="/protected/setups/accttypes"/>" class="btn btn-primary">Define</a>
          </div><!-- /.info-box-content -->
        </div><!-- /.info-box -->
      </div>
-<div class="col-md-6 col-sm-6 col-xs-12">
-       <div class="info-box">
-         <span class="info-box-icon bg-aqua"><i class="ion ion-ios-keypad-outline"></i></span>
-         <div class="info-box-content">
-           <span class="info-box-text">Clauses and Limits</span>
-           <span class="info-box-number">
-              <small class="text-muted">Define System Limits of liabilities and Clauses</small>
-             
-                   
-           </span>
-            <a href="<c:url value="/protected/organization/"/>" class="btn btn-primary">Define</a>
-         </div><!-- /.info-box-content -->
-       </div><!-- /.info-box -->
-     </div>
-<div class="col-md-6 col-sm-6 col-xs-12">
-       <div class="info-box">
-         <span class="info-box-icon bg-aqua"><i class="ion ion-ios-albums-outline"></i></span>
-         <div class="info-box-content">
-           <span class="info-box-text">Classes and Sub Classes</span>
-           <span class="info-box-number">
-              <small class="text-muted">Set up Classes and Sub Classes</small>
-           </span>
-            <a href="<c:url value="/protected/classes/"/>" class="btn btn-primary">Define</a>
-         </div><!-- /.info-box-content -->
-       </div><!-- /.info-box -->
-     </div>
-   <div class="col-md-6 col-sm-6 col-xs-12">
-       <div class="info-box">
-         <span class="info-box-icon bg-aqua"><i class="ion ion-ios-paper-outline"></i></span>
-         <div class="info-box-content">
-           <span class="info-box-text">Products Definition</span>
-           <span class="info-box-number">
-              <small class="text-muted">Define Products in the system</small>
-           </span>
-            <a href="<c:url value="/protected/products/"/>" class="btn btn-primary">Define</a>
-         </div><!-- /.info-box-content -->
-       </div><!-- /.info-box -->
-     </div>
-     
      <div class="col-md-6 col-sm-6 col-xs-12">
        <div class="info-box">
-         <span class="info-box-icon bg-aqua"><i class="ion ion-bag"></i></span>
+         <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
          <div class="info-box-content">
-           <span class="info-box-text">Products Contracts</span>
+           <span class="info-box-text">Accounts</span>
            <span class="info-box-number">
-              <small class="text-muted">Define System Products Contracts</small>
+           <small class="text-muted">Define Accounts</small>
            </span>
             <a href="<c:url value="/protected/organization/"/>" class="btn btn-primary">Define</a>
          </div><!-- /.info-box-content -->
        </div><!-- /.info-box -->
      </div>
-   <div class="col-md-6 col-sm-6 col-xs-12">
+     <div class="col-md-6 col-sm-6 col-xs-12">
        <div class="info-box">
-         <span class="info-box-icon bg-aqua"><i class="ion ion-card"></i></span>
+         <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
          <div class="info-box-content">
-           <span class="info-box-text">Revenue Items</span>
+           <span class="info-box-text">Tenants</span>
            <span class="info-box-number">
-            <small class="text-muted">Define Revenue items for the system</small>
+           <small class="text-muted">Define Tenant Details</small>
            </span>
             <a href="<c:url value="/protected/organization/"/>" class="btn btn-primary">Define</a>
          </div><!-- /.info-box-content -->

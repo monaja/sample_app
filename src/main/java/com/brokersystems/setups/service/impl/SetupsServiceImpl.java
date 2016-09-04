@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
+import com.brokersystems.setup.repository.AccountTypeRepo;
 import com.brokersystems.setup.repository.CountryRepository;
 import com.brokersystems.setup.repository.CountyRepository;
 import com.brokersystems.setup.repository.CurrencyRepository;
@@ -27,12 +28,14 @@ import com.brokersystems.setup.repository.RentalUnitChargeRepo;
 import com.brokersystems.setup.repository.RentalUnitsRepository;
 import com.brokersystems.setup.repository.TownRepository;
 import com.brokersystems.setup.repository.UnitTypeRepository;
+import com.brokersystems.setups.model.AccountTypes;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.OrgRegions;
 import com.brokersystems.setups.model.PaymentModes;
+import com.brokersystems.setups.model.QAccountTypes;
 import com.brokersystems.setups.model.QCountry;
 import com.brokersystems.setups.model.QCounty;
 import com.brokersystems.setups.model.QCurrencies;
@@ -90,6 +93,9 @@ public class SetupsServiceImpl implements SetupsService {
 	
 	@Autowired
 	private PaymentModeRepo payRepo;
+	
+	@Autowired
+	private AccountTypeRepo acctypeRepo;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -386,6 +392,39 @@ public class SetupsServiceImpl implements SetupsService {
 	public void deletePaymentMode(Long pmId) {
 		payRepo.delete(pmId);
 		
+	}
+
+	@Override
+	public DataTablesResult<AccountTypes> findAllAccountTypes(DataTablesRequest request) throws IllegalAccessException {
+		Page<AccountTypes> page = acctypeRepo.findAll(request.searchPredicate(QAccountTypes.accountTypes), request);
+		return new DataTablesResult<>(request, page);
+	}
+
+	@Override
+	public void defineAccountType(AccountTypes acctypes) throws BadRequestException {
+		if(acctypes.isVatAppli()){
+			if(acctypes.getVatRate()==null || acctypes.getVatRate().compareTo(BigDecimal.ZERO)<=0){
+				throw new BadRequestException("Vat Rate cannot be zero or less than zero if Vat is applicable");
+			}
+			if(acctypes.getVatRate().compareTo(new BigDecimal(100))==1){
+				throw new BadRequestException("VAT Rate cannot cannot be greater than 100");
+			}
+		}
+		if(acctypes.isWhtxAppl()){
+			if(acctypes.getWhtaxVal()==null || acctypes.getWhtaxVal().compareTo(BigDecimal.ZERO)<=0){
+				throw new BadRequestException("Whtx Rate cannot be zero or less than zero if Whtx is applicable");
+			}
+			if(acctypes.getWhtaxVal().compareTo(new BigDecimal(100))==1){
+				throw new BadRequestException("Whtx Rate cannot cannot be greater than 100");
+			}
+		}
+		acctypeRepo.save(acctypes);
+		
+	}
+
+	@Override
+	public void deleteAccountType(Long acctId) {
+		acctypeRepo.delete(acctId);
 	}
 
 }
