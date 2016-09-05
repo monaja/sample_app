@@ -20,7 +20,7 @@
            <span class="info-box-number">
            <small class="text-muted">Define Accounts</small>
            </span>
-            <a href="<c:url value="/protected/organization/"/>" class="btn btn-primary">Define</a>
+            <a href="<c:url value="/protected/setups/accts"/>" class="btn btn-primary">Define</a>
          </div><!-- /.info-box-content -->
        </div><!-- /.info-box -->
      </div>

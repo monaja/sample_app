@@ -75,8 +75,9 @@ function editAcctTypes(button){
 function checkTaxes(){
 	$('#vat-appli').click(function() {
 		if($('#vat-appli').prop('checked')) {
+			$("#vat-rate").attr("required", true);
 		  	  $("#vat-rate").removeAttr('disabled');
-		  	  $("#vat-rate").prop("required", true);
+		  	  
 			   } 
 			   else{
 				   $("#vat-rate").val("");
@@ -88,7 +89,7 @@ function checkTaxes(){
 	$('#whtx-appli').click(function() {
 		if($('#whtx-appli').prop('checked')) {
 		  	  $("#whtx-rate").removeAttr('disabled');
-		  	  $("#whtx-rate").prop("required", true);
+		  	  $("#whtx-rate").attr("required", true);
 			   } 
 			   else{
 				   $("#whtx-rate").val("");

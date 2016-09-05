@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
+import com.brokersystems.setup.repository.AccountRepo;
 import com.brokersystems.setup.repository.AccountTypeRepo;
 import com.brokersystems.setup.repository.CountryRepository;
 import com.brokersystems.setup.repository.CountyRepository;
@@ -28,6 +29,7 @@ import com.brokersystems.setup.repository.RentalUnitChargeRepo;
 import com.brokersystems.setup.repository.RentalUnitsRepository;
 import com.brokersystems.setup.repository.TownRepository;
 import com.brokersystems.setup.repository.UnitTypeRepository;
+import com.brokersystems.setups.model.AccountDef;
 import com.brokersystems.setups.model.AccountTypes;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
@@ -35,6 +37,7 @@ import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.OrgRegions;
 import com.brokersystems.setups.model.PaymentModes;
+import com.brokersystems.setups.model.QAccountDef;
 import com.brokersystems.setups.model.QAccountTypes;
 import com.brokersystems.setups.model.QCountry;
 import com.brokersystems.setups.model.QCounty;
@@ -96,6 +99,9 @@ public class SetupsServiceImpl implements SetupsService {
 	
 	@Autowired
 	private AccountTypeRepo acctypeRepo;
+	
+	@Autowired
+	private AccountRepo accountRepo;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -425,6 +431,31 @@ public class SetupsServiceImpl implements SetupsService {
 	@Override
 	public void deleteAccountType(Long acctId) {
 		acctypeRepo.delete(acctId);
+	}
+
+	@Override
+	public Page<AccountTypes> findAccountTypesforSelect(String paramString, Pageable paramPageable) {
+		Predicate pred = null;
+		if (paramString == null || StringUtils.isBlank(paramString)) {
+			pred = QAccountTypes.accountTypes.isNotNull();
+		} else {
+			pred = QAccountTypes.accountTypes.accShtDesc.containsIgnoreCase(paramString);
+		}
+		return acctypeRepo.findAll(pred, paramPageable);
+	}
+
+	@Override
+	public DataTablesResult<AccountDef> findAllAccounts(long accId, DataTablesRequest request)
+			throws IllegalAccessException {
+		QAccountTypes accountType = QAccountDef.accountDef.accountType;
+		BooleanExpression pred = accountType.accId.eq(accId);
+		Page<AccountDef> page = accountRepo.findAll(pred.and(request.searchPredicate(QAccountDef.accountDef)), request);
+		return new DataTablesResult(request, page);
+	}
+
+	@Override
+	public AccountDef getAccountDetails(Long acctId) {
+       return accountRepo.findOne(acctId);
 	}
 
 }

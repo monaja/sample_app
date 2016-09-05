@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
+import com.brokersystems.setups.model.AccountDef;
 import com.brokersystems.setups.model.AccountTypes;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
@@ -101,5 +102,11 @@ public interface SetupsService {
  	void defineAccountType(AccountTypes accType) throws BadRequestException;
  	
 	void deleteAccountType(Long acctId);
+	
+	public Page<AccountTypes> findAccountTypesforSelect(String paramString, Pageable paramPageable);
+	
+	DataTablesResult<AccountDef> findAllAccounts(long accId,DataTablesRequest request)  throws IllegalAccessException;
 
+    AccountDef getAccountDetails(Long acctId);	
+	
 }

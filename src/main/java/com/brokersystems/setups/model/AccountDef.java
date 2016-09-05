@@ -8,9 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="accounts")
@@ -41,6 +44,8 @@ public class AccountDef extends AuditBaseEntity{
 	@Column(name="acct_idpassport")
 	private String idPassportNo;
 	
+	@Lob
+	@JsonIgnore
 	@Column(name="acct_photo")
 	private byte[] photo;
 	
@@ -50,11 +55,6 @@ public class AccountDef extends AuditBaseEntity{
 	@Column(name="acct_phone")
 	private String phoneNo;
 	
-	@Column(name="acct_wef")
-	private Date wef;
-	
-	@Column(name="acct_wet")
-	private Date wet;
 	
 	@XmlTransient
 	@ManyToOne
@@ -147,21 +147,6 @@ public class AccountDef extends AuditBaseEntity{
 		this.phoneNo = phoneNo;
 	}
 
-	public Date getWef() {
-		return wef;
-	}
-
-	public void setWef(Date wef) {
-		this.wef = wef;
-	}
-
-	public Date getWet() {
-		return wet;
-	}
-
-	public void setWet(Date wet) {
-		this.wet = wet;
-	}
 
 	public OrgBranch getBranch() {
 		return branch;

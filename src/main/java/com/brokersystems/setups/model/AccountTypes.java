@@ -18,7 +18,7 @@ public class AccountTypes extends AuditBaseEntity {
 	@Column(name="acc_id")
 	private Long accId;
 	
-	@Column(name="acc_sht_desc")
+	@Column(name="acc_sht_desc",nullable=false,unique=true)
 	private String accShtDesc;
 	
 	@Column(name="acc_name")

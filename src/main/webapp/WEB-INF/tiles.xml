@@ -93,6 +93,16 @@
         <put-attribute name="title" value="Account Types Definition" />  
         <put-attribute name="body" value="/WEB-INF/pages/accountsetups/acctypes.jsp" />  
     </definition> 
+    
+    <definition name="accounts" extends="base.definition">  
+        <put-attribute name="title" value="Account Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/accountsetups/accounts.jsp" />  
+    </definition> 
+    
+     <definition name="acctsform" extends="base.definition">  
+        <put-attribute name="title" value="Account Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/accountsetups/accountsform.jsp" />  
+    </definition>
      
     
 </tiles-definitions> 
