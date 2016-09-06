@@ -13,7 +13,12 @@ import com.brokersystems.setups.model.User;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
+/**
+ * Organization Service
+ * Mainly used for crud service on organization setups
+ * @author Peter
+ *
+ */
 public abstract interface OrganizationService
 {
   public abstract Organization getOrganizationDetails();

@@ -11,7 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -61,11 +67,16 @@ public class AccountDef extends AuditBaseEntity{
 	@JoinColumn(name="acct_brn_code")
 	private OrgBranch branch;
 	
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
 	@Column(name="acct_dob")
 	private Date dob;
 	
 	@Column(name="acct_status")
 	private String status;
+	
+	@Transient
+	MultipartFile file;
 
 	public Long getAcctId() {
 		return acctId;
@@ -170,6 +181,14 @@ public class AccountDef extends AuditBaseEntity{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
 	}
 	
 	

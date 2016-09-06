@@ -5,7 +5,7 @@
 <script type="text/javascript" src="<c:url value="/libs/rivets/rivets.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/modules/accountsetups/accounts.js"/>"></script>
 	<script type="text/javascript">
-		var accId = ${accId};
+		var accIdpk = ${accId};
 	</script>
 <div class="box box-info" id="acct_model">
     
@@ -17,7 +17,7 @@
 					<label for="houseId" class="control-label col-md-5">First
 						Name</label>
 					<div class="col-md-7">
-						<input type="text" name="fname" id="house-id" class="form-control"
+						<input type="text" name="fname" id="fname" class="form-control"
 							placeholder="First Name" required>
 					</div>
 				</div>
@@ -25,7 +25,7 @@
 					<label for="houseName" class="control-label col-md-5">Other
 						Names</label>
 					<div class="col-md-7">
-						<input type="text" name="otherNames" id="house-name" class="form-control"
+						<input type="text" name="otherNames" id="other-names" class="form-control"
 							placeholder="Other Names" required>
 					</div>
 				</div>
@@ -34,14 +34,14 @@
 				<div class="col-md-6">
 					<label for="houseId" class="control-label col-md-5">ID/Passport No</label>
 					<div class="col-md-7">
-						<input type="text" name="idPassportNo" id="house-name" class="form-control"
+						<input type="text" name="idPassportNo" id="idno" class="form-control"
 							placeholder="ID or Passport No" required>
 					</div>
 				</div>
 				<div class="col-md-6">
 					<label for="noOfUnits" class="control-label col-md-5">Pin No</label>
 					<div class="col-md-7">
-						<input type="text" name="pinNo" id="house-name" class="form-control"
+						<input type="text" name="pinNo" id="pinNo" class="form-control"
 							placeholder="Pin No" required>
 					</div>
 				</div>
@@ -50,14 +50,14 @@
 				<div class="col-md-6">
 					<label for="houseId" class="control-label col-md-5">Email</label>
 					<div class="col-md-7">
-						<input type="email" name="email" id="house-name" class="form-control"
+						<input type="email" name="email" id="email" class="form-control"
 							placeholder="Email" required>
 					</div>
 				</div>
 				<div class="col-md-6">
 					<label for="noOfUnits" class="control-label col-md-5">Phone No</label>
 					<div class="col-md-7">
-						<input type="text" name="phoneNo" id="house-name" class="form-control"
+						<input type="text" name="phoneNo" id="phone-no" class="form-control"
 							placeholder="Phone No" required>
 					</div>
 				</div>
@@ -66,7 +66,7 @@
 			    <div class="col-md-6">
 					<label for="noOfUnits" class="control-label col-md-5">Address</label>
 					<div class="col-md-7">
-						<textarea rows="3" cols=30 class="form-control"></textarea>
+						<textarea rows="3" cols=30 class="form-control" name="address" id="address"></textarea>
 					</div>
 				
 				</div>
@@ -76,7 +76,7 @@
 
 				<div class="col-md-7">
 		                     <input type="hidden" id="acc-id" name="accountType" rv-value="accounts.accType.accId"/>
-		                     
+		                     <input type="hidden" id="acc-name">
 		                        <div id="accounttypes" class="form-control" 
 				                                 select2-url="<c:url value="/protected/setups/selAcctTypes"/>" >
 				                                 
@@ -89,10 +89,10 @@
 				<div class="col-md-6">
 					<label for="houseId" class="control-label col-md-5">Status</label>
 					<div class="col-md-7">
-						 <select class="form-control" id="sel2" name="taxType">
+						 <select class="form-control" id="sel2" name="status">
 							        <option value="">Select Status</option>
-							        <option value="VAT">Active</option>
-								    <option value="WHTX">Inactive</option>
+							        <option value="A">Active</option>
+								    <option value="I">Inactive</option>
 								  </select>
 					</div>
 				</div>
@@ -100,7 +100,7 @@
 						<label for="houseId" class="control-label col-md-5">Branch</label>
 					<div class="col-md-7">
 						 <input type="hidden" id="obId" name="branch" rv-value="accounts.branch.brnCode"/>
-		                     
+		                       <input type="hidden" id="ob-name">
 		                        <div id="acct-branch" class="form-control" 
 				                                 select2-url="<c:url value="/protected/rental/setups/branches"/>" >
 				                                 
@@ -143,7 +143,7 @@
 		</div>
 <div class="box-footer">
      
-     <input type="submit" class="btn btn-info pull-left" style="margin-right: 10px;" value="Save">
+     <input type="submit" class="btn btn-info pull-left" style="margin-right: 10px;" value="Save and New">
 	 <a href="<c:url value='/protected/setups/accts'/> " class="btn btn-info pull-left">Cancel</a>
 	 </div>
 	</form>

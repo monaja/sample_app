@@ -109,6 +109,8 @@ public interface SetupsService {
 
     AccountDef getAccountDetails(Long acctId);	
     
-    AccountDef defineAccount(AccountDef account) throws BadRequestException;
+    void defineAccount(AccountDef account) throws BadRequestException;
+    
+    void deleteAccount(Long acctId);
 	
 }

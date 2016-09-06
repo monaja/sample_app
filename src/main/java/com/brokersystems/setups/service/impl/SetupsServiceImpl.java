@@ -459,7 +459,7 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
-	public AccountDef defineAccount(AccountDef account) throws BadRequestException{
+	public void defineAccount(AccountDef account) throws BadRequestException{
 		if(account.getAccountType()==null){
 			throw new BadRequestException("Select Account Type to continue...");
 		}
@@ -474,9 +474,21 @@ public class SetupsServiceImpl implements SetupsService {
 				throw new BadRequestException("Date of Birth/Date of Incorporation cannot be greater than today");
 			}
 		}
+		if(null == account.getStatus() || "".equals(account.getStatus())){
+			if(account.getAcctId()!=null){
+				throw new BadRequestException("Select Status...");
+			}
+			else{
+				account.setStatus("A");
+			}
+		}
+		 accountRepo.save(account);
+	}
+
+	@Override
+	public void deleteAccount(Long acctId) {
+		accountRepo.delete(acctId);
 		
-		AccountDef acc = accountRepo.save(account);
-		return acc;
 	}
 
 }

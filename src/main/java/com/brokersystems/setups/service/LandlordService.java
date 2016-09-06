@@ -6,7 +6,12 @@ import com.brokersystems.server.exception.BadRequestException;
 import com.brokersystems.setups.model.RentalStructure;
 import com.brokersystems.setups.model.Landlord;
 import com.brokersystems.setups.model.PaymentModes;
-
+/**
+ * Landlord Service
+ *  Mainly used for crud service on landlord setups
+ * @author Peter
+ *
+ */
 public interface LandlordService {
 	
     DataTablesResult<Landlord> findAllLandlords(DataTablesRequest request)  throws IllegalAccessException;

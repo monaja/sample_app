@@ -8,7 +8,12 @@ import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.setups.model.User;
 
-
+/**
+ * User Service
+ * Mainly used for crud service on user setups
+ * @author Peter
+ *
+ */
 public interface UserService {
 
     User findByUserName(String userName);

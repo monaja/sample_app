@@ -2,16 +2,23 @@ package com.brokersystems.setup.controllers;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,9 +37,11 @@ import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.PaymentModes;
+import com.brokersystems.setups.model.RentalStructForm;
 import com.brokersystems.setups.model.RentalStructure;
 import com.brokersystems.setups.model.RentalUnitCharges;
 import com.brokersystems.setups.model.Landlord;
+import com.brokersystems.setups.model.ModelHelperForm;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.model.UnitTypes;
 import com.brokersystems.setups.service.SetupsService;
@@ -44,6 +53,18 @@ public class SetupsController {
 
 	@Autowired
 	private SetupsService setupsService;
+	
+	@InitBinder({ "account" })
+	protected void initBinder(WebDataBinder binder) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	    dateFormat.setLenient(false);
+	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+	}
+	
+	@ModelAttribute
+	public ModelHelperForm createHelperForm() {
+		return new ModelHelperForm();
+	}
 
 	@RequestMapping(value = "currency", method = RequestMethod.GET)
 	public String currencyHome(Model model) {
@@ -228,8 +249,46 @@ public class SetupsController {
 	@RequestMapping(value = { "createAccount" }, method = {
 			org.springframework.web.bind.annotation.RequestMethod.POST })
 	@ResponseStatus(HttpStatus.CREATED)
-	public void saveOrUpdateAccount(AccountDef account) throws BadRequestException {
-		setupsService.defineAccount(account);
+	public void saveOrUpdateAccount(AccountDef account) throws BadRequestException, IOException {
+		
+		if ((account.getFile() != null) && (!account.getFile().isEmpty())) {
+			if (account.getFile().getSize() != 0) {
+				account.setPhoto(account.getFile().getBytes());
+			} else {
+
+				if (account.getAcctId() != null) {
+					account.setPhoto(
+							setupsService.getAccountDetails(account.getAcctId()).getPhoto());
+
+				}
+			}
+		} else {
+
+			if (account.getAcctId() != null) {
+				account.setPhoto(setupsService.getAccountDetails(account.getAcctId()).getPhoto());
+
+			}
+		}
+		 setupsService.defineAccount(account);
+	}
+	
+	@RequestMapping(value = "/editAcctForm", method = RequestMethod.POST)
+	public String editRentalForm(@Valid @ModelAttribute ModelHelperForm helperForm, Model model) {
+		model.addAttribute("accId", helperForm.getId());
+		return "acctsform";
+	}
+	
+	@RequestMapping(value = { "accounts/{acctId}" }, method = { RequestMethod.GET })
+	@ResponseBody
+	public AccountDef getAccountDetails(@PathVariable Long acctId) {
+		return setupsService.getAccountDetails(acctId);
+	}
+	
+	@RequestMapping(value = { "deleteAccount/{acctId}" }, method = {
+			org.springframework.web.bind.annotation.RequestMethod.GET })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteAccount(@PathVariable Long acctId) {
+		setupsService.deleteAccount(acctId);
 	}
 
 }
