@@ -29,7 +29,7 @@ public class AccountDef extends AuditBaseEntity{
 	@JoinColumn(name="acct_acc_code")
 	private AccountTypes accountType;
 	
-	@Column(name="acct_fname")
+	@Column(name="acct_fname",nullable=false)
 	private String fname;
 	
 	@Column(name="acct_other_names")
@@ -41,7 +41,7 @@ public class AccountDef extends AuditBaseEntity{
 	@Column(name="acct_pin")
 	private String pinNo;
 	
-	@Column(name="acct_idpassport")
+	@Column(name="acct_idpassport", nullable=false)
 	private String idPassportNo;
 	
 	@Lob
@@ -52,7 +52,7 @@ public class AccountDef extends AuditBaseEntity{
 	@Column(name="acct_email")
 	private String email;
 	
-	@Column(name="acct_phone")
+	@Column(name="acct_phone",nullable=false)
 	private String phoneNo;
 	
 	

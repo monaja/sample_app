@@ -108,5 +108,7 @@ public interface SetupsService {
 	DataTablesResult<AccountDef> findAllAccounts(long accId,DataTablesRequest request)  throws IllegalAccessException;
 
     AccountDef getAccountDetails(Long acctId);	
+    
+    AccountDef defineAccount(AccountDef account) throws BadRequestException;
 	
 }

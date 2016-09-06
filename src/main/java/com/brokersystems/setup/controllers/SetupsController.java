@@ -31,6 +31,7 @@ import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.PaymentModes;
 import com.brokersystems.setups.model.RentalStructure;
+import com.brokersystems.setups.model.RentalUnitCharges;
 import com.brokersystems.setups.model.Landlord;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.model.UnitTypes;
@@ -222,6 +223,13 @@ public class SetupsController {
 			response.getOutputStream().write(account.getPhoto());
 			response.getOutputStream().close();
 		}
+	}
+	
+	@RequestMapping(value = { "createAccount" }, method = {
+			org.springframework.web.bind.annotation.RequestMethod.POST })
+	@ResponseStatus(HttpStatus.CREATED)
+	public void saveOrUpdateAccount(AccountDef account) throws BadRequestException {
+		setupsService.defineAccount(account);
 	}
 
 }

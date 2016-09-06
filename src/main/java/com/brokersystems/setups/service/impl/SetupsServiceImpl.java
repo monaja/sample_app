@@ -458,4 +458,25 @@ public class SetupsServiceImpl implements SetupsService {
        return accountRepo.findOne(acctId);
 	}
 
+	@Override
+	public AccountDef defineAccount(AccountDef account) throws BadRequestException{
+		if(account.getAccountType()==null){
+			throw new BadRequestException("Select Account Type to continue...");
+		}
+		
+		if(account.getAccountType()==null){
+			throw new BadRequestException("Select Account Branch to continue...");
+		}
+		
+		if(account.getDob()!=null){
+			Date today  = new Date();
+			if(today.before(account.getDob())){
+				throw new BadRequestException("Date of Birth/Date of Incorporation cannot be greater than today");
+			}
+		}
+		
+		AccountDef acc = accountRepo.save(account);
+		return acc;
+	}
+
 }

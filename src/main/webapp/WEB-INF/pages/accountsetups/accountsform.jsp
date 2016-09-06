@@ -7,11 +7,11 @@
 	<script type="text/javascript">
 		var accId = ${accId};
 	</script>
-<div class="box box-info">
-    <input type="hidden" id="accId" name="accountType">
-	<form id="struct-form" class="form-horizontal" enctype="multipart/form-data">
+<div class="box box-info" id="acct_model">
+    
+	<form id="account-form" class="form-horizontal" enctype="multipart/form-data">
 		<div class="box-body">
-		    <input type="hidden" name="rentalId" id="rental-struct-pk">
+		    <input type="hidden" name="acctId" id="acctId-pk">
 			<div class="form-group form-required">
 				<div class="col-md-6">
 					<label for="houseId" class="control-label col-md-5">First
@@ -71,7 +71,17 @@
 				
 				</div>
 				<div class="col-md-6">
-					
+					<label for="brn-id" class="col-md-5 control-label">Select
+					Account Type</label>
+
+				<div class="col-md-7">
+		                     <input type="hidden" id="acc-id" name="accountType" rv-value="accounts.accType.accId"/>
+		                     
+		                        <div id="accounttypes" class="form-control" 
+				                                 select2-url="<c:url value="/protected/setups/selAcctTypes"/>" >
+				                                 
+				               </div> 
+				</div>
 				</div>
 				
 			</div>
@@ -106,7 +116,7 @@
 
 							<div class="col-md-3">
             	<div class='input-group date datepicker-input'>
-						 <input type='text' class="form-control" name="wetDate" id="wet-date" />
+						 <input type='text' class="form-control" name="dob" id="dob" />
 				                    <span class="input-group-addon">
 				                        <span class="glyphicon glyphicon-calendar"></span>
 				                    </span>

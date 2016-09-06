@@ -23,11 +23,37 @@ function getContextPath() {
 			.indexOf("/", 2));
 }
 
+function createAccount(){
+	
+	$('form#account-form')
+	  .submit( function( e ) {
+		  e.preventDefault();
+		  var data = new FormData( this );
+		  data.append( 'file', $( '#avatar' )[0].files[0] );
+		  $.ajax( {
+		      url: 'createAccount',
+		      type: 'POST',
+		      data: data,
+		      processData: false,
+		      contentType: false,
+		      success: function (s ) {
+		    	  bootbox.alert("Record created/updated Successfully");
+		    	  console.log(s);
+		    	  //$("#acctId-pk").val(s);		    
+		      },
+		      error: function(xhr, error){
+		    	  bootbox.alert(xhr.responseText);
+		      }
+		      });
+	  });
+}
+
 $(function(){
 
 	$(document).ready(function() {
 		
 		accountImage(-2000);
+		createAccount();
 		
 		$(".datepicker-input").each(function() {
 		    $(this).datetimepicker({
@@ -58,8 +84,32 @@ $(function(){
 	                 /*   */
 	                },
 		            id: "obId",
-		            width:"220px"
+		            width:"200px"
 		        });
+		  }
+		
+		if($("#accounttypes").filter("div").html() != undefined)
+		  {
+			Select2Builder.initAjaxSelect2({
+	            containerId : "accounttypes",
+	            sort : 'accShtDesc',
+	            change:  function(e, a, v){
+	            	$("#acc-id").val(e.added.accId);
+	            },
+	            formatResult : function(a)
+	            {
+	            	return a.accShtDesc
+	            },
+	            formatSelection : function(a)
+	            {
+	            	return a.accShtDesc
+	            },
+	            initSelection: function (element, callback) {
+                 
+                },
+	            id: "accId",
+	            width:"200px"
+	        });
 		  }
 		
 		 if($("#acc-types").filter("div").html() != undefined)
@@ -121,7 +171,11 @@ function createAccounts(){
 			pageLength: 5,
 			destroy: true,
 			"columns": [
-				{ "data": "fname" },
+				{ "data": "fname",
+				  "render": function ( data, type, full, meta ) {
+					  return full.fname+" "+full.otherNames;
+				  }
+				},
 				{ "data": "idPassportNo" },
 				{ "data": "email" },
 				{ "data": "phoneNo" },
