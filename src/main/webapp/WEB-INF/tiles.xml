@@ -95,13 +95,18 @@
     </definition> 
     
     <definition name="accounts" extends="base.definition">  
-        <put-attribute name="title" value="Account Definition" />  
+        <put-attribute name="title" value="Account List" />  
         <put-attribute name="body" value="/WEB-INF/pages/accountsetups/accounts.jsp" />  
     </definition> 
     
      <definition name="acctsform" extends="base.definition">  
         <put-attribute name="title" value="Account Definition" />  
         <put-attribute name="body" value="/WEB-INF/pages/accountsetups/accountsform.jsp" />  
+    </definition>
+    
+     <definition name="tenants" extends="base.definition">  
+        <put-attribute name="title" value="Tenants List" />  
+        <put-attribute name="body" value="/WEB-INF/pages/tenants/tenantList.jsp" />  
     </definition>
      
     

@@ -26,6 +26,9 @@ public class TenantDef {
 	@Column(name="ten_id")
 	private Long tenId;
 	
+	@Column(name="ten_number",nullable=false,unique=true)
+	private String tenantNumber;
+	
 	@Column(name="ten_fname",nullable=false)
     private String fname;
     
@@ -206,5 +209,15 @@ public class TenantDef {
 	public void setRegisteredbrn(OrgBranch registeredbrn) {
 		this.registeredbrn = registeredbrn;
 	}
+
+	public String getTenantNumber() {
+		return tenantNumber;
+	}
+
+	public void setTenantNumber(String tenantNumber) {
+		this.tenantNumber = tenantNumber;
+	}
+	
+	
 
 }
