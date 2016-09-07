@@ -5,7 +5,7 @@
   <div class="spacer"></div>
 	<hr>
 	<div class="spacer"></div>
-	 <a href="<c:url value='/protected/setups/acctsform'/> " class="btn btn-info pull-right">New</a>
+	 <a href="<c:url value='/protected/tenants/setups/tenantsform'/> " class="btn btn-info pull-right">New</a>
 	<h4>Tenants List</h4>
 	
 	

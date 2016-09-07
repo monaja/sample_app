@@ -3,10 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <script type="text/javascript" src="<c:url value="/js/modules/utils/select2builder.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/libs/rivets/rivets.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/modules/accountsetups/accounts.js"/>"></script>
-	<script type="text/javascript">
-		var accIdpk = ${accId};
-	</script>
+<script type="text/javascript" src="<c:url value="/js/modules/tenants/tenants.js"/>"></script>
 <div class="box box-info" id="acct_model">
     
 	<form id="account-form" class="form-horizontal" enctype="multipart/form-data">
@@ -32,33 +29,36 @@
 			</div>
 			<div class="form-group form-required">
 				<div class="col-md-6">
-					<label for="houseId" class="control-label col-md-5">ID/Passport No</label>
+					<label for="houseId" class="control-label col-md-5">Tenant ID</label>
 					<div class="col-md-7">
 						<input type="text" name="idPassportNo" id="idno" class="form-control"
-							placeholder="ID or Passport No" required>
+							placeholder="" required disabled>
 					</div>
 				</div>
 				<div class="col-md-6">
-					<label for="noOfUnits" class="control-label col-md-5">Pin No</label>
+					<label for="noOfUnits" class="control-label col-md-5">Tenant Type</label>
 					<div class="col-md-7">
-						<input type="text" name="pinNo" id="pinNo" class="form-control"
-							placeholder="Pin No" required>
+						 <select class="form-control" id="sel2" name="status">
+							        <option value="">Select Tenant Type</option>
+							        <option value="I">Individual</option>
+								    <option value="C">Corporate </option>
+								  </select>
 					</div>
 				</div>
 			</div>
 			<div class="form-group form-required">
 				<div class="col-md-6">
-					<label for="houseId" class="control-label col-md-5">Email</label>
+					<label for="houseId" class="control-label col-md-5">Pin No</label>
 					<div class="col-md-7">
 						<input type="email" name="email" id="email" class="form-control"
-							placeholder="Email" required>
+							placeholder="Pin No" required>
 					</div>
 				</div>
 				<div class="col-md-6">
-					<label for="noOfUnits" class="control-label col-md-5">Phone No</label>
+					<label for="noOfUnits" class="control-label col-md-5">Email</label>
 					<div class="col-md-7">
 						<input type="text" name="phoneNo" id="phone-no" class="form-control"
-							placeholder="Phone No" required>
+							placeholder="Email" required>
 					</div>
 				</div>
 			</div>
@@ -70,18 +70,14 @@
 					</div>
 				
 				</div>
+				
 				<div class="col-md-6">
-					<label for="brn-id" class="col-md-5 control-label">Select
-					Account Type</label>
-
-				<div class="col-md-7">
-		                     <input type="hidden" id="acc-id" name="accountType" rv-value="accounts.accType.accId"/>
-		                     <input type="hidden" id="acc-name">
-		                        <div id="accounttypes" class="form-control" 
-				                                 select2-url="<c:url value="/protected/setups/selAcctTypes"/>" >
-				                                 
-				               </div> 
-				</div>
+					<label for="noOfUnits" class="control-label col-md-5">ID/Passport No</label>
+					<div class="col-md-7">
+						<input type="text" name="pinNo" id="pinNo" class="form-control"
+							placeholder="ID/Passport No" required>
+					</div>
+				
 				</div>
 				
 			</div>
@@ -97,7 +93,7 @@
 					</div>
 				</div>
 				<div class="col-md-6">
-						<label for="houseId" class="control-label col-md-5">Branch</label>
+						<label for="houseId" class="control-label col-md-5">Branch Registered</label>
 					<div class="col-md-7">
 						 <input type="hidden" id="obId" name="branch" rv-value="accounts.branch.brnCode"/>
 		                       <input type="hidden" id="ob-name">
@@ -111,8 +107,20 @@
 			 <div class='spacer'></div>
 				        <h4>Other Information</h4>
 				        <hr>
-<div class="form-group">
+                 <div class="form-group">
 							<label for="reg-wet" class="col-md-3 control-label">Date of Birth</label>
+
+							<div class="col-md-3">
+            	<div class='input-group date datepicker-input'>
+						 <input type='text' class="form-control pull-right" name="dob" id="dob" />
+				                    <div class="input-group-addon">
+				                        <span class="glyphicon glyphicon-calendar"></span>
+				                    </div>
+					</div>
+					</div>
+				</div>
+				 <div class="form-group">
+							<label for="reg-wet" class="col-md-3 control-label">Date Terminated</label>
 
 							<div class="col-md-3">
             	<div class='input-group date datepicker-input'>
@@ -138,6 +146,69 @@
 					</div>
 				</div>
 
+			</div>
+			 <div class='spacer'></div>
+				        <h4>Unit Allocation Details</h4>
+				        <hr>
+				  <div class="form-group form-required">
+				<div class="col-md-6">
+					<label for="houseId" class="control-label col-md-5">Branch Allocated</label>
+					<div class="col-md-7">
+						 <div id="acct-branch" class="form-control" 
+				                                 select2-url="<c:url value="/protected/rental/setups/branches"/>" >
+				                                 
+				               </div> 
+					</div>
+				</div>
+				<div class="col-md-6">
+					<label for="houseName" class="control-label col-md-5">Property Allocated</label>
+					<div class="col-md-7">
+						 <div id="acct-branch" class="form-control" 
+				                                 select2-url="<c:url value="/protected/rental/setups/branches"/>" >
+				                                 
+				               </div> 
+					</div>
+				</div>
+			</div>
+			<div class="form-group form-required">
+				<div class="col-md-6">
+					<label for="houseId" class="control-label col-md-5">Unit Allocated</label>
+					<div class="col-md-7">
+						 <div id="acct-branch" class="form-control" 
+				                                 select2-url="<c:url value="/protected/rental/setups/branches"/>" >
+				                                 
+				               </div> 
+					</div>
+				</div>
+				
+			</div>
+			<div class="form-group">
+
+				<div class="col-md-6">
+					<label for="houseName" class="control-label col-md-5">Date Allocated</label>
+					<div class="col-md-7">
+						<div class='input-group date datepicker-input'>
+						 <input type='text' class="form-control pull-right" name="dob" id="dob" disabled />
+				                    <div class="input-group-addon">
+				                        <span class="glyphicon glyphicon-calendar"></span>
+				                    </div>
+					</div>
+					</div>
+				</div>
+				</div>
+				 <div class="form-group">
+				<div class="col-md-6">
+		                    <label for="orgShtDesc" class="control-label col-md-5">Tenancy Status</label>
+		                    <div class="col-md-7">
+		                      <p class="form-control-static">Active</p>
+		                    </div>    
+		                    </div>   
+				<div class="col-md-6">
+		                    <label for="orgShtDesc" class="control-label col-md-5">Date Cancelled</label>
+		                    <div class="col-md-7">
+		                      <p class="form-control-static"> </p>
+		                    </div>    
+		                    </div>   
 			</div>
 
 		</div>

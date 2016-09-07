@@ -1,9 +1,8 @@
 $(function(){
 
-	$(document).ready(function() {
-		
+	$(document).ready(function() {		
 		createTenantsList();
-		
+		hey();
 	});
 });
 

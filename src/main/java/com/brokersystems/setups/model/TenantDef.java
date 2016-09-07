@@ -13,6 +13,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -81,6 +82,9 @@ public class TenantDef {
 	@JsonIgnore
 	@OneToMany(mappedBy="tenant")
 	private List<TenAllocations> allocations;
+	
+	@Transient
+	private TenAllocations allocation;
 
 	public Long getTenId() {
 		return tenId;
@@ -216,6 +220,14 @@ public class TenantDef {
 
 	public void setTenantNumber(String tenantNumber) {
 		this.tenantNumber = tenantNumber;
+	}
+
+	public TenAllocations getAllocation() {
+		return allocation;
+	}
+
+	public void setAllocation(TenAllocations allocation) {
+		this.allocation = allocation;
 	}
 	
 	

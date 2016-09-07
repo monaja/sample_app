@@ -108,6 +108,11 @@
         <put-attribute name="title" value="Tenants List" />  
         <put-attribute name="body" value="/WEB-INF/pages/tenants/tenantList.jsp" />  
     </definition>
+    
+    <definition name="tenantsform" extends="base.definition">  
+        <put-attribute name="title" value="Tenant Details" />  
+        <put-attribute name="body" value="/WEB-INF/pages/tenants/tenantform.jsp" />  
+    </definition>
      
     
 </tiles-definitions> 

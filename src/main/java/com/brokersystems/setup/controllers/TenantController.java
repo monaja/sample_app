@@ -22,8 +22,14 @@ public class TenantController {
 	
 	
 	@RequestMapping(value = "tenantlist", method = RequestMethod.GET)
-	public String paymentModesHome(Model model) {
+	public String tenantList(Model model) {
 		return "tenants";
+	}
+	
+	
+	@RequestMapping(value = "tenantsform", method = RequestMethod.GET)
+	public String tenantForm(Model model) {
+		return "tenantsform";
 	}
 	
 	@RequestMapping(value = { "tenants" }, method = { RequestMethod.GET })
