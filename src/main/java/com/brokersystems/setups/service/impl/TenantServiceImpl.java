@@ -1,5 +1,7 @@
 package com.brokersystems.setups.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,11 @@ public class TenantServiceImpl implements TenantService {
 	public void deleteTenant(Long tenId) {
 		tenantRepo.delete(tenId);
 		
+	}
+
+	@Override
+	public TenantDef getTenantDetails(Long tenId) {
+		return tenantRepo.findByTenId(tenId).orElse(new TenantDef());
 	}
 
 }

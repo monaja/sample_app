@@ -93,15 +93,22 @@
 					</div>
 				</div>
 				<div class="col-md-6">
-						<label for="houseId" class="control-label col-md-5">Branch Registered</label>
+			    </div>	
+			</div>
+			<div class="form-group form-required">
+				<div class="col-md-6">
+					<label for="houseId" class="control-label col-md-5">Branch Registered</label>
 					<div class="col-md-7">
-						 <input type="hidden" id="obId" name="branch" rv-value="accounts.branch.brnCode"/>
+						 <input type="hidden" id="obId" name="branch" rv-value="tenant.branch.brnCode"/>
 		                       <input type="hidden" id="ob-name">
-		                        <div id="acct-branch" class="form-control" 
+		                        <div id="ten-branch" class="form-control" 
 				                                 select2-url="<c:url value="/protected/rental/setups/branches"/>" >
 				                                 
 				               </div> 
 					</div>
+				</div>
+				<div class="col-md-6">
+						
 				</div>
 			</div>
 			 <div class='spacer'></div>
@@ -154,7 +161,8 @@
 				<div class="col-md-6">
 					<label for="houseId" class="control-label col-md-5">Branch Allocated</label>
 					<div class="col-md-7">
-						 <div id="acct-branch" class="form-control" 
+					     <input type="hidden" id="ob-alloc-id" name="branch" rv-value="tenant.branch.brnCode"/>
+						 <div id="unit-branch" class="form-control" 
 				                                 select2-url="<c:url value="/protected/rental/setups/branches"/>" >
 				                                 
 				               </div> 

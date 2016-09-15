@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.action.internal.QueuedOperationCollectionAction;
@@ -291,7 +292,8 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	public RentalStructure getStructureDetails(Long rentalId) {
-		return rentalStructRepo.findOne(rentalId);
+		Optional<RentalStructure> struct = rentalStructRepo.findByRentalId(rentalId);
+		return struct.orElse(new RentalStructure());
 	}
 
 	@Override
@@ -489,6 +491,17 @@ public class SetupsServiceImpl implements SetupsService {
 	public void deleteAccount(Long acctId) {
 		accountRepo.delete(acctId);
 		
+	}
+
+	@Override
+	public Page<RentalStructure> findRentalStructForSelect(Long branchCOde, String paramString, Pageable paramPageable) {
+		Predicate pred = null;
+		if (paramString == null || StringUtils.isBlank(paramString)) {
+			pred = QRentalStructure.rentalStructure.isNotNull();
+		} else {
+			pred = QRentalStructure.rentalStructure..containsIgnoreCase(paramString);
+		}
+		return null;
 	}
 
 }

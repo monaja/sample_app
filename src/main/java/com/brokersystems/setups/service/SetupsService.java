@@ -81,6 +81,8 @@ public interface SetupsService {
 	 
 	 Page<UnitTypes> findUnitsForSelect(String paramString, Pageable paramPageable);
 	 
+	 Page<RentalStructure> findRentalStructForSelect(Long branchCOde,String paramString, Pageable paramPageable);
+	 
 	 RentalStructure getStructureDetails(Long rentalId);
 	 
 	 DataTablesResult<RentalUnitCharges> findRentalUnitCharges(long renId,DataTablesRequest request)  throws IllegalAccessException;
