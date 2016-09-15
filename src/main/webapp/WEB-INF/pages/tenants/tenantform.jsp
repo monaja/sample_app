@@ -161,7 +161,7 @@
 				<div class="col-md-6">
 					<label for="houseId" class="control-label col-md-5">Branch Allocated</label>
 					<div class="col-md-7">
-					     <input type="hidden" id="ob-alloc-id" name="branch" rv-value="tenant.branch.brnCode"/>
+					     <input type="hidden" id="ob-alloc-id" name="allocation.allocbranch" rv-value="tenant.branch.brnCode"/>
 						 <div id="unit-branch" class="form-control" 
 				                                 select2-url="<c:url value="/protected/rental/setups/branches"/>" >
 				                                 
@@ -171,8 +171,9 @@
 				<div class="col-md-6">
 					<label for="houseName" class="control-label col-md-5">Property Allocated</label>
 					<div class="col-md-7">
-						 <div id="acct-branch" class="form-control" 
-				                                 select2-url="<c:url value="/protected/rental/setups/branches"/>" >
+					   <input type="hidden" id="rental-id" name="allocation.structure" rv-value="tenant.branch.struct.rentalId"/>
+						 <div id="ten-property" class="form-control" 
+				                                 select2-url="<c:url value="/protected/tenants/setups/rentalstructs"/>" >
 				                                 
 				               </div> 
 					</div>

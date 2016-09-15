@@ -495,13 +495,15 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	public Page<RentalStructure> findRentalStructForSelect(Long branchCOde, String paramString, Pageable paramPageable) {
-		Predicate pred = null;
+		QOrgBranch branch = QRentalStructure.rentalStructure.branch;
+		BooleanExpression pred = branch.obId.eq(branchCOde);
 		if (paramString == null || StringUtils.isBlank(paramString)) {
-			pred = QRentalStructure.rentalStructure.isNotNull();
+		     pred = pred.and(QRentalStructure.rentalStructure.isNotNull());
 		} else {
-			pred = QRentalStructure.rentalStructure..containsIgnoreCase(paramString);
+			pred = pred.and(QRentalStructure.rentalStructure.houseName.containsIgnoreCase(paramString));
 		}
-		return null;
+		System.out.println("List "+rentalStructRepo.findAll(pred, paramPageable));
+		return rentalStructRepo.findAll(pred, paramPageable);
 	}
 
 }

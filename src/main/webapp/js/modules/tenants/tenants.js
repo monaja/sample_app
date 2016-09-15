@@ -12,6 +12,7 @@ $(function(){
 		tenantImage(-2000);
 		populateBranchLov1();
 		populateBranchLov2();
+		populateStructures();
 	});
 });
 
@@ -21,7 +22,11 @@ var model = {
 		tenant: {
 			branch:{
 				brnCode:"",
+				struct:{
+					rentalId: "",
+				}
 			},
+			
 	    }
 	};
 function populateBranchLov2(){
@@ -30,9 +35,7 @@ function populateBranchLov2(){
 		  Select2Builder.initAjaxSelect2({
 	            containerId : "unit-branch",
 	            sort : 'obName',
-	            change: function(e, a, v){
-	            	// $("#obId").val(e.added.obId);
-	            },
+	            change: branchChanged,
 	            formatResult : function(a)
 	            {
 	            	return a.obName
@@ -50,6 +53,39 @@ function populateBranchLov2(){
                 },
 	            id: "obId",
 	            width:"200px"
+	        });
+	  }
+}
+
+function branchChanged(e, a, v) {
+    model.tenant.branch = e.added || {};
+}
+
+function populateStructures(){
+	if($("#ten-property").filter("div").html() != undefined)
+	  {
+		  Select2Builder.initAjaxSelect2({
+	            containerId : "ten-property",
+	            sort : 'houseName',
+	            change: function(e, a, v){
+	            	// $("#obId").val(e.added.obId);
+	            },
+	            formatResult : function(a)
+	            {
+	            	return a.houseName
+	            },
+	            formatSelection : function(a)
+	            {
+	            	return a.houseName
+	            },
+	            initSelection: function (element, callback) {
+	            	
+                },
+	            id: "rentalId",
+	            width:"200px",
+	            params: {branchId: function(){
+	            	return model.tenant.branch.obId;
+	            }}
 	        });
 	  }
 }
@@ -80,6 +116,7 @@ function populateBranchLov1(){
                 },
 	            id: "obId",
 	            width:"200px"
+	            
 	        });
 	  }
 }

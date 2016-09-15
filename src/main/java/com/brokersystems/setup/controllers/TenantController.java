@@ -6,18 +6,24 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.brokersystems.server.datatables.DataTable;
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.setups.model.AccountDef;
+import com.brokersystems.setups.model.RentalStructure;
 import com.brokersystems.setups.model.TenantDef;
+import com.brokersystems.setups.model.UnitTypes;
+import com.brokersystems.setups.service.SetupsService;
 import com.brokersystems.setups.service.TenantService;
 
 @Controller
@@ -26,6 +32,9 @@ public class TenantController {
 	
 	@Autowired
 	private TenantService tenService;
+	
+	@Autowired
+	private SetupsService setupsService;
 	
 	
 	@RequestMapping(value = "tenantlist", method = RequestMethod.GET)
@@ -56,6 +65,14 @@ public class TenantController {
 			response.getOutputStream().write(tenant.getPhoto());
 			response.getOutputStream().close();
 		}
+	}
+	
+	@RequestMapping(value = { "rentalstructs" }, method = { org.springframework.web.bind.annotation.RequestMethod.GET })
+	@ResponseBody
+	public Page<RentalStructure> rentalStructures(@RequestParam(value = "term", required = false) String term, Pageable pageable,@RequestParam("branchId") Long branchId)
+			throws IllegalAccessException {
+	
+		return setupsService.findRentalStructForSelect(branchId, term, pageable);
 	}
 
 }
