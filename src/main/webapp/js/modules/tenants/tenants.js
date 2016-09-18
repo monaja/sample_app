@@ -9,10 +9,26 @@ $(function(){
 		    
 		});
 		
-		tenantImage(-2000);
+		getTenantDetails();
+		
+		if($("#tenId-pk").val()!=''){
+			 $("#sel3").removeAttr('disabled');
+			
+		}
+		else{
+			$("#sel3").val("A");
+			$("#sel3").prop("disabled", true);
+		}
+		
+		
+		
+		
 		populateBranchLov1();
 		populateBranchLov2();
 		populateStructures();
+		populateUnits();
+		
+		createTenant();
 	});
 });
 
@@ -24,13 +40,17 @@ var model = {
 				brnCode:"",
 				struct:{
 					rentalId: "",
-				}
+					units:{
+						renId: "",
+					},
+				},
 			},
 			
 	    }
 	};
+
 function populateBranchLov2(){
-	if($("#ten-branch").filter("div").html() != undefined)
+	if($("#unit-branch").filter("div").html() != undefined)
 	  {
 		  Select2Builder.initAjaxSelect2({
 	            containerId : "unit-branch",
@@ -45,11 +65,7 @@ function populateBranchLov2(){
 	            	return a.obName
 	            },
 	            initSelection: function (element, callback) {
-//	            	var code = $("#obId").val();
-//	                var name = $("#ob-name").val();
-//	                model.accounts.branch.brnCode = code;
-//	                var data = {obName:name,obId:code};
-//	                callback(data);
+	            	
                 },
 	            id: "obId",
 	            width:"200px"
@@ -57,8 +73,47 @@ function populateBranchLov2(){
 	  }
 }
 
+
+function createTenant(){
+	$('form#tenant-form')
+	  .submit( function( e ) {
+		  e.preventDefault();
+		  var data = new FormData( this );
+		  data.append( 'file', $( '#avatar' )[0].files[0] );
+		  $.ajax( {
+		      url: 'createTenant',
+		      type: 'POST',
+		      data: data,
+		      processData: false,
+		      contentType: false,
+		      success: function (s ) {
+		    	  bootbox.alert("Record created/updated Successfully");
+		    	  $('#tenant-form').find("input[type=text],input[type=mobileNumber],input[file],input[type=email],input[type=password],input[type=hidden],input[type=number], textarea,select").val("");
+		    	  $('#avatar').fileinput('reset');
+		    	  populateBranchLov1();
+		  		  populateBranchLov2();
+		  		  populateStructures();
+		  		  populateUnits();
+		      },
+		      error: function(xhr, error){
+		    	  bootbox.alert(xhr.responseText);
+		      }
+		      });
+	  });
+}
+
 function branchChanged(e, a, v) {
     model.tenant.branch = e.added || {};
+    populateStructures();
+    populateUnits();
+    $("#ob-alloc-id").val(e.added.obId);
+}
+
+function structChanged(e, a, v) {
+	populateUnits();
+    model.tenant.branch.struct = e.added || {};
+    $("#rental-id").val(e.added.rentalId);
+    
 }
 
 function populateStructures(){
@@ -67,9 +122,7 @@ function populateStructures(){
 		  Select2Builder.initAjaxSelect2({
 	            containerId : "ten-property",
 	            sort : 'houseName',
-	            change: function(e, a, v){
-	            	// $("#obId").val(e.added.obId);
-	            },
+	            change: structChanged,
 	            formatResult : function(a)
 	            {
 	            	return a.houseName
@@ -90,6 +143,35 @@ function populateStructures(){
 	  }
 }
 
+function populateUnits(){
+	if($("#ten-unit").filter("div").html() != undefined)
+	  {
+		  Select2Builder.initAjaxSelect2({
+	            containerId : "ten-unit",
+	            sort : 'unitName',
+	            change: function(e, a, v){
+	            	 $("#unit-id").val(e.added.renId);
+	            },
+	            formatResult : function(a)
+	            {
+	            	return a.unitName
+	            },
+	            formatSelection : function(a)
+	            {
+	            	return a.unitName
+	            },
+	            initSelection: function (element, callback) {
+	            	
+                },
+	            id: "renId",
+	            width:"200px",
+	            params: {rentalId: function(){
+	            	return model.tenant.branch.struct.rentalId;
+	            }}
+	        });
+	  }
+}
+
 function populateBranchLov1(){
 	if($("#ten-branch").filter("div").html() != undefined)
 	  {
@@ -97,7 +179,7 @@ function populateBranchLov1(){
 	            containerId : "ten-branch",
 	            sort : 'obName',
 	            change: function(e, a, v){
-	            	// $("#obId").val(e.added.obId);
+	            	$("#obId").val(e.added.obId);
 	            },
 	            formatResult : function(a)
 	            {
@@ -108,11 +190,11 @@ function populateBranchLov1(){
 	            	return a.obName
 	            },
 	            initSelection: function (element, callback) {
-//	            	var code = $("#obId").val();
-//	                var name = $("#ob-name").val();
-//	                model.accounts.branch.brnCode = code;
-//	                var data = {obName:name,obId:code};
-//	                callback(data);
+	            	var code = $("#obId").val();
+	                var name = $("#reg-brn-name").val();
+	                model.tenant.branch.brnCode = code;
+	                var data = {obName:name,obId:code};
+	                callback(data);
                 },
 	            id: "obId",
 	            width:"200px"
@@ -151,6 +233,7 @@ function createTenantsList(){
 	  var currTable = $('#tenTbl').DataTable( {
 			"processing": true,
 			"serverSide": true,
+			autoWidth: true,
 			"ajax": url,
 			lengthMenu: [ [10, 15], [10, 15] ],
 			pageLength: 5,
@@ -162,16 +245,22 @@ function createTenantsList(){
 					  return full.fname+" "+full.otherNames;
 				  }
 				},
-				{ "data": "IdPassport" },
+				{ "data": "idPassport" },
 				{ "data": "emailAddress" },
 				{ "data": "phoneNo" },
-				{ "data": "dob" },
-				{ "data": "tenantType" },
-				{ "data": "dateregistered" },
+				{ "data": "tenantType",
+					"render": function ( data, type, full, meta ) {
+						   if(!full.tenantType || full.tenantType==="I"){
+							   return "Individual";
+						   }
+						   else if(full.status==="C")
+							  return "Corporate";
+						  }
+				},
 				{ "data": "status",
 				   "render": function ( data, type, full, meta ) {
-					   if(!full.status || full.status==="I"){
-						   return "Inactive";
+					   if(!full.status || full.status==="T"){
+						   return "Terminated";
 					   }
 					   else if(full.status==="A")
 						  return "Active";
@@ -180,18 +269,86 @@ function createTenantsList(){
 				{ 
 					"data": "tenId",
 					"render": function ( data, type, full, meta ) {
-						return '<form action="editAcctForm" method="post"><input type="hidden" name="id" value='+full.acctId+'><input type="submit"  class="btn btn-primary" value="Edit" ></form>';
+						return '<form action="editTenantForm" method="post"><input type="hidden" name="id" value='+full.tenId+'><input type="submit"  class="btn btn-primary" value="Edit" ></form>';
 					}
-
-				},
-				{ 
-					"data": "tenId",
-					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-account='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmAccountDel(this);"/>';
-					 }
 
 				},
 			]
 		} );
 	  return currTable;
+}
+
+function getTenantDetails(){
+	if(typeof tenidpkey!== 'undefined'){
+		if(tenidpkey!==-2000){
+			$.ajax( {
+			      url: 'tenants/'+tenidpkey,
+			      type: 'GET',
+			      processData: false,
+			      contentType: false,
+			      success: function (s ) {
+			    	  populateTenantDetails(s);
+			    	  
+			      },
+			      error: function(xhr, error){
+			    	  bootbox.alert(xhr.responseText);
+			      }
+			      });
+		}
+		else{
+			tenantImage(-2000);
+		}
+		
+	}
+}
+
+function populateTenantDetails(data){
+	$("#tenId-pk").val(data.tenId);
+	$("#fname").val(data.fname);
+	$("#other-names").val(data.otherNames);
+	$("#id-no").val(data.idPassport);
+	$("#pin-no").val(data.pinNo);
+	$("#email-address").val(data.emailAddress);
+	$("#phone-no").val(data.phoneNo);
+	$("#address").val(data.address);
+	$("#sel2").val(data.tenantType);
+	$("#dob").val(moment(data.dob).format('DD/MM/YYYY'));
+	if(data.status!="T"){
+		$("#sel3").val(data.status);
+		$("#sel3").prop("disabled", false);
+		$("#btn-save-tenant").prop("disabled", false);
+	}
+	else{
+		$("#sel3").val(data.status);
+		$("#sel3").prop("disabled", true);
+		$("#btn-save-tenant").prop("disabled", true);
+	}
+	
+	$("#ten-id").val(data.tenantNumber);
+	$("#date-reg").val(moment(data.dateregistered).format('DD/MM/YYYY'));
+	if(data.allocation.structure){
+		$("#rental-loc").text(data.allocation.structure.houseName);
+	}
+	if(data.allocation.allocbranch){
+		$("#branch-alloc").text(data.allocation.allocbranch.obName);
+	}
+	
+	if(data.allocation.renunits){
+		$("#unit-alloc").text(data.allocation.renunits.unitName);
+	}	
+	else{
+		$("#alloc-details").hide();
+	}
+	if(data.allocation.dateregistered){
+		$("#dt-alloc").val(moment(data.allocation.dateregistered).format('DD/MM/YYYY'));
+	}
+	
+	$("#reg-brn-name").val(data.registeredbrn.obName);
+	$("#obId").val(data.registeredbrn.obId);
+	populateBranchLov1();
+	if(data.dateterminated)
+	$("#dt-terminated").val(moment(data.dateterminated).format('DD/MM/YYYY'));
+	tenantImage(data.tenId);
+	
+	
 }

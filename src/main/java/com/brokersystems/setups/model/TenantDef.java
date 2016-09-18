@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -52,7 +54,7 @@ public class TenantDef {
     private String pinNo;
     
 	@Column(name="ten_idno",nullable=false)
-    private String IdPassport;
+    private String idPassport;
     
     @Lob
 	@JsonIgnore
@@ -75,6 +77,9 @@ public class TenantDef {
     @ManyToOne
 	@JoinColumn(name="ten_brn_code",nullable=false)
 	private OrgBranch registeredbrn;
+    
+    @Transient
+	MultipartFile file;
     
     
     
@@ -151,11 +156,11 @@ public class TenantDef {
 	}
 
 	public String getIdPassport() {
-		return IdPassport;
+		return idPassport;
 	}
 
 	public void setIdPassport(String idPassport) {
-		IdPassport = idPassport;
+		this.idPassport = idPassport;
 	}
 
 	public byte[] getPhoto() {
@@ -228,6 +233,14 @@ public class TenantDef {
 
 	public void setAllocation(TenAllocations allocation) {
 		this.allocation = allocation;
+	}
+
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
 	}
 	
 	

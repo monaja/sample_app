@@ -17,6 +17,8 @@ import com.brokersystems.setups.model.RateTypes;
 import com.brokersystems.setups.model.RentalStructure;
 import com.brokersystems.setups.model.RentalUnitCharges;
 import com.brokersystems.setups.model.RentalUnits;
+import com.brokersystems.setups.model.TenAllocations;
+import com.brokersystems.setups.model.TenantDef;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.model.UnitTypes;
 
@@ -114,5 +116,13 @@ public interface SetupsService {
     void defineAccount(AccountDef account) throws BadRequestException;
     
     void deleteAccount(Long acctId);
+    
+    Page<RentalUnits> findRentalUnitsForSelect(Long renId,String paramString, Pageable paramPageable);
+    
+    void defineTenant(TenantDef tenant) throws BadRequestException;
+    
+    TenantDef getTenantDetails(Long tenId);
+    
+    TenAllocations getActiveAllocation(Long tenId);
 	
 }

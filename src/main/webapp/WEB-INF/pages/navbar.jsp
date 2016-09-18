@@ -25,7 +25,7 @@
               
             </li>
             <li>
-              <a href="<c:url value="/protected/home/setups"/>">
+              <a href="<c:url value="/protected/home/trans"/>">
                 <i class="fa fa-cog"></i> <span>Tenant Transactions</span> <i class="pull-right"></i>
               </a>
               

@@ -23,8 +23,17 @@ public class NavigationController {
 	  * @return
 	  */
 	 @RequestMapping(value="/setups",method = RequestMethod.GET)
-	    public ModelAndView uwsetups() {
+	    public ModelAndView tensetups() {
 	        return new ModelAndView("tensetups");
+	    }
+	 
+	 /**
+	  * Navigation to System Transaction Screen
+	  * @return
+	  */
+	 @RequestMapping(value="/trans",method = RequestMethod.GET)
+	    public ModelAndView trans() {
+	        return new ModelAndView("tentrans");
 	    }
 	 
 	

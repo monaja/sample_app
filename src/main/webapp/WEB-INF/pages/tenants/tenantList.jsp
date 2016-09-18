@@ -14,16 +14,13 @@
 	<table id="tenTbl" class="table table-hover table-bordered">
 		<thead>
 			<tr>
-                <th>Reg. Id</th>
+                <th>Ten. No</th>
 				<th>Name</th>
 				<th>Id/Passport No</th>
 				<th>Email</th>
 				<th>Phone</th>
-				<th>Date of Birth</th>
 				<th>Tenant Type</th>
-				<th>Date Reg.</th>
 				<th>Status</th>
-				<th width="5%"></th>
 				<th width="5%"></th>
 			</tr>
 		</thead>

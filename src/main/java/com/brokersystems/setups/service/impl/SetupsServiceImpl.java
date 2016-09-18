@@ -1,10 +1,13 @@
 package com.brokersystems.setups.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.action.internal.QueuedOperationCollectionAction;
@@ -28,6 +31,8 @@ import com.brokersystems.setup.repository.RateTypeRepository;
 import com.brokersystems.setup.repository.RentalStructRepository;
 import com.brokersystems.setup.repository.RentalUnitChargeRepo;
 import com.brokersystems.setup.repository.RentalUnitsRepository;
+import com.brokersystems.setup.repository.TenantAllocRepo;
+import com.brokersystems.setup.repository.TenantRepository;
 import com.brokersystems.setup.repository.TownRepository;
 import com.brokersystems.setup.repository.UnitTypeRepository;
 import com.brokersystems.setups.model.AccountDef;
@@ -50,15 +55,20 @@ import com.brokersystems.setups.model.QRateTypes;
 import com.brokersystems.setups.model.QRentalStructure;
 import com.brokersystems.setups.model.QRentalUnitCharges;
 import com.brokersystems.setups.model.QRentalUnits;
+import com.brokersystems.setups.model.QTenAllocations;
+import com.brokersystems.setups.model.QTenantDef;
 import com.brokersystems.setups.model.QTown;
 import com.brokersystems.setups.model.QUnitTypes;
 import com.brokersystems.setups.model.RateTypes;
 import com.brokersystems.setups.model.RentalStructure;
 import com.brokersystems.setups.model.RentalUnitCharges;
 import com.brokersystems.setups.model.RentalUnits;
+import com.brokersystems.setups.model.TenAllocations;
+import com.brokersystems.setups.model.TenantDef;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.model.UnitTypes;
 import com.brokersystems.setups.service.SetupsService;
+import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
 
@@ -103,6 +113,12 @@ public class SetupsServiceImpl implements SetupsService {
 	
 	@Autowired
 	private AccountRepo accountRepo;
+	
+	@Autowired
+	private TenantRepository tenRepo;
+	
+	@Autowired
+	private TenantAllocRepo allocRepo;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -502,8 +518,72 @@ public class SetupsServiceImpl implements SetupsService {
 		} else {
 			pred = pred.and(QRentalStructure.rentalStructure.houseName.containsIgnoreCase(paramString));
 		}
-		System.out.println("List "+rentalStructRepo.findAll(pred, paramPageable));
 		return rentalStructRepo.findAll(pred, paramPageable);
+	}
+
+	@Override
+	public Page<RentalUnits> findRentalUnitsForSelect(Long renId, String paramString, Pageable paramPageable) {
+	
+		return allocRepo.findUnallocatedUnits(renId,paramPageable);
+	}
+
+	@Override
+	public void defineTenant(TenantDef tenant) throws BadRequestException {
+		List<TenAllocations> allocations = new ArrayList<>();
+		if(tenant.getTenId()==null){
+			if(tenant.getAllocation().getAllocbranch()==null){
+				throw new BadRequestException("Select Tenant Allocation Branch....");
+			}
+			if(tenant.getAllocation().getStructure()==null){
+				throw new BadRequestException("Select Tenant Allocation Property....");
+			}
+			if(tenant.getAllocation().getRenunits()==null){
+				throw new BadRequestException("Select Tenant Allocation Unit....");
+			}
+			tenant.getAllocation().setDateregistered(new Date());
+			tenant.getAllocation().setCancelled("N");
+			tenant.getAllocation().setTenant(tenant);
+			allocations.add(tenant.getAllocation());
+			
+			final String tenFormat =  String.format("%05d", tenRepo.count()+1);
+			tenant.setTenantNumber("TEN"+tenFormat);
+			tenant.setStatus("A");
+		}
+		if(tenant.getRegisteredbrn()==null){
+			throw new BadRequestException("Select Tenant Registered Branch....");
+		}
+		
+		if(tenant.getTenantNumber()==null){
+			throw new BadRequestException("Tenant Number missing....");
+		}
+		if(tenant.getDateregistered()==null){
+			throw new BadRequestException("Date of tenant registration is required....");
+		}
+		if(tenant.getStatus().equals("T")){
+			tenant.setDateterminated(new  Date());
+			TenAllocations activeAllocation = getActiveAllocation(tenant.getTenId());
+			if(activeAllocation!=null){
+				activeAllocation.setDatecancelled(new Date());
+				activeAllocation.setCancelled("Y");
+				allocRepo.save(activeAllocation);
+			}
+		}
+		tenRepo.save(tenant);
+		if(allocations.size()>0)
+		allocRepo.save(allocations);
+	}
+
+	@Override
+	public TenantDef getTenantDetails(Long tenId) {
+		return tenRepo.findOne(tenId);
+	}
+
+	@Override
+	public TenAllocations getActiveAllocation(Long tenId) {
+		  BooleanExpression pred=  QTenAllocations.tenAllocations.tenant.tenId.eq(tenId);
+		  Iterable<TenAllocations> allocs = allocRepo.findAll(pred);
+		 Optional<TenAllocations> tenant =StreamSupport.stream(allocs.spliterator(),false).filter(a -> a.getCancelled().equalsIgnoreCase("N")).findFirst();
+		 return tenant.orElse(new TenAllocations());
 	}
 
 }

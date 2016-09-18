@@ -294,7 +294,7 @@ public class RentalSetupsController {
 	 @RequestMapping(value = { "createTenant" }, method = {
 				org.springframework.web.bind.annotation.RequestMethod.POST })
 		@ResponseStatus(HttpStatus.CREATED)
-		public void saveTenants(Landlord tenant) throws BadRequestException {
+		public void saveLandlord(Landlord tenant) throws BadRequestException {
 		       tenantService.defineLandlord(tenant);
 		}
 	 

@@ -113,6 +113,21 @@
         <put-attribute name="title" value="Tenant Details" />  
         <put-attribute name="body" value="/WEB-INF/pages/tenants/tenantform.jsp" />  
     </definition>
+    
+     <definition name="invoices" extends="base.definition">  
+        <put-attribute name="title" value="Invoice List" />  
+        <put-attribute name="body" value="/WEB-INF/pages/invoices/invoicelist.jsp" />  
+    </definition>
+    
+     <definition name="invoiceform" extends="base.definition">  
+        <put-attribute name="title" value="Invoice List" />  
+        <put-attribute name="body" value="/WEB-INF/pages/invoices/invoice.jsp" />  
+    </definition>
+    
+    <definition name="tentrans" extends="base.definition">  
+        <put-attribute name="title" value="Tenant Transactions" />  
+        <put-attribute name="body" value="/WEB-INF/pages/submenus/transactionscreen.jsp" />  
+    </definition> 
      
     
 </tiles-definitions> 

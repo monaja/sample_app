@@ -51,6 +51,11 @@ public class RentalUnits extends AuditBaseEntity {
 	 @JsonIgnore
 	@OneToMany(mappedBy="unit")
 	private List<RentalUnitCharges> unitChages;
+	
+	@XmlTransient
+	 @JsonIgnore
+	@OneToMany(mappedBy="renunits")
+	private List<TenAllocations> allocations;
 
 	public Long getRenId() {
 		return renId;
@@ -82,6 +87,22 @@ public class RentalUnits extends AuditBaseEntity {
 
 	public void setRentalStruct(RentalStructure rentalStruct) {
 		this.rentalStruct = rentalStruct;
+	}
+
+	public List<RentalUnitCharges> getUnitChages() {
+		return unitChages;
+	}
+
+	public void setUnitChages(List<RentalUnitCharges> unitChages) {
+		this.unitChages = unitChages;
+	}
+
+	public List<TenAllocations> getAllocations() {
+		return allocations;
+	}
+
+	public void setAllocations(List<TenAllocations> allocations) {
+		this.allocations = allocations;
 	}
 	
 	
