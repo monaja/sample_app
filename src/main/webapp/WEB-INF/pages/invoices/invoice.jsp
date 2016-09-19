@@ -5,76 +5,44 @@
 	src="<c:url value="/js/modules/utils/select2builder.js"/>"></script>
 <script type="text/javascript"
 	src="<c:url value="/libs/rivets/rivets.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/modules/transactions/invoice.js"/>"></script>
+<script type="text/javascript"
+	src="<c:url value="/js/modules/transactions/invoice.js"/>"></script>
 
 <div class="box box-info" id="acct_model">
 
 	<form id="invoice-form" class="form-horizontal">
+		<div class="box-footer">
+
+			<input type="button" class="btn btn-info pull-left"
+				style="margin-right: 10px;" value="Save"> <a
+				href="<c:url value='/protected/setups/accts'/> "
+				class="btn btn-info pull-left">Back</a> <input type="button"
+				class="btn btn-info pull-right" style="margin-right: 10px;"
+				value="Authorize">
+		</div>
 		<div class="box-body">
-			<input type="hidden" name="acctId" id="invoice-pk">
+			<input type="hidden" name="invoiceId" id="invoice-pk">
 			<div class="form-group">
-				<label for="reg-wet" class="col-md-3 control-label">Invoice Date</label>
+				<div class="col-md-6">
+					<label for="brn-id" class="col-md-6 control-label">Invoice
+						Number</label>
 
-				<div class="col-md-3">
-					<div class='input-group date datepicker-input'>
-						<input type='text' class="form-control pull-right" name="dob"
-							id="dob" />
-						<div class="input-group-addon">
-							<span class="glyphicon glyphicon-calendar"></span>
-						</div>
+					<div class="col-md-6">
+						<input type="text" name=invoiceNumber id="inv-number"
+							class="form-control" placeholder="" readonly>
 					</div>
 				</div>
+				<div class="col-md-6"></div>
+
+
 			</div>
 			<div class="form-group form-required">
 				<div class="col-md-6">
-					<label for="houseId" class="control-label col-md-5">ID/Passport
-						No</label>
-					<div class="col-md-7">
-						<input type="text" name="idPassportNo" id="idno"
-							class="form-control" placeholder="ID or Passport No" required>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<label for="noOfUnits" class="control-label col-md-5">Pin
-						No</label>
-					<div class="col-md-7">
-						<input type="text" name="pinNo" id="pinNo" class="form-control"
-							placeholder="Pin No" required>
-					</div>
-				</div>
-			</div>
-			<div class="form-group form-required">
-				<div class="col-md-6">
-					<label for="houseId" class="control-label col-md-5">Email</label>
-					<div class="col-md-7">
-						<input type="email" name="email" id="email" class="form-control"
-							placeholder="Email" required>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<label for="noOfUnits" class="control-label col-md-5">Phone
-						No</label>
-					<div class="col-md-7">
-						<input type="text" name="phoneNo" id="phone-no"
-							class="form-control" placeholder="Phone No" required>
-					</div>
-				</div>
-			</div>
-			<div class="form-group form-required">
-				<div class="col-md-6">
-					<label for="noOfUnits" class="control-label col-md-5">Address</label>
-					<div class="col-md-7">
-						<textarea rows="3" cols=30 class="form-control" name="address"
-							id="address"></textarea>
-					</div>
+					<label for="brn-id" class="col-md-6 control-label">Select
+						Tenant</label>
 
-				</div>
-				<div class="col-md-6">
-					<label for="brn-id" class="col-md-5 control-label">Select
-						Account Type</label>
-
-					<div class="col-md-7">
-						<input type="hidden" id="acc-id" name="accountType"
+					<div class="col-md-6">
+						<input type="hidden" id="acc-id" name="tenant"
 							rv-value="accounts.accType.accId" /> <input type="hidden"
 							id="acc-name">
 						<div id="accounttypes" class="form-control"
@@ -83,72 +51,194 @@
 						</div>
 					</div>
 				</div>
+				<div class="col-md-6">
+					<label for="noOfUnits" class="control-label col-md-5">Transaction
+						Branch</label>
+					<div class="col-md-7">
+						<input type="hidden" id="acc-id" name="branch"
+							rv-value="accounts.accType.accId" /> <input type="hidden"
+							id="acc-name">
+						<div id="accounttypes" class="form-control"
+							select2-url="<c:url value="/protected/setups/selAcctTypes"/>">
+
+						</div>
+					</div>
+
+				</div>
+
 
 			</div>
 			<div class="form-group form-required">
 				<div class="col-md-6">
-					<label for="houseId" class="control-label col-md-5">Status</label>
-					<div class="col-md-7">
-						<select class="form-control" id="sel2" name="status">
-							<option value="">Select Status</option>
-							<option value="A">Active</option>
-							<option value="I">Inactive</option>
-						</select>
+					<label for="brn-id" class="col-md-6 control-label">Transaction
+						Date</label>
+
+					<div class="col-md-6">
+						<div class='input-group date datepicker-input'>
+							<input type='text' class="form-control pull-right" name="invoiceDate"
+								id="dob" />
+							<div class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="col-md-6">
-					<label for="houseId" class="control-label col-md-5">Branch</label>
+					<label for="brn-id" class="col-md-5 control-label">Payment
+						Frequency</label>
+
 					<div class="col-md-7">
-						<input type="hidden" id="obId" name="branch"
-							rv-value="accounts.branch.brnCode" /> <input type="hidden"
-							id="ob-name">
-						<div id="acct-branch" class="form-control"
-							select2-url="<c:url value="/protected/rental/setups/branches"/>">
-
-						</div>
+						<select class="form-control" id="sel2" name="frequency">
+							<option value="">Select Payment Frequency</option>
+							<option value="M">Monthly</option>
+							<option value="Q">Quartely</option>
+							<option value="S">Semi-Annually</option>
+							<option value="A">Annually</option>
+						</select>
 					</div>
-				</div>
-			</div>
-			<div class='spacer'></div>
-			<h4>Other Information</h4>
-			<hr>
-			<div class="form-group">
-				<label for="reg-wet" class="col-md-3 control-label">Date of
-					Birth</label>
 
-				<div class="col-md-3">
-					<div class='input-group date datepicker-input'>
-						<input type='text' class="form-control pull-right" name="dob"
-							id="dob" />
-						<div class="input-group-addon">
-							<span class="glyphicon glyphicon-calendar"></span>
-						</div>
-					</div>
 				</div>
+
+
 			</div>
-			<div class='spacer'></div>
 
 			<div class="form-group">
+				<div class="col-md-6  form-required">
+					<label for="brn-id" class="col-md-6 control-label">Date
+						From</label>
 
-				<div class="col-md-6 form-required">
-					<label for="file" class="control-label col-md-5"> Photo</label>
+					<div class="col-md-6">
+						<div class='input-group date datepicker-input' id="wef-date">
+							<input type='text' class="form-control pull-right" name="wefDate"
+								 id="from-date"/>
+							<div class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<label for="noOfUnits" class="control-label col-md-5">Date
+						To</label>
 					<div class="col-md-7">
-						<div class="kv-avatar center-block" style="width: 200px">
-							<input name="file" type="file" id="avatar" class="file-loading">
+						<div class='input-group date datepicker-input'>
+							<input type='text' class="form-control pull-right" name="wetDate"
+								id="wet-date" readonly />
+							<div class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+
+			</div>
+			<div class="form-group form-required">
+				<div class="col-md-6">
+					<label for="brn-id" class="col-md-6 control-label">Select
+						Currency</label>
+
+					<div class="col-md-6">
+						<input type="hidden" id="acc-id" name="transCurrency"
+							rv-value="accounts.accType.accId" /> <input type="hidden"
+							id="acc-name">
+						<div id="accounttypes" class="form-control"
+							select2-url="<c:url value="/protected/setups/selAcctTypes"/>">
 
 						</div>
 					</div>
 				</div>
+				<div class="col-md-6">
+					<label for="noOfUnits" class="control-label col-md-5">Payment
+						Mode</label>
+					<div class="col-md-7">
+						<input type="hidden" id="acc-id" name="paymentMode"
+							rv-value="accounts.accType.accId" /> <input type="hidden"
+							id="acc-name">
+						<div id="accounttypes" class="form-control"
+							select2-url="<c:url value="/protected/setups/selAcctTypes"/>">
+
+						</div>
+					</div>
+
+				</div>
+
+
+			</div>
+			<div class="form-group">
+				<div class="col-md-6">
+					<label for="brn-id" class="col-md-6 control-label">Invoice
+						Status</label>
+
+					<div class="col-md-6">
+						<p class="form-control-static">Draft</p>
+					</div>
+				</div>
+				<div class="col-md-6"></div>
+
+
+			</div>
+			<div class="form-group">
+				<div class="col-md-6">
+					<label for="brn-id" class="col-md-6 control-label">Invoice
+						Amount</label>
+
+					<div class="col-md-6">
+						<p class="form-control-static">0</p>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<label for="brn-id" class="col-md-6 control-label">Total
+						Taxes</label>
+
+					<div class="col-md-6">
+						<p class="form-control-static">0</p>
+					</div>
+
+				</div>
+
+
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-6">
+					<label for="brn-id" class="col-md-6 control-label">Net
+						Amount</label>
+
+					<div class="col-md-6">
+						<p class="form-control-static">0</p>
+					</div>
+				</div>
+				<div class="col-md-6"></div>
+
 
 			</div>
 
 		</div>
-		<div class="box-footer">
 
-			<input type="submit" class="btn btn-info pull-left"
-				style="margin-right: 10px;" value="Save and New"> <a
-				href="<c:url value='/protected/setups/accts'/> "
-				class="btn btn-info pull-left">Cancel</a>
-		</div>
 	</form>
+<div class="box-body">
+	<h4>Invoice Rates</h4>
+	<div class="spacer"></div>
+	
+
+		<button type="button" class="btn btn-info" data-toggle="modal"
+			data-target="#invmodal">New</button>
+
+	<hr>
+	<table id="invdet-tbl" class="table table-hover table-bordered">
+		<thead>
+			<tr>
+
+				<th>Rate Type</th>
+				<th>Amount</th>
+				<th>Taxes</th>
+				<th>Net Amount</th>
+				<th width="5%"></th>
+				<th width="5%"></th>
+			</tr>
+		</thead>
+	</table>
+	</div>
 </div>

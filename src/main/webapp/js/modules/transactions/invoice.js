@@ -2,8 +2,58 @@ $(function(){
 
 	$(document).ready(function() {
 		createInvoices();
+		$(".datepicker-input").each(function() {
+		    $(this).datetimepicker({
+                format: 'DD/MM/YYYY'
+            });
+		    
+		});
+		
+		changeWefDate();
+		
+		
+		
 	});
 });
+
+function changeWefDate(){
+	$('#wef-date').on('dp.change', function (ev) {
+		var curDate = ev.date;
+		if($("#sel2").val()!=''){
+			if($("#sel2").val()==='M'){ 
+			  $("#wet-date").val(moment(moment(curDate).add(1, 'month')).format('DD/MM/YYYY'));
+			}
+			else if($("#sel2").val()==='Q'){ 
+			  $("#wet-date").val(moment(moment(curDate).add(3, 'month')).format('DD/MM/YYYY'));
+			}
+			else if($("#sel2").val()==='S'){ 
+				  $("#wet-date").val(moment(moment(curDate).add(6, 'month')).format('DD/MM/YYYY'));
+			}
+			else if($("#sel2").val()==='A'){ 
+				  $("#wet-date").val(moment(moment(curDate).add(12, 'month')).format('DD/MM/YYYY'));
+			}
+		}
+	});
+	
+	$("#sel2").change(function(){
+		if($("#from-date").val()!=''){
+			var curDate = $("#from-date").val();
+			console.log(curDate);
+			if($("#sel2").val()==='M'){ 
+				  $("#wet-date").val(moment(moment(curDate).add(1, 'month')).format('DD/MM/YYYY'));
+				}
+				else if($("#sel2").val()==='Q'){ 
+				  $("#wet-date").val(moment(moment(curDate).add(3, 'month')).format('DD/MM/YYYY'));
+				}
+				else if($("#sel2").val()==='S'){ 
+					  $("#wet-date").val(moment(moment(curDate).add(6, 'month')).format('DD/MM/YYYY'));
+				}
+				else if($("#sel2").val()==='A'){ 
+					  $("#wet-date").val(moment(moment(curDate).add(12, 'month')).format('DD/MM/YYYY'));
+				}
+		}
+	})
+}
 
 
 function createInvoices(){

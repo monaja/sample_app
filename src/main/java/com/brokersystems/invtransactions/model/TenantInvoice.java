@@ -39,10 +39,13 @@ public class TenantInvoice extends AuditBaseEntity {
 	private Date invoiceDate;
 	
 	@Column(name="invoice_wef_date", nullable=false)
-	private Date wetDate;
+	private Date wefDate;
 	
 	@Column(name="invoice_wet_date",nullable=false)
-	private Date wefDate;
+	private Date wetDate;
+	
+	@Column(name="invoice_frequency",nullable=false)
+	private String frequency;
 	
 	@XmlTransient
 	@ManyToOne
@@ -191,6 +194,14 @@ public class TenantInvoice extends AuditBaseEntity {
 
 	public void setInvDetails(List<TenantInvoiceDetails> invDetails) {
 		this.invDetails = invDetails;
+	}
+
+	public String getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
 	}
 	
 	
