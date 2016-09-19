@@ -234,7 +234,9 @@ function createTenantsList(){
 			"processing": true,
 			"serverSide": true,
 			autoWidth: true,
-			"ajax": url,
+			"ajax": {
+				'url': url,
+			},
 			lengthMenu: [ [10, 15], [10, 15] ],
 			pageLength: 5,
 			destroy: true,

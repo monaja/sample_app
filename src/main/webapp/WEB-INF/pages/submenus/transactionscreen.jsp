@@ -9,7 +9,7 @@
            <span class="info-box-number">
            <small class="text-muted">Create Tenants Invoices</small>
            </span>
-            <a href="<c:url value="/protected/organization/"/>" class="btn btn-primary">Create</a>
+            <a href="<c:url value="/protected/transactions/invoices/invlist"/>" class="btn btn-primary">Create</a>
          </div><!-- /.info-box-content -->
        </div><!-- /.info-box -->
      </div>

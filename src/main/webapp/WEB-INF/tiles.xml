@@ -120,7 +120,7 @@
     </definition>
     
      <definition name="invoiceform" extends="base.definition">  
-        <put-attribute name="title" value="Invoice List" />  
+        <put-attribute name="title" value="Invoice Details" />  
         <put-attribute name="body" value="/WEB-INF/pages/invoices/invoice.jsp" />  
     </definition>
     
