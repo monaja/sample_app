@@ -1,5 +1,9 @@
 package com.brokersystems.invtransactions.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Optional;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +16,7 @@ import com.brokersystems.invtransactions.repository.InvoiceRepository;
 import com.brokersystems.invtransactions.service.InvoiceService;
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
+import com.brokersystems.server.exception.BadRequestException;
 import com.brokersystems.setup.repository.CurrencyRepository;
 import com.brokersystems.setup.repository.PaymentModeRepo;
 import com.brokersystems.setup.repository.TenantAllocRepo;
@@ -39,6 +44,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	
 	@Autowired
 	private TenantRepository tenantRepo;
+	
 
 	@Override
 	public DataTablesResult<TenantInvoice> findAllInvoices(DataTablesRequest request) throws IllegalAccessException {
@@ -48,18 +54,18 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	public Page<TenantDef> findActiveTenants(String paramString, Pageable paramPageable) {
-		Predicate pred = QTenantDef.tenantDef.status.eq("A");
+		Predicate pred =null;
 		if (paramString == null || StringUtils.isBlank(paramString)) {
-			pred = QTenantDef.tenantDef.isNotNull();
+			pred = QTenantDef.tenantDef.isNotNull().and(QTenantDef.tenantDef.status.eq("A"));
 		} else {
-			pred = QTenantDef.tenantDef.fname.containsIgnoreCase(paramString).or(QTenantDef.tenantDef.otherNames.containsIgnoreCase(paramString)).or(QTenantDef.tenantDef.tenantNumber.containsIgnoreCase(paramString));
+			pred = QTenantDef.tenantDef.fname.containsIgnoreCase(paramString).and(QTenantDef.tenantDef.status.eq("A")).or(QTenantDef.tenantDef.otherNames.containsIgnoreCase(paramString)).or(QTenantDef.tenantDef.tenantNumber.containsIgnoreCase(paramString));
 		}
 		return tenantRepo.findAll(pred, paramPageable);
 	}
 
 	@Override
 	public Page<Currencies> findCurrencyForSelect(String paramString, Pageable paramPageable) {
-		Predicate pred = null;
+		Predicate pred = QCurrencies.currencies.enabled.eq(true);
 		if (paramString == null || StringUtils.isBlank(paramString)) {
 			pred = QCurrencies.currencies.isNotNull();
 		} else {
@@ -77,6 +83,43 @@ public class InvoiceServiceImpl implements InvoiceService {
 			pred = QPaymentModes.paymentModes.pmDesc.containsIgnoreCase(paramString);
 		}
 		return paymentRepo.findAll(pred, paramPageable);
+	}
+
+	@Override
+	public TenantInvoice createInvoice(TenantInvoice invoice)  throws BadRequestException {
+		if(invoice.getTenant()==null){
+			throw new BadRequestException("Tenant is Mandatory");
+		}
+		if(invoice.getBranch()==null){
+			throw new BadRequestException("Branch is Mandatory");
+		}
+		if(invoice.getPaymentMode()==null){
+			throw new BadRequestException("Payment Mode is Mandatory");
+		}
+		if(invoice.getTransCurrency()==null){
+			throw new BadRequestException("Currency is Mandatory");
+		}
+		
+		if(invoice.getInvoiceDate().after(new Date())){
+			throw new BadRequestException("Invoice Date cannot be in future "+invoice.getInvoiceDate()+" now "+new Date()+" "+invoice.getWefDate()+" "+invoice.getWetDate());
+		}
+		
+		if(invoice.getWefDate()==null){
+			throw new BadRequestException("Invoice Date From is Mandatory");
+		}
+		final String invNumber =  String.format("%05d", invoiceRepo.count()+1);
+		 invoice.setInvoiceNumber("INV"+invNumber);
+		 invoice.setStatus("D");
+		 TenantInvoice created = invoiceRepo.save(invoice);
+		 return created;
+		
+	}
+
+	@Override
+	public TenantInvoice findByInvoiceId(Long invoiceId) throws BadRequestException {
+		 Optional<TenantInvoice> invoice  = invoiceRepo.findByInvoiceId(invoiceId);
+		 if(!invoice.isPresent()) throw new BadRequestException("The Invoice Does not Exist....");
+		return invoice.get();
 	}
 
 }

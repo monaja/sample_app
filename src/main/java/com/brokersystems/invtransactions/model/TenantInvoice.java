@@ -22,6 +22,7 @@ import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.OrgRegions;
 import com.brokersystems.setups.model.PaymentModes;
 import com.brokersystems.setups.model.TenantDef;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="tenant_invoices")
@@ -81,6 +82,7 @@ public class TenantInvoice extends AuditBaseEntity {
 	@Column(name="invoice_status")
 	private String status;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="invoice")
 	private List<TenantInvoiceDetails> invDetails;
 

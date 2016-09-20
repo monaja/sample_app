@@ -3,7 +3,6 @@
 <script type="text/javascript" src="<c:url value="/libs/rivets/rivets.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/modules/transactions/invoice.js"/>"></script>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
 <div class="box box-info" id="inv_model">
 <div class="box-body">
   <div class="spacer"></div>
@@ -16,7 +15,7 @@
 		<thead>
 			<tr>
 
-				<th>Inv. Number</th>
+				<th>Inv. No.</th>
 				<th>Inv. Date</th>
 				<th>Tenant</th>
 				<th>Currency</th>
@@ -25,7 +24,7 @@
 				<th>Gross Amount</th>
 				<th>Taxes</th>
 				<th>Net Amount</th>
-				<th width="5%"></th>
+				<th width="2%"></th>
 			</tr>
 		</thead>
 	</table>

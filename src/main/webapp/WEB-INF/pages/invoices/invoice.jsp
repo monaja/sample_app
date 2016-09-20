@@ -11,15 +11,7 @@
 <div class="box box-info" id="acct_model">
 
 	<form id="invoice-form" class="form-horizontal">
-		<div class="box-footer">
-
-			<input type="button" class="btn btn-info pull-left"
-				style="margin-right: 10px;" value="Save"> <a
-				href="<c:url value='/protected/setups/accts'/> "
-				class="btn btn-info pull-left">Back</a> <input type="button"
-				class="btn btn-info pull-right" style="margin-right: 10px;"
-				value="Authorize">
-		</div>
+		
 		<div class="box-body">
 			<input type="hidden" name="invoiceId" id="invoice-pk">
 			<div class="form-group">
@@ -42,11 +34,11 @@
 						Tenant</label>
 
 					<div class="col-md-6">
-						<input type="hidden" id="acc-id" name="tenant"
-							rv-value="accounts.accType.accId" /> <input type="hidden"
-							id="acc-name">
-						<div id="accounttypes" class="form-control"
-							select2-url="<c:url value="/protected/setups/selAcctTypes"/>">
+						<input type="hidden" id="ten-id" name="tenant"
+							rv-value="invoice.tenant.tenId" /> <input type="hidden"
+							id="ten-name">
+						<div id="tenant-div" class="form-control"
+							select2-url="<c:url value="/protected/transactions/invoices/activetenants"/>">
 
 						</div>
 					</div>
@@ -55,11 +47,10 @@
 					<label for="noOfUnits" class="control-label col-md-5">Transaction
 						Branch</label>
 					<div class="col-md-7">
-						<input type="hidden" id="acc-id" name="branch"
-							rv-value="accounts.accType.accId" /> <input type="hidden"
-							id="acc-name">
-						<div id="accounttypes" class="form-control"
-							select2-url="<c:url value="/protected/setups/selAcctTypes"/>">
+						<input type="hidden" id="brn-id" name="branch"
+							rv-value="invoice.branch.brnCode" />
+						<div id="brn-div" class="form-control"
+							select2-url="<c:url value="/protected/rental/setups/branches"/>">
 
 						</div>
 					</div>
@@ -140,11 +131,10 @@
 						Currency</label>
 
 					<div class="col-md-6">
-						<input type="hidden" id="acc-id" name="transCurrency"
-							rv-value="accounts.accType.accId" /> <input type="hidden"
-							id="acc-name">
-						<div id="accounttypes" class="form-control"
-							select2-url="<c:url value="/protected/setups/selAcctTypes"/>">
+						<input type="hidden" id="cur-id" name="transCurrency"
+							rv-value="invoice.currency.curCode" /> 
+						<div id="curr-div" class="form-control"
+							select2-url="<c:url value="/protected/transactions/invoices/currencies"/>">
 
 						</div>
 					</div>
@@ -153,11 +143,10 @@
 					<label for="noOfUnits" class="control-label col-md-5">Payment
 						Mode</label>
 					<div class="col-md-7">
-						<input type="hidden" id="acc-id" name="paymentMode"
-							rv-value="accounts.accType.accId" /> <input type="hidden"
-							id="acc-name">
-						<div id="accounttypes" class="form-control"
-							select2-url="<c:url value="/protected/setups/selAcctTypes"/>">
+						<input type="hidden" id="pymt-id" name="paymentMode"
+							rv-value="invoice.paymentmodes.pmId" />
+						<div id="div-paymodes" class="form-control"
+							select2-url="<c:url value="/protected/transactions/invoices/paymentmodes"/>">
 
 						</div>
 					</div>
@@ -216,7 +205,15 @@
 			</div>
 
 		</div>
+<div class="box-footer">
 
+			<input type="button" class="btn btn-info pull-left"
+				style="margin-right: 10px;" value="Save" id="btn-add-invoice"> <a
+				href="<c:url value='/protected/setups/accts'/> "
+				class="btn btn-info pull-left">Back</a> <input type="button"
+				class="btn btn-info pull-right" style="margin-right: 10px;"
+				value="Authorize">
+		</div>
 	</form>
 <div class="box-body">
 	<h4>Invoice Rates</h4>
@@ -224,7 +221,7 @@
 	
 
 		<button type="button" class="btn btn-info" data-toggle="modal"
-			data-target="#invmodal">New</button>
+			data-target="#invmodal">Add</button>
 
 	<hr>
 	<table id="invdet-tbl" class="table table-hover table-bordered">

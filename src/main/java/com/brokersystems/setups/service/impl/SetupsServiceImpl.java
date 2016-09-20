@@ -270,10 +270,10 @@ public class SetupsServiceImpl implements SetupsService {
 	@Override
 	public void defineRentalUnits(RentalUnits unit) throws BadRequestException {
 		RentalStructure struct = unit.getRentalStruct();
-		if (struct.getNoOfUnits() == struct.getRentalUnits().size()) {
-			throw new BadRequestException(
-					"Number of Units Defined in the structure cannot be greater than number of units setup");
-		}
+//		if (struct.getNoOfUnits() == struct.getRentalUnits().size()) {
+//			throw new BadRequestException(
+//					"Number of Units Defined in the structure cannot be greater than number of units setup");
+//		}
 		rentalUnitRepo.save(unit);
 
 	}
