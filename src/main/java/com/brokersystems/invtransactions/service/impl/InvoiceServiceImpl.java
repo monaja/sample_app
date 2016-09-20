@@ -1,9 +1,13 @@
 package com.brokersystems.invtransactions.service.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +23,8 @@ import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
 import com.brokersystems.setup.repository.CurrencyRepository;
 import com.brokersystems.setup.repository.PaymentModeRepo;
+import com.brokersystems.setup.repository.RentalUnitChargeRepo;
+import com.brokersystems.setup.repository.RentalUnitsRepository;
 import com.brokersystems.setup.repository.TenantAllocRepo;
 import com.brokersystems.setup.repository.TenantRepository;
 import com.brokersystems.setups.model.Currencies;
@@ -26,9 +32,13 @@ import com.brokersystems.setups.model.PaymentModes;
 import com.brokersystems.setups.model.QCurrencies;
 import com.brokersystems.setups.model.QOrgBranch;
 import com.brokersystems.setups.model.QPaymentModes;
+import com.brokersystems.setups.model.QRentalUnitCharges;
 import com.brokersystems.setups.model.QTenantDef;
+import com.brokersystems.setups.model.RentalUnitCharges;
+import com.brokersystems.setups.model.RentalUnits;
 import com.brokersystems.setups.model.TenantDef;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.BooleanExpression;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
@@ -44,6 +54,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 	
 	@Autowired
 	private TenantRepository tenantRepo;
+	
+	@Autowired
+	private RentalUnitsRepository unitsRepo;
+	
+	@Autowired
+	private RentalUnitChargeRepo chargesRepo;
 	
 
 	@Override
@@ -120,6 +136,20 @@ public class InvoiceServiceImpl implements InvoiceService {
 		 Optional<TenantInvoice> invoice  = invoiceRepo.findByInvoiceId(invoiceId);
 		 if(!invoice.isPresent()) throw new BadRequestException("The Invoice Does not Exist....");
 		return invoice.get();
+	}
+
+	@Override
+	public List<RentalUnitCharges> getActiveCharges(long unitCode,Date invoiceDate) throws BadRequestException {
+		RentalUnits unit = unitsRepo.findOne(unitCode);
+		List<RentalUnitCharges> list = new ArrayList<>();
+		if(unit ==null) return null;
+		QRentalUnitCharges unitCharges = QRentalUnitCharges.rentalUnitCharges;
+		Date dateTo = new Date();
+		Predicate exp = unitCharges.unit.eq(unit).and(unitCharges.wefDate
+				.between(invoiceDate, dateTo).or(unitCharges.wetDate.between(invoiceDate, dateTo)));
+		Iterable<RentalUnitCharges> charges = chargesRepo.findAll(exp);
+		charges.forEach(list::add);
+		return list;
 	}
 
 }

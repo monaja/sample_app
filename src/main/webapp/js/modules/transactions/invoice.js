@@ -64,6 +64,23 @@ var model = {
 	    }
 	};
 
+function getTenantUnitDetails(id){
+	 $.ajax({
+	        type: 'GET',
+	        url:  'getAllocation/' + id,
+	        dataType: 'json',
+	        async: true,
+	        success: function(result) {
+	        	$("#unit-number").val(result.renunits.unitName+"   "+result.structure.houseName);
+	        },
+	        error: function(jqXHR, textStatus, errorThrown) {
+             bootbox.alert(jqXHR.responseText);
+	        }
+	    });
+	
+}
+
+
 
 function tenantLov(){
 	if($("#tenant-div").filter("div").html() != undefined)
@@ -73,6 +90,8 @@ function tenantLov(){
 	            sort : 'tenantNumber',
 	            change:  function(e, a, v){
 	            	$("#ten-id").val(e.added.tenId);
+	            	var id = e.added.tenId;
+	            	getTenantUnitDetails(id);
 	            },
 	            formatResult : function(a)
 	            {
@@ -262,4 +281,3 @@ function createInvoices(){
 }
 		
 		
-

@@ -1,5 +1,8 @@
 package com.brokersystems.invtransactions.service;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -9,6 +12,7 @@ import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.PaymentModes;
+import com.brokersystems.setups.model.RentalUnitCharges;
 import com.brokersystems.setups.model.TenantDef;
 
 public interface InvoiceService {
@@ -24,6 +28,8 @@ public interface InvoiceService {
 	TenantInvoice createInvoice(TenantInvoice invoice) throws BadRequestException;
 	
 	TenantInvoice findByInvoiceId(Long invoidId) throws BadRequestException;
+	
+	public List<RentalUnitCharges> getActiveCharges(long unitCode,Date invoiceDate)  throws BadRequestException ;
 	
 	
 

@@ -9,26 +9,19 @@
 	src="<c:url value="/js/modules/transactions/invoice.js"/>"></script>
 
 <div class="box box-info" id="acct_model">
-
+     <div class="box-header with-border">
+              <h3 class="box-title">Enter Invoice Details</h3>
+            </div>
+            <div class="box-footer">
+            <input type="button"
+				class="btn btn-info pull-right" style="margin-right: 10px;"
+				value="Authorize">
+				</div>
 	<form id="invoice-form" class="form-horizontal">
 		
 		<div class="box-body">
 			<input type="hidden" name="invoiceId" id="invoice-pk">
 			<div class="form-group">
-				<div class="col-md-6">
-					<label for="brn-id" class="col-md-6 control-label">Invoice
-						Number</label>
-
-					<div class="col-md-6">
-						<input type="text" name=invoiceNumber id="inv-number"
-							class="form-control" placeholder="" readonly>
-					</div>
-				</div>
-				<div class="col-md-6"></div>
-
-
-			</div>
-			<div class="form-group form-required">
 				<div class="col-md-6">
 					<label for="brn-id" class="col-md-6 control-label">Select
 						Tenant</label>
@@ -42,6 +35,29 @@
 
 						</div>
 					</div>
+				</div>
+				<div class="col-md-6">
+				  <label for="brn-id" class="col-md-5 control-label">Unit Details</label>
+
+					<div class="col-md-7">
+						<input type="text"  id="unit-number"
+							class="form-control" readonly>
+					</div>
+				</div>
+
+
+			</div>
+			<div class="form-group form-required">
+				<div class="col-md-6">
+				
+				   <label for="brn-id" class="col-md-6 control-label">Invoice
+						Number</label>
+
+					<div class="col-md-6">
+						<input type="text" name=invoiceNumber" id="inv-number"
+							class="form-control" placeholder="" readonly>
+					</div>
+					
 				</div>
 				<div class="col-md-6">
 					<label for="noOfUnits" class="control-label col-md-5">Transaction
@@ -67,7 +83,7 @@
 					<div class="col-md-6">
 						<div class='input-group date datepicker-input'>
 							<input type='text' class="form-control pull-right" name="invoiceDate"
-								id="dob" />
+								id="dob" required/>
 							<div class="input-group-addon">
 								<span class="glyphicon glyphicon-calendar"></span>
 							</div>
@@ -79,7 +95,7 @@
 						Frequency</label>
 
 					<div class="col-md-7">
-						<select class="form-control" id="sel2" name="frequency">
+						<select class="form-control" id="sel2" name="frequency" required>
 							<option value="">Select Payment Frequency</option>
 							<option value="M">Monthly</option>
 							<option value="Q">Quartely</option>
@@ -101,7 +117,7 @@
 					<div class="col-md-6">
 						<div class='input-group date datepicker-input' id="wef-date">
 							<input type='text' class="form-control pull-right" name="wefDate"
-								 id="from-date"/>
+								 id="from-date" required/>
 							<div class="input-group-addon">
 								<span class="glyphicon glyphicon-calendar"></span>
 							</div>
@@ -114,7 +130,7 @@
 					<div class="col-md-7">
 						<div class='input-group date datepicker-input'>
 							<input type='text' class="form-control pull-right" name="wetDate"
-								id="wet-date" readonly />
+								id="wet-date" readonly required/>
 							<div class="input-group-addon">
 								<span class="glyphicon glyphicon-calendar"></span>
 							</div>
@@ -178,10 +194,10 @@
 					</div>
 				</div>
 				<div class="col-md-6">
-					<label for="brn-id" class="col-md-6 control-label">Total
+					<label for="brn-id" class="col-md-5 control-label">Total
 						Taxes</label>
 
-					<div class="col-md-6">
+					<div class="col-md-7">
 						<p class="form-control-static">0</p>
 					</div>
 
@@ -210,9 +226,7 @@
 			<input type="button" class="btn btn-info pull-left"
 				style="margin-right: 10px;" value="Save" id="btn-add-invoice"> <a
 				href="<c:url value='/protected/setups/accts'/> "
-				class="btn btn-info pull-left">Back</a> <input type="button"
-				class="btn btn-info pull-right" style="margin-right: 10px;"
-				value="Authorize">
+				class="btn btn-info pull-left">Back</a> 
 		</div>
 	</form>
 <div class="box-body">

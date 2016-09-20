@@ -351,7 +351,7 @@ public class SetupsServiceImpl implements SetupsService {
 		}
 
 		QRentalUnitCharges unitCharges = QRentalUnitCharges.rentalUnitCharges;
-		BooleanExpression exp = unitCharges.rateType.eq(charge.getRateType()).and(unitCharges.wefDate
+		BooleanExpression exp = unitCharges.rateType.eq(charge.getRateType()).and(unitCharges.unit.eq(charge.getUnit())).and(unitCharges.wefDate
 				.between(charge.getWefDate(), dateTo).or(unitCharges.wetDate.between(charge.getWefDate(), dateTo)));
 		long size = unitChargeRepo.findAll(exp).spliterator().getExactSizeIfKnown();
 		if (charge.getChargeId() == null) {
