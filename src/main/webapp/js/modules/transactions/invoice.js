@@ -38,18 +38,17 @@ function changeWefDate(){
 	$("#sel2").change(function(){
 		if($("#from-date").val()!=''){
 			var curDate = $("#from-date").val();
-			console.log(curDate);
 			if($("#sel2").val()==='M'){ 
-				  $("#wet-date").val(moment(moment(curDate).add(1, 'month')).format('DD/MM/YYYY'));
+				  $("#wet-date").val(moment(moment(curDate,'DD/MM/YYYY').add(1, 'month')).format('DD/MM/YYYY'));
 				}
 				else if($("#sel2").val()==='Q'){ 
-				  $("#wet-date").val(moment(moment(curDate).add(3, 'month')).format('DD/MM/YYYY'));
+				  $("#wet-date").val(moment(moment(curDate,'DD/MM/YYYY').add(3, 'month')).format('DD/MM/YYYY'));
 				}
 				else if($("#sel2").val()==='S'){ 
-					  $("#wet-date").val(moment(moment(curDate).add(6, 'month')).format('DD/MM/YYYY'));
+					  $("#wet-date").val(moment(moment(curDate,'DD/MM/YYYY').add(6, 'month')).format('DD/MM/YYYY'));
 				}
 				else if($("#sel2").val()==='A'){ 
-					  $("#wet-date").val(moment(moment(curDate).add(12, 'month')).format('DD/MM/YYYY'));
+					  $("#wet-date").val(moment(moment(curDate,'DD/MM/YYYY').add(12, 'month')).format('DD/MM/YYYY'));
 				}
 		}
 	})
