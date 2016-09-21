@@ -21,6 +21,39 @@
 		
 		<div class="box-body">
 			<input type="hidden" name="invoiceId" id="invoice-pk">
+			<div class="form-group form-required">
+				<div class="col-md-6">
+					<label for="brn-id" class="col-md-6 control-label">Transaction
+						Date</label>
+
+					<div class="col-md-6">
+						<div class='input-group date datepicker-input'>
+							<input type='text' class="form-control pull-right" name="invoiceDate"
+								id="inv-date" required/>
+							<div class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<label for="brn-id" class="col-md-5 control-label">Payment
+						Frequency</label>
+
+					<div class="col-md-7">
+						<select class="form-control" id="sel2" name="frequency" required>
+							<option value="">Select Payment Frequency</option>
+							<option value="M">Monthly</option>
+							<option value="Q">Quartely</option>
+							<option value="S">Semi-Annually</option>
+							<option value="A">Annually</option>
+						</select>
+					</div>
+
+				</div>
+
+
+			</div>
 			<div class="form-group">
 				<div class="col-md-6">
 					<label for="brn-id" class="col-md-6 control-label">Select
@@ -75,39 +108,7 @@
 
 
 			</div>
-			<div class="form-group form-required">
-				<div class="col-md-6">
-					<label for="brn-id" class="col-md-6 control-label">Transaction
-						Date</label>
-
-					<div class="col-md-6">
-						<div class='input-group date datepicker-input'>
-							<input type='text' class="form-control pull-right" name="invoiceDate"
-								id="dob" required/>
-							<div class="input-group-addon">
-								<span class="glyphicon glyphicon-calendar"></span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<label for="brn-id" class="col-md-5 control-label">Payment
-						Frequency</label>
-
-					<div class="col-md-7">
-						<select class="form-control" id="sel2" name="frequency" required>
-							<option value="">Select Payment Frequency</option>
-							<option value="M">Monthly</option>
-							<option value="Q">Quartely</option>
-							<option value="S">Semi-Annually</option>
-							<option value="A">Annually</option>
-						</select>
-					</div>
-
-				</div>
-
-
-			</div>
+			
 
 			<div class="form-group">
 				<div class="col-md-6  form-required">
@@ -219,37 +220,19 @@
 
 
 			</div>
+			
+		
 
-		</div>
-<div class="box-footer">
+	</form>
+	<form id="invoice-rates-form">
+     	<div id="rates-div"></div>
+	</form>
+	
+	<div class="box-footer">
 
 			<input type="button" class="btn btn-info pull-left"
 				style="margin-right: 10px;" value="Save" id="btn-add-invoice"> <a
 				href="<c:url value='/protected/setups/accts'/> "
 				class="btn btn-info pull-left">Back</a> 
 		</div>
-	</form>
-<div class="box-body">
-	<h4>Invoice Rates</h4>
-	<div class="spacer"></div>
-	
-
-		<button type="button" class="btn btn-info" data-toggle="modal"
-			data-target="#invmodal">Add</button>
-
-	<hr>
-	<table id="invdet-tbl" class="table table-hover table-bordered">
-		<thead>
-			<tr>
-
-				<th>Rate Type</th>
-				<th>Amount</th>
-				<th>Taxes</th>
-				<th>Net Amount</th>
-				<th width="5%"></th>
-				<th width="5%"></th>
-			</tr>
-		</thead>
-	</table>
-	</div>
 </div>

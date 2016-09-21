@@ -5,6 +5,7 @@ package com.brokersystems.invtransactions.controllers;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -32,6 +33,7 @@ import com.brokersystems.server.exception.BadRequestException;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.PaymentModes;
 import com.brokersystems.setups.model.RentalStructure;
+import com.brokersystems.setups.model.RentalUnitCharges;
 import com.brokersystems.setups.model.TenAllocations;
 import com.brokersystems.setups.model.TenantDef;
 import com.brokersystems.setups.service.SetupsService;
@@ -104,16 +106,18 @@ public class InvoiceController {
 		return new ResponseEntity<TenantInvoice>(created,HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = { "editInvoice/{invoiceId}" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
-	public ResponseEntity<TenantInvoice> editInvoice(@PathVariable Long invoiceId) throws BadRequestException {
-		TenantInvoice created = invService.findByInvoiceId(invoiceId);
-		return new ResponseEntity<TenantInvoice>(created,HttpStatus.OK);
-	}
 	
 	@RequestMapping(value = { "getAllocation/{tenId}" }, method = { org.springframework.web.bind.annotation.RequestMethod.GET })
 	public ResponseEntity<TenAllocations> getActiveAllocation(@PathVariable Long tenId) throws BadRequestException {
 		TenAllocations created = service.getActiveAllocation(tenId);
 		return new ResponseEntity<TenAllocations>(created,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = { "getActiveCharges" }, method = { org.springframework.web.bind.annotation.RequestMethod.GET })
+	public ResponseEntity<List<RentalUnitCharges>> getCurrentUnitCharges(@RequestParam(value = "unitCode", required = false) Long unitCode,
+			@RequestParam(value = "invoiceDate", required = false) Date invoiceDate) throws BadRequestException {
+		List<RentalUnitCharges> charges = invService.getActiveCharges(unitCode,invoiceDate);
+		return new ResponseEntity<List<RentalUnitCharges>>(charges,HttpStatus.OK);
 	}
 
 }

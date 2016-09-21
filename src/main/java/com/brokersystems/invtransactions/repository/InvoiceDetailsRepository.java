@@ -8,4 +8,5 @@ import com.brokersystems.setups.model.AccountDef;
 
 public interface InvoiceDetailsRepository extends  PagingAndSortingRepository<TenantInvoiceDetails, Long>, QueryDslPredicateExecutor<TenantInvoiceDetails> {
 
+		
 }

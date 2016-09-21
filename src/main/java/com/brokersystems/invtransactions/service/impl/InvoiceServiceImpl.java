@@ -140,15 +140,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	public List<RentalUnitCharges> getActiveCharges(long unitCode,Date invoiceDate) throws BadRequestException {
-		RentalUnits unit = unitsRepo.findOne(unitCode);
-		List<RentalUnitCharges> list = new ArrayList<>();
-		if(unit ==null) return null;
-		QRentalUnitCharges unitCharges = QRentalUnitCharges.rentalUnitCharges;
-		Date dateTo = new Date();
-		Predicate exp = unitCharges.unit.eq(unit).and(unitCharges.wefDate
-				.between(invoiceDate, dateTo).or(unitCharges.wetDate.between(invoiceDate, dateTo)));
-		Iterable<RentalUnitCharges> charges = chargesRepo.findAll(exp);
-		charges.forEach(list::add);
+		List<RentalUnitCharges> list = chargesRepo.getActiveUnitCharges(unitCode, invoiceDate);
 		return list;
 	}
 

@@ -64,6 +64,47 @@ var model = {
 	    }
 	};
 
+
+function getActiveCharges(unitId,invoiceDate){
+	$.ajax({
+        type: 'GET',
+        url:  'getActiveCharges',
+        dataType: 'json',
+        data: {"unitCode": unitId,"invoiceDate":invoiceDate},
+        async: true,
+        success: function(result) {
+           
+           var data = '';
+        	for(var i = 0; i < result.length; i++) {
+        	    var obj = result[i];
+        	    data+='<div class="form-group"> '+
+    			' <div class="col-md-6"> '+
+                ' <label for="brn-id" class="col-md-6 control-label">'+obj.rateType.rateType+'</label>  '+
+               '  <div class="input-group col-md-6">  '+
+                   ' <input type="number" name="input_name" class="form-control" aria-label="..." value="'+obj.amount+'">   '+
+                   '  <span class="input-group-addon">  '+
+                     '    <label>  '+
+                      '   <input type="checkbox" aria-label="Over here on the right"> Compute  '+
+                      '   </label>  '+
+                   '  </span>  '+
+               '  </div>  '+
+           '  </div>  '+
+            ' <div class="col-md-6">  '+
+            ' </div>  '+
+    		' </div>';
+        	}
+        	;
+        	
+        	 $("#rates-div").html(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+        	
+        }
+    });
+	
+}
+
+
 function getTenantUnitDetails(id){
 	 $.ajax({
 	        type: 'GET',
@@ -72,6 +113,10 @@ function getTenantUnitDetails(id){
 	        async: true,
 	        success: function(result) {
 	        	$("#unit-number").val(result.renunits.unitName+"   "+result.structure.houseName);
+	        	if($("#inv-date").val()!=''){
+	        		getActiveCharges(result.renunits.renId,$("#inv-date").val());	
+	        	}
+	        	
 	        },
 	        error: function(jqXHR, textStatus, errorThrown) {
              bootbox.alert(jqXHR.responseText);
