@@ -14,6 +14,7 @@ import org.hibernate.action.internal.QueuedOperationCollectionAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -128,6 +129,8 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void defineCurrency(Currencies currency) {
 
 		currRepo.save(currency);
@@ -135,6 +138,8 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void deleteCurrency(Long currCode) {
 		currRepo.delete(currCode);
 
@@ -147,12 +152,16 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void defineCountry(Country country) {
 		countryRepo.save(country);
 
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void deleteCountry(Long couCode) {
 		countryRepo.delete(couCode);
 
@@ -168,12 +177,16 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void defineCounty(County county) {
 		countyRepo.save(county);
 
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void deleteCounty(Long countyCode) {
 		countyRepo.delete(countyCode);
 
@@ -189,11 +202,15 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void defineTown(Town town) {
 		townRepo.save(town);
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void deleteTown(Long townCode) {
 		townRepo.delete(townCode);
 	}
@@ -205,12 +222,16 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void defineRateType(RateTypes rateType) {
 		rateTypeRepo.save(rateType);
 
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void deleteRateType(Long rateTypeCode) {
 		rateTypeRepo.delete(rateTypeCode);
 
@@ -223,12 +244,16 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void defineUnitType(UnitTypes unitType) {
 		unitTypeRepo.save(unitType);
 
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void deleteUnitType(Long unitCode) {
 		unitTypeRepo.delete(unitCode);
 
@@ -255,6 +280,8 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public RentalStructure defineRentalStruct(RentalStructure struct) {
 		RentalStructure s = rentalStructRepo.save(struct);
 		return s;
@@ -262,12 +289,16 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void deleteRentalStruct(Long structId) {
 		rentalStructRepo.delete(structId);
 
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void defineRentalUnits(RentalUnits unit) throws BadRequestException {
 		RentalStructure struct = unit.getRentalStruct();
 //		if (struct.getNoOfUnits() == struct.getRentalUnits().size()) {
@@ -279,6 +310,8 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void deleteRentalUnit(Long unitId) {
 		rentalUnitRepo.delete(unitId);
 
@@ -323,6 +356,8 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void defineRentalCharges(RentalUnitCharges charge) throws BadRequestException {
 		if (charge.isTaxable()) {
 			if (charge.getTaxValue() == null || charge.getTaxValue().compareTo(BigDecimal.ZERO) == 0) {
@@ -381,6 +416,8 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void deleteRentalCharge(Long chargeId) {
 		unitChargeRepo.delete(chargeId);
 
@@ -404,6 +441,8 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void definePaymentMode(PaymentModes mode) throws BadRequestException {
 		if(mode.getPmMaxValue().compareTo(mode.getPmMinValue()) ==-1){
 			throw new BadRequestException("Max Value cannot be less than min Value");
@@ -413,6 +452,8 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void deletePaymentMode(Long pmId) {
 		payRepo.delete(pmId);
 		
@@ -425,6 +466,8 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void defineAccountType(AccountTypes acctypes) throws BadRequestException {
 		if(acctypes.isVatAppli()){
 			if(acctypes.getVatRate()==null || acctypes.getVatRate().compareTo(BigDecimal.ZERO)<=0){
@@ -447,6 +490,8 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void deleteAccountType(Long acctId) {
 		acctypeRepo.delete(acctId);
 	}
@@ -472,11 +517,15 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public AccountDef getAccountDetails(Long acctId) {
        return accountRepo.findOne(acctId);
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void defineAccount(AccountDef account) throws BadRequestException{
 		if(account.getAccountType()==null){
 			throw new BadRequestException("Select Account Type to continue...");
@@ -504,6 +553,8 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void deleteAccount(Long acctId) {
 		accountRepo.delete(acctId);
 		
@@ -528,6 +579,8 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void defineTenant(TenantDef tenant) throws BadRequestException {
 		List<TenAllocations> allocations = new ArrayList<>();
 		if(tenant.getTenId()==null){

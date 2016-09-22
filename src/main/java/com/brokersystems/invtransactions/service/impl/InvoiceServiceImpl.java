@@ -1,5 +1,6 @@
 package com.brokersystems.invtransactions.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,15 +8,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.brokersystems.invtransactions.model.QTenantInvoice;
 import com.brokersystems.invtransactions.model.TenantInvoice;
+import com.brokersystems.invtransactions.model.TenantInvoiceDetails;
+import com.brokersystems.invtransactions.repository.InvoiceDetailsRepository;
 import com.brokersystems.invtransactions.repository.InvoiceRepository;
 import com.brokersystems.invtransactions.service.InvoiceService;
 import com.brokersystems.server.datatables.DataTablesRequest;
@@ -61,6 +68,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Autowired
 	private RentalUnitChargeRepo chargesRepo;
 	
+	@Autowired
+	private InvoiceDetailsRepository invoceDetRepo;
+	
 
 	@Override
 	public DataTablesResult<TenantInvoice> findAllInvoices(DataTablesRequest request) throws IllegalAccessException {
@@ -102,6 +112,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public TenantInvoice createInvoice(TenantInvoice invoice)  throws BadRequestException {
 		if(invoice.getTenant()==null){
 			throw new BadRequestException("Tenant is Mandatory");
@@ -130,6 +142,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 		 return created;
 		
 	}
+	
+	
 
 	@Override
 	public TenantInvoice findByInvoiceId(Long invoiceId) throws BadRequestException {
@@ -142,6 +156,52 @@ public class InvoiceServiceImpl implements InvoiceService {
 	public List<RentalUnitCharges> getActiveCharges(long unitCode,Date invoiceDate) throws BadRequestException {
 		List<RentalUnitCharges> list = chargesRepo.getActiveUnitCharges(unitCode, invoiceDate);
 		return list;
+	}
+
+	@Override
+	@Modifying
+    @Transactional(propagation =Propagation.REQUIRED,readOnly=false)
+	public TenantInvoiceDetails createInvoiceDetails(TenantInvoiceDetails invoiceDet) throws BadRequestException {
+		if(invoiceDet.getAmount().compareTo(BigDecimal.ZERO)<=0){
+			throw new BadRequestException("Invoice Amount cannot be zero");
+		}
+		if(invoiceDet.getCharge()==null){
+			throw new BadRequestException("Invoice Charge is compulsory");
+		}
+		if(invoiceDet.getInvoice()==null){
+			throw new BadRequestException("Invoice is compulsory");
+		}
+		
+		
+		BigDecimal taxValue = BigDecimal.ZERO;
+		if(invoiceDet.getCharge().isTaxable())
+		{
+			String rateType = invoiceDet.getCharge().getTaxRateType();
+			BigDecimal rate = invoiceDet.getCharge().getTaxValue();
+			if(rateType!=null){
+				if("P".equalsIgnoreCase(rateType)){
+					taxValue =  rate.divide(new BigDecimal(100)).multiply(invoiceDet.getAmount());
+				}
+				else
+					taxValue = rate;
+			}
+		}
+		 invoiceDet.setNetAmount(invoiceDet.getAmount().subtract(taxValue));
+		 
+		TenantInvoiceDetails temp = invoceDetRepo.save(invoiceDet);
+		TenantInvoice invoice = temp.getInvoice();
+		BigDecimal grossAmount = BigDecimal.ZERO;
+		if(invoice.getInvAmount()==null){
+		 grossAmount = temp.getAmount();
+		}else
+		  grossAmount = invoice.getInvAmount().add(temp.getAmount());
+		System.out.println("Gross Amount "+grossAmount);
+		invoice.setInvAmount(grossAmount);
+		BigDecimal netValue = grossAmount.subtract(taxValue);
+		 invoice.setTaxAmount(taxValue);
+		 invoice.setNetAmount(netValue);
+		 invoiceRepo.save(invoice);
+		return temp;
 	}
 
 }

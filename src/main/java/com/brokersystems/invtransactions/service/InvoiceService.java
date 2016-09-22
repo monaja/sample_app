@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.brokersystems.invtransactions.model.TenantInvoice;
+import com.brokersystems.invtransactions.model.TenantInvoiceDetails;
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
@@ -30,7 +31,7 @@ public interface InvoiceService {
 	TenantInvoice findByInvoiceId(Long invoidId) throws BadRequestException;
 	
 	public List<RentalUnitCharges> getActiveCharges(long unitCode,Date invoiceDate)  throws BadRequestException ;
-	
-	
+		
+	public TenantInvoiceDetails createInvoiceDetails(TenantInvoiceDetails invoiceDet)  throws BadRequestException;
 
 }

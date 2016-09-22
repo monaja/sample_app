@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.brokersystems.invtransactions.model.TenantInvoice;
+import com.brokersystems.invtransactions.model.TenantInvoiceDetails;
 import com.brokersystems.invtransactions.service.InvoiceService;
 import com.brokersystems.server.datatables.DataTable;
 import com.brokersystems.server.datatables.DataTablesRequest;
@@ -119,5 +120,12 @@ public class InvoiceController {
 		List<RentalUnitCharges> charges = invService.getActiveCharges(unitCode,invoiceDate);
 		return new ResponseEntity<List<RentalUnitCharges>>(charges,HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = { "createInvoiceDetails" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
+	public  ResponseEntity<TenantInvoiceDetails> createInvoiceDetails(TenantInvoiceDetails invDetails) throws BadRequestException {
+		TenantInvoiceDetails inv = invService.createInvoiceDetails(invDetails);
+		return new ResponseEntity<TenantInvoiceDetails>(inv,HttpStatus.OK);
+	}
+	
 
 }

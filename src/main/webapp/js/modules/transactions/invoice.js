@@ -34,8 +34,10 @@ function createInvoice(){
         request.success(function(s){
         	$("#inv-number").val(s.invoiceNumber);
         	$("#invoice-pk").val(s.invoiceId);
+        	$('[id^=ten-id-pk]').val(s.invoiceId);
         	bootbox.alert("Record created/updated Successfully");
 			currValidator.resetForm();
+			saveInvoiceDetails();
         });
         request.error(function(jqXHR, textStatus, errorThrown){
         	bootbox.alert(jqXHR.responseText);
@@ -65,6 +67,21 @@ var model = {
 	};
 
 
+function saveInvoiceDetails(){
+	$("[id^=invoice-rates-form]").each(function(f){
+		var $form = $(this);
+		var data = {};
+		$form.serializeArray().map(function(x){data[x.name] = x.value;});
+		console.log(data);
+		var url = "createInvoiceDetails";
+        var request = $.post(url, data );
+        request.success(function(s){
+        	$form.find("[id^=detail-id-pk]").val(s.detailId);
+        });
+	});
+}
+
+
 function getActiveCharges(unitId,invoiceDate){
 	$.ajax({
         type: 'GET',
@@ -73,35 +90,47 @@ function getActiveCharges(unitId,invoiceDate){
         data: {"unitCode": unitId,"invoiceDate":invoiceDate},
         async: true,
         success: function(result) {
-           
-           var data = '';
+            
+        	$('[id^=invoice-rates-form]').remove();
         	for(var i = 0; i < result.length; i++) {
         	    var obj = result[i];
-        	    data+='<div class="form-group"> '+
-    			' <div class="col-md-6"> '+
+        	    console.log(obj);
+        	
+        	    
+        	   var data=' <form id="invoice-rates-form'+i+'" class="form-horizontal"><div class="form-group"> '+
+    			'<div class="col-md-6"> '+
+    			'<input type="hidden" name="charge" value = "'+obj.chargeId+'"> '+
+    			'<input type="hidden" name="invoice" id="ten-id-pk'+i+'"> '+
+    			'<input type="hidden" name="detailId" id="detail-id-pk'+i+'"> '+
+    			'<input type="hidden" name="rateType" value = "'+obj.rateType.rateId+'"> '+
                 ' <label for="brn-id" class="col-md-6 control-label">'+obj.rateType.rateType+'</label>  '+
                '  <div class="input-group col-md-6">  '+
-                   ' <input type="number" name="input_name" class="form-control" aria-label="..." value="'+obj.amount+'">   '+
-                   '  <span class="input-group-addon">  '+
-                     '    <label>  '+
-                      '   <input type="checkbox" aria-label="Over here on the right"> Compute  '+
-                      '   </label>  '+
-                   '  </span>  '+
+                   ' <input type="text" name="amount" class="form-control" value="'+obj.amount+'" required>   '+
                '  </div>  '+
            '  </div>  '+
             ' <div class="col-md-6">  '+
-            ' </div>  '+
-    		' </div>';
-        	}
-        	;
+            ' </div> '+
+    		' </div></form> ';
+        	   $("#rates-div").append(data);
+        	};
         	
-        	 $("#rates-div").html(data);
+        	$("[id^=invoice-rates-form]").find("input[type=text]").number( true, 2 );
+        	
+        	
+        	
         },
         error: function(jqXHR, textStatus, errorThrown) {
         	
         }
     });
 	
+}
+
+function currencyFormat (num) {
+	if(num)
+    return  num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    else
+    	return null;
 }
 
 

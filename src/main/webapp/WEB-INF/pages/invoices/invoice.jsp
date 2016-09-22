@@ -17,9 +17,10 @@
 				class="btn btn-info pull-right" style="margin-right: 10px;"
 				value="Authorize">
 				</div>
+	<div class="box-body">			
 	<form id="invoice-form" class="form-horizontal">
 		
-		<div class="box-body">
+		
 			<input type="hidden" name="invoiceId" id="invoice-pk">
 			<div class="form-group form-required">
 				<div class="col-md-6">
@@ -220,13 +221,14 @@
 
 
 			</div>
-			
-		
 
 	</form>
-	<form id="invoice-rates-form">
-     	<div id="rates-div"></div>
-	</form>
+	<div id="rates-div">
+     	
+     	  
+    </div>
+	</div>
+	
 	
 	<div class="box-footer">
 

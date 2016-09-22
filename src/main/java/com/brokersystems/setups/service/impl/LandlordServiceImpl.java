@@ -2,7 +2,9 @@ package com.brokersystems.setups.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
@@ -36,6 +38,8 @@ public class LandlordServiceImpl implements LandlordService{
 	}
 
 	@Override
+	@Modifying
+    @Transactional(readOnly=false)
 	public void deleteLandlord(Long tenCode) {
 		tenantRepo.delete(tenCode);
 		
