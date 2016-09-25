@@ -1,6 +1,7 @@
 package com.brokersystems.invtransactions.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.TenantDef;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name="sys_transactions")
@@ -58,11 +60,16 @@ public class Transactions {
 	@Column(name="trans_net_amt",nullable=false)
 	private BigDecimal transNetAmt;
 	
+	@Column(name="trans_settled_amt",nullable=false)
+	private BigDecimal transSettledAmt;
+	
+	
 	@Column(name="trans_authorized")
 	private String authorized;
 	
 	@Column(name="trans_authorized_by")
 	private String authoriedBy;
+	
 
 	public Long getTransId() {
 		return transId;
@@ -167,5 +174,15 @@ public class Transactions {
 	public void setAuthoriedBy(String authoriedBy) {
 		this.authoriedBy = authoriedBy;
 	}
+
+	public BigDecimal getTransSettledAmt() {
+		return transSettledAmt;
+	}
+
+	public void setTransSettledAmt(BigDecimal transSettledAmt) {
+		this.transSettledAmt = transSettledAmt;
+	}
+	
+	
 	
 }

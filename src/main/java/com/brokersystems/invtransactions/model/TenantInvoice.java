@@ -13,7 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.hibernate.annotations.Cascade;
 
 import com.brokersystems.setups.model.AccountTypes;
 import com.brokersystems.setups.model.AuditBaseEntity;
@@ -22,6 +25,8 @@ import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.OrgRegions;
 import com.brokersystems.setups.model.PaymentModes;
 import com.brokersystems.setups.model.TenantDef;
+import com.brokersystems.setups.model.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -33,17 +38,24 @@ public class TenantInvoice extends AuditBaseEntity {
 	@Column(name="invoice_id")
 	private Long invoiceId;
 	
-	@Column(name="invoice_number",nullable=false)
+	@Column(name="invoice_number",nullable=false,unique=true)
 	private String invoiceNumber;
 	
 	@Column(name="invoice_dt",nullable=false)
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date invoiceDate;
 	
 	@Column(name="invoice_wef_date", nullable=false)
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date wefDate;
 	
 	@Column(name="invoice_wet_date",nullable=false)
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date wetDate;
+	
+	@Column(name="invoice_ren_date",nullable=false)
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	private Date renewalDate;
 	
 	@Column(name="invoice_frequency",nullable=false)
 	private String frequency;
@@ -53,22 +65,33 @@ public class TenantInvoice extends AuditBaseEntity {
 	@JoinColumn(name="invoice_ten_id")
 	private TenantDef tenant;
 	
+	@Transient
+	private Long tenantId;
+	
 	
 	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name="invoice_branch_id")
 	private OrgBranch branch;
 	
+	@Transient
+	private Long branchId;
 	
 	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name="invoice_pmode_id")
 	private PaymentModes paymentMode;
 	
+	@Transient
+	private Long payId;
+	
 	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name="invoice_curr_id")
 	private Currencies transCurrency;
+	
+	@Transient
+	private Long currCode;
 	
 	@Column(name="invoice_amount")
 	private BigDecimal invAmount;
@@ -82,9 +105,26 @@ public class TenantInvoice extends AuditBaseEntity {
 	@Column(name="invoice_status")
 	private String status;
 	
+	@Column(name="invoice_trans_type")
+	private String transType;
+	
+	@Column(name="invoice_prev_invoice")
+	private TenantInvoice previousTrans;
+	
+	@Column(name="invoice_current_status")
+	private String currentStatus;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy="invoice")
 	private List<TenantInvoiceDetails> invDetails;
+	
+	@Transient
+	private List<TenantInvoiceDetails> details;
+	
+	@XmlTransient
+	@ManyToOne
+	@JoinColumn(name="invoice_auth_user")
+	private User authBy;
 
 	public Long getInvoiceId() {
 		return invoiceId;
@@ -204,6 +244,86 @@ public class TenantInvoice extends AuditBaseEntity {
 
 	public void setFrequency(String frequency) {
 		this.frequency = frequency;
+	}
+
+	public List<TenantInvoiceDetails> getDetails() {
+		return details;
+	}
+
+	public void setDetails(List<TenantInvoiceDetails> details) {
+		this.details = details;
+	}
+
+	public Long getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(Long tenantId) {
+		this.tenantId = tenantId;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public Long getPayId() {
+		return payId;
+	}
+
+	public void setPayId(Long payId) {
+		this.payId = payId;
+	}
+
+	public Long getCurrCode() {
+		return currCode;
+	}
+
+	public void setCurrCode(Long currCode) {
+		this.currCode = currCode;
+	}
+
+	public User getAuthBy() {
+		return authBy;
+	}
+
+	public void setAuthBy(User authBy) {
+		this.authBy = authBy;
+	}
+
+	public Date getRenewalDate() {
+		return renewalDate;
+	}
+
+	public void setRenewalDate(Date renewalDate) {
+		this.renewalDate = renewalDate;
+	}
+
+	public String getTransType() {
+		return transType;
+	}
+
+	public void setTransType(String transType) {
+		this.transType = transType;
+	}
+
+	public TenantInvoice getPreviousTrans() {
+		return previousTrans;
+	}
+
+	public void setPreviousTrans(TenantInvoice previousTrans) {
+		this.previousTrans = previousTrans;
+	}
+
+	public String getCurrentStatus() {
+		return currentStatus;
+	}
+
+	public void setCurrentStatus(String currentStatus) {
+		this.currentStatus = currentStatus;
 	}
 	
 	

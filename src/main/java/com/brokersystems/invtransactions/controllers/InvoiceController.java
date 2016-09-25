@@ -7,17 +7,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,13 +30,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.brokersystems.invtransactions.model.TenantInvoice;
+import com.brokersystems.invtransactions.model.TenantInvoiceBean;
 import com.brokersystems.invtransactions.model.TenantInvoiceDetails;
 import com.brokersystems.invtransactions.service.InvoiceService;
 import com.brokersystems.server.datatables.DataTable;
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
+import com.brokersystems.setups.model.AccountDef;
 import com.brokersystems.setups.model.Currencies;
+import com.brokersystems.setups.model.ModelHelperForm;
 import com.brokersystems.setups.model.PaymentModes;
 import com.brokersystems.setups.model.RentalStructure;
 import com.brokersystems.setups.model.RentalUnitCharges;
@@ -67,6 +75,13 @@ public class InvoiceController {
 	
 	@RequestMapping(value = "invform", method = RequestMethod.GET)
 	public String tenantForm(Model model) {
+		model.addAttribute("invoiceCode", -2000);
+		return "invoiceform";
+	}
+	
+	@RequestMapping(value = "/editInvoice", method = RequestMethod.POST)
+	public String editRentalForm(@Valid @ModelAttribute ModelHelperForm helperForm, Model model) {
+		model.addAttribute("invoiceCode", helperForm.getId());
 		return "invoiceform";
 	}
 	
@@ -102,9 +117,9 @@ public class InvoiceController {
 	
 	
 	@RequestMapping(value = { "createInvoice" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
-	public ResponseEntity<TenantInvoice> createTenant(TenantInvoice invoice) throws BadRequestException {
-		TenantInvoice created = invService.createInvoice(invoice);
-		return new ResponseEntity<TenantInvoice>(created,HttpStatus.OK);
+	public ResponseEntity<TenantInvoiceBean> createTenant(@RequestBody TenantInvoice invoice) throws BadRequestException {
+		TenantInvoiceBean created = invService.createInvoice(invoice);
+		return new ResponseEntity<TenantInvoiceBean>(created,HttpStatus.OK);
 	}
 	
 	
@@ -121,11 +136,32 @@ public class InvoiceController {
 		return new ResponseEntity<List<RentalUnitCharges>>(charges,HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = { "createInvoiceDetails" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
-	public  ResponseEntity<TenantInvoiceDetails> createInvoiceDetails(TenantInvoiceDetails invDetails) throws BadRequestException {
-		TenantInvoiceDetails inv = invService.createInvoiceDetails(invDetails);
-		return new ResponseEntity<TenantInvoiceDetails>(inv,HttpStatus.OK);
+	@RequestMapping(value = { "invoice/{invoiceId}" }, method = { RequestMethod.GET })
+	@ResponseBody
+	public TenantInvoiceBean queryInvoiceDetails(@PathVariable Long invoiceId) throws BadRequestException {
+		TenantInvoiceBean invoice =  invService.queryInvoice(invoiceId);
+		return invoice;
 	}
 	
+	@RequestMapping(value = { "getNewCharges" }, method = { org.springframework.web.bind.annotation.RequestMethod.GET })
+	public ResponseEntity<List<RentalUnitCharges>> getNewCharges(@RequestParam(value = "unitCode", required = false) Long unitCode,
+			@RequestParam(value = "invoiceDate", required = false) Date invoiceDate,@RequestParam(value = "tencode", required = false) Long tencode) throws BadRequestException {
+		List<RentalUnitCharges> charges = invService.getNewCharges(unitCode,invoiceDate,tencode);
+		return new ResponseEntity<List<RentalUnitCharges>>(charges,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = { "confirmInvoice" }, method = {
+			org.springframework.web.bind.annotation.RequestMethod.GET })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void authInvoice(@RequestParam(value = "invoiceCode", required = false) Long invoiceCode) throws BadRequestException {
+		invService.authorizeInvoice(invoiceCode);
+	}
+	
+	@RequestMapping(value = { "getInvDetails/{invoiceCode}" }, method = { RequestMethod.GET })
+	@ResponseBody
+	public DataTablesResult<TenantInvoiceDetails> getInvoiceDetails(@DataTable DataTablesRequest pageable, @PathVariable Long invoiceCode)
+			throws IllegalAccessException {
+		return invService.findInvoiceDetails(pageable,invoiceCode);
+	}
 
 }

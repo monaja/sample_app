@@ -21,9 +21,10 @@
 				<th>Currency</th>
 				<th>WEF</th>
 				<th>WET</th>
-				<th>Gross Amount</th>
+				<th>Gross</th>
 				<th>Taxes</th>
-				<th>Net Amount</th>
+				<th>Net</th>
+				<th>Status</th>
 				<th width="2%"></th>
 			</tr>
 		</thead>

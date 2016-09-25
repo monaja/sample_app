@@ -45,6 +45,7 @@ public class TenantServiceImpl implements TenantService {
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public TenantDef getTenantDetails(Long tenId) {
 		return tenantRepo.findByTenId(tenId).orElse(new TenantDef());
 	}

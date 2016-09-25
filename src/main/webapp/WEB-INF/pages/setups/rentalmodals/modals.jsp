@@ -143,9 +143,6 @@
 							       <option value="">Select Frequency</option>
 							        <option value="One-Off">One-Off</option>
 								    <option value="Monthly">Monthly</option>
-								    <option value="Quarterly">Quarterly</option>
-								    <option value="Semi-Annually">Semi-Annually</option>
-								    <option value="Annually">Annually</option>
 								  </select>
 							</div>
 						</div>

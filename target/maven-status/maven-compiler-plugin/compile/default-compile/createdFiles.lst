@@ -1,0 +1,6 @@
+com/brokersystems/server/utils/FormatUtils.class
+com/brokersystems/server/utils/UserUtils.class
+com/brokersystems/invtransactions/model/TenantInvoiceDetailsBean.class
+com/brokersystems/utilities/service/UtilitiesService.class
+com/brokersystems/invtransactions/model/TenantInvoiceBean.class
+com/brokersystems/utilities/service/impl/UtilitiesServiceImpl.class

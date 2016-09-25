@@ -24,6 +24,7 @@ public class GeneralExceptionHandler {
 	
 	@ExceptionHandler(Exception.class)
 	    ResponseEntity handle(Exception   e) {
+		    e.printStackTrace();
 	        return new ResponseEntity(e.getCause().getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 	    }
 	
@@ -43,6 +44,7 @@ public class GeneralExceptionHandler {
 
     @ExceptionHandler({DataAccessException.class})
     ResponseEntity databaseError(DataAccessException   e) {
+    	       e.printStackTrace();
     		  return new ResponseEntity(e.getMostSpecificCause().getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     	
     }

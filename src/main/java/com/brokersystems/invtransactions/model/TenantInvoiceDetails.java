@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.brokersystems.setups.model.AuditBaseEntity;
@@ -31,11 +32,18 @@ public class TenantInvoiceDetails extends AuditBaseEntity{
 	@JoinColumn(name="inv_det_charge_id")
 	private RentalUnitCharges charge;
 	
+	@Transient
+	private Long chargeId;
+	
+	
 	@XmlTransient
 	// @JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="inv_det_rate_type",nullable=false)
 	private RateTypes rateType;
+	
+	@Transient
+	private Long rateTyoeId;
 	
 	@Column(name="inv_det_amount", nullable=false)
 	private BigDecimal amount;
@@ -45,7 +53,6 @@ public class TenantInvoiceDetails extends AuditBaseEntity{
 	
 	
 	@XmlTransient
-	 @JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="inv_ten_code")
 	private TenantInvoice invoice;
@@ -96,6 +103,22 @@ public class TenantInvoiceDetails extends AuditBaseEntity{
 
 	public void setNetAmount(BigDecimal netAmount) {
 		this.netAmount = netAmount;
+	}
+
+	public Long getChargeId() {
+		return chargeId;
+	}
+
+	public void setChargeId(Long chargeId) {
+		this.chargeId = chargeId;
+	}
+
+	public Long getRateTyoeId() {
+		return rateTyoeId;
+	}
+
+	public void setRateTyoeId(Long rateTyoeId) {
+		this.rateTyoeId = rateTyoeId;
 	}
 	
 	

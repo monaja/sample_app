@@ -2,9 +2,6 @@ $(function(){
 
 	$(document).ready(function() {
 		
-		if(typeof tenantId!== 'undefined'){
-			console.log("Tenant ID "+tenantId);
-		}
 		createTenantTable();
 		saveRentalDetails();
 		getTenantDetails();

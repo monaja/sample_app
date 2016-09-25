@@ -341,8 +341,8 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	public RentalStructure getStructureDetails(Long rentalId) {
-		Optional<RentalStructure> struct = rentalStructRepo.findByRentalId(rentalId);
-		return struct.orElse(new RentalStructure());
+		RentalStructure struct = rentalStructRepo.findOne(rentalId);
+		return struct;
 	}
 
 	@Override
@@ -399,7 +399,7 @@ public class SetupsServiceImpl implements SetupsService {
 			}
 		}
 		
-		BooleanExpression nullDates = unitCharges.rateType.eq(charge.getRateType()).and(unitCharges.wetDate.isNull());
+		BooleanExpression nullDates = unitCharges.rateType.eq(charge.getRateType()).and(unitCharges.unit.eq(charge.getUnit())).and(unitCharges.wetDate.isNull());
 		
 		Iterator<RentalUnitCharges> it = unitChargeRepo.findAll(nullDates).iterator();
 		while(it.hasNext()){
@@ -573,6 +573,7 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Page<RentalUnits> findRentalUnitsForSelect(Long renId, String paramString, Pageable paramPageable) {
 	
 		return allocRepo.findUnallocatedUnits(renId,paramPageable);
