@@ -21,7 +21,7 @@
            <span class="info-box-number">
            <small class="text-muted">Revise Tenant Invoices Transactions</small>
            </span>
-            <a href="<c:url value="/protected/rental/setups/ratetypes"/>" class="btn btn-primary">Revise</a>
+            <a href="<c:url value="/protected/transactions/invoices/reviseinvoice"/>" class="btn btn-primary">Revise</a>
          </div><!-- /.info-box-content -->
        </div><!-- /.info-box -->
      </div>

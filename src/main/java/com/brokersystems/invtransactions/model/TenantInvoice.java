@@ -108,7 +108,10 @@ public class TenantInvoice extends AuditBaseEntity {
 	@Column(name="invoice_trans_type")
 	private String transType;
 	
-	@Column(name="invoice_prev_invoice")
+	@XmlTransient
+	@ManyToOne
+	@JsonIgnore
+	@JoinColumn(name="invoice_prev_invoice")
 	private TenantInvoice previousTrans;
 	
 	@Column(name="invoice_current_status")

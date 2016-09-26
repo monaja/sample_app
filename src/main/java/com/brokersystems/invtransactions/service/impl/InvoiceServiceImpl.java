@@ -101,15 +101,15 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	public Page<TenantDef> findActiveTenants(String paramString, Pageable paramPageable) {
-		Predicate pred = null;
-		if (paramString == null || StringUtils.isBlank(paramString)) {
-			pred = QTenantDef.tenantDef.isNotNull().and(QTenantDef.tenantDef.status.eq("A"));
-		} else {
-			pred = QTenantDef.tenantDef.fname.containsIgnoreCase(paramString).and(QTenantDef.tenantDef.status.eq("A"))
-					.or(QTenantDef.tenantDef.otherNames.containsIgnoreCase(paramString))
-					.or(QTenantDef.tenantDef.tenantNumber.containsIgnoreCase(paramString));
-		}
-		return tenantRepo.findAll(pred, paramPageable);
+//		Predicate pred = null;
+//		if (paramString == null || StringUtils.isBlank(paramString)) {
+//			pred = QTenantDef.tenantDef.isNotNull().and(QTenantDef.tenantDef.status.eq("A"));
+//		} else {
+//			pred = QTenantDef.tenantDef.fname.containsIgnoreCase(paramString).and(QTenantDef.tenantDef.status.eq("A"))
+//					.or(QTenantDef.tenantDef.otherNames.containsIgnoreCase(paramString))
+//					.or(QTenantDef.tenantDef.tenantNumber.containsIgnoreCase(paramString));
+//		}
+		return invoiceRepo.findTenantsWithoutContracts(paramString, paramPageable);
 	}
 
 	@Override
@@ -159,14 +159,16 @@ public class InvoiceServiceImpl implements InvoiceService {
 		if (invoice.getWefDate() == null) {
 			throw new BadRequestException("Invoice Date From is Mandatory");
 		}
+		if(invoice.getInvoiceId()==null){
+	      
+			Long count = invoiceRepo.getActiveTenancyCount(invoice.getTenantId());
+			
+			if(count > 0){
+				throw new BadRequestException("An Existing Invoice for the tenant for the invoice period exists....");
+			}
+		}
 		
 		if(invoice.getInvoiceNumber()==null){
-          
-		Long count = invoiceRepo.getActiveTenancyCount(invoice.getTenantId());
-		
-		if(count > 0){
-			throw new BadRequestException("An Existing Invoice for the tenant for the invoice period exists....");
-		}
 		
 		final String invNumber = String.format("%05d", invoiceRepo.count() + 1);
 		invoice.setInvoiceNumber("INV" + invNumber);
@@ -312,9 +314,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 	public Long getCalculateRate(String frequency) throws BadRequestException{
 		if(frequency==null) throw new BadRequestException("Frequency cannot be null");
 		if("M".equalsIgnoreCase(frequency)) return 1l;
-		else if("Q".equalsIgnoreCase(frequency)) return 3l;
-		else if("S".equalsIgnoreCase(frequency)) return 6l;
-		else if("A".equalsIgnoreCase(frequency)) return 12l;
+		else if("Q".equalsIgnoreCase(frequency)) return 3L;
+		else if("S".equalsIgnoreCase(frequency)) return 6L;
+		else if("A".equalsIgnoreCase(frequency)) return 12L;
 		return null;
 	}
 
@@ -371,6 +373,36 @@ public class InvoiceServiceImpl implements InvoiceService {
 	     Page<TenantInvoiceDetails> page = invoceDetRepo.findAll(pred, request);
 		 return new DataTablesResult(request, page);
 	}
+
+	@Override
+	public DataTablesResult<TenantInvoice> findActiveInvoices(DataTablesRequest request, String invoiceNumber,
+			String tenantName) throws IllegalAccessException {
+		QTenantDef tenant = QTenantInvoice.tenantInvoice.tenant;
+		BooleanExpression pred = null;
+		if (tenantName == null || StringUtils.isBlank(tenantName)) {
+			pred = tenant.isNotNull();
+		} else {
+			pred = tenant.fname.containsIgnoreCase(tenantName).or(tenant.otherNames.containsIgnoreCase(tenantName));
+		}
+		
+		if (invoiceNumber == null || StringUtils.isBlank(invoiceNumber)) {
+			if(pred!=null)
+			pred = pred.or(QTenantInvoice.tenantInvoice.invoiceNumber.isNotNull());
+			else
+			  pred = QTenantInvoice.tenantInvoice.invoiceNumber.isNotNull();
+		} else {
+			if(pred!=null)
+			pred = pred.or(QTenantInvoice.tenantInvoice.invoiceNumber.containsIgnoreCase(invoiceNumber).or( QTenantInvoice.tenantInvoice.invoiceNumber.containsIgnoreCase(invoiceNumber)));
+			else
+				pred = QTenantInvoice.tenantInvoice.invoiceNumber.containsIgnoreCase(invoiceNumber).or( QTenantInvoice.tenantInvoice.invoiceNumber.containsIgnoreCase(invoiceNumber));
+		}
+		 Page<TenantInvoice> page = invoiceRepo.findAll(pred, request);
+		 return new DataTablesResult(request, page);
+	}
+
+	
+
+
 	
 	
 

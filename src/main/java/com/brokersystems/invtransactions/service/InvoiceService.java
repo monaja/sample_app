@@ -42,5 +42,7 @@ public interface InvoiceService {
 	void authorizeInvoice(Long invoiceId) throws BadRequestException;
 	
 	DataTablesResult<TenantInvoiceDetails> findInvoiceDetails(DataTablesRequest request,Long invoiceCode) throws IllegalAccessException;
+	
+	DataTablesResult<TenantInvoice> findActiveInvoices(DataTablesRequest request,String invoiceNumber,String tenantName) throws IllegalAccessException;
 
 }

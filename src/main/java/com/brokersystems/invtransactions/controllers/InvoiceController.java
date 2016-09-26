@@ -2,7 +2,6 @@ package com.brokersystems.invtransactions.controllers;
 
 
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -37,11 +35,9 @@ import com.brokersystems.server.datatables.DataTable;
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
-import com.brokersystems.setups.model.AccountDef;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.ModelHelperForm;
 import com.brokersystems.setups.model.PaymentModes;
-import com.brokersystems.setups.model.RentalStructure;
 import com.brokersystems.setups.model.RentalUnitCharges;
 import com.brokersystems.setups.model.TenAllocations;
 import com.brokersystems.setups.model.TenantDef;
@@ -74,9 +70,15 @@ public class InvoiceController {
 	
 	
 	@RequestMapping(value = "invform", method = RequestMethod.GET)
-	public String tenantForm(Model model) {
+	public String invoicehome(Model model) {
 		model.addAttribute("invoiceCode", -2000);
 		return "invoiceform";
+	}
+	
+	@RequestMapping(value = "reviseinvoice", method = RequestMethod.GET)
+	public String reviseinvoice(Model model) {
+		//model.addAttribute("invoiceCode", -2000);
+		return "reviseinvoice";
 	}
 	
 	@RequestMapping(value = "/editInvoice", method = RequestMethod.POST)
@@ -162,6 +164,14 @@ public class InvoiceController {
 	public DataTablesResult<TenantInvoiceDetails> getInvoiceDetails(@DataTable DataTablesRequest pageable, @PathVariable Long invoiceCode)
 			throws IllegalAccessException {
 		return invService.findInvoiceDetails(pageable,invoiceCode);
+	}
+	
+	@RequestMapping(value = { "revisionInvoices" }, method = { RequestMethod.GET })
+	@ResponseBody
+	public DataTablesResult<TenantInvoice> getRevisionInvoices(@DataTable DataTablesRequest pageable, @RequestParam(value = "invoiceNumber", required = false) String invoiceNumber,
+			@RequestParam(value = "tenantName", required = false) String tenantName)
+			throws IllegalAccessException {
+		return invService.findActiveInvoices(pageable,invoiceNumber,tenantName);
 	}
 
 }

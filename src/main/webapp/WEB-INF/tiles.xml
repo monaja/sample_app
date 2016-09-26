@@ -124,6 +124,11 @@
         <put-attribute name="body" value="/WEB-INF/pages/invoices/invoice.jsp" />  
     </definition>
     
+     <definition name="reviseinvoice" extends="base.definition">  
+        <put-attribute name="title" value="Invoice Details" />  
+        <put-attribute name="body" value="/WEB-INF/pages/invoices/reviseinvoice.jsp" />  
+    </definition>
+    
     <definition name="tentrans" extends="base.definition">  
         <put-attribute name="title" value="Tenant Transactions" />  
         <put-attribute name="body" value="/WEB-INF/pages/submenus/transactionscreen.jsp" />  
