@@ -43,6 +43,7 @@ public interface InvoiceService {
 	
 	DataTablesResult<TenantInvoiceDetails> findInvoiceDetails(DataTablesRequest request,Long invoiceCode) throws IllegalAccessException;
 	
-	DataTablesResult<TenantInvoice> findActiveInvoices(DataTablesRequest request,String invoiceNumber,String tenantName) throws IllegalAccessException;
+	public DataTablesResult<TenantInvoice> findActiveInvoices(DataTablesRequest request, String invoiceNumber,
+			String firstName,String otherNames) throws IllegalAccessException;
 
 }

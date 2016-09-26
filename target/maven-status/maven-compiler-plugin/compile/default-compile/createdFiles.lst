@@ -1,7 +1,4 @@
-com\brokersystems\utilities\service\impl\UtilitiesServiceImpl.class
-com\brokersystems\invtransactions\model\QReceiptTrans.class
-com\brokersystems\server\utils\UserUtils.class
-com\brokersystems\server\utils\FormatUtils.class
-com\brokersystems\utilities\service\UtilitiesService.class
-com\brokersystems\invtransactions\model\TenantInvoiceBean.class
-com\brokersystems\invtransactions\model\TenantInvoiceDetailsBean.class
+com/brokersystems/invtransactions/controllers/ReceiptController.class
+com/brokersystems/invtransactions/model/ReceiptTrans.class
+com/brokersystems/invtransactions/repository/ReceiptRepository.class
+com/brokersystems/invtransactions/model/QReceiptTrans.class

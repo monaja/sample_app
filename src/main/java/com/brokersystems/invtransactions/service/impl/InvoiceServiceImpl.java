@@ -100,26 +100,20 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Page<TenantDef> findActiveTenants(String paramString, Pageable paramPageable) {
-//		Predicate pred = null;
-//		if (paramString == null || StringUtils.isBlank(paramString)) {
-//			pred = QTenantDef.tenantDef.isNotNull().and(QTenantDef.tenantDef.status.eq("A"));
-//		} else {
-//			pred = QTenantDef.tenantDef.fname.containsIgnoreCase(paramString).and(QTenantDef.tenantDef.status.eq("A"))
-//					.or(QTenantDef.tenantDef.otherNames.containsIgnoreCase(paramString))
-//					.or(QTenantDef.tenantDef.tenantNumber.containsIgnoreCase(paramString));
-//		}
 		return invoiceRepo.findTenantsWithoutContracts(paramString, paramPageable);
 	}
 
 	@Override
 	public Page<Currencies> findCurrencyForSelect(String paramString, Pageable paramPageable) {
-		Predicate pred = QCurrencies.currencies.enabled.eq(true);
+		Predicate pred = null;
 		if (paramString == null || StringUtils.isBlank(paramString)) {
-			pred = QCurrencies.currencies.isNotNull();
+			pred = QCurrencies.currencies.enabled.eq(true).and(QCurrencies.currencies.isNotNull());
 		} else {
-			pred = QCurrencies.currencies.curName.containsIgnoreCase(paramString);
+			pred = QCurrencies.currencies.enabled.eq(true).and(QCurrencies.currencies.curName.containsIgnoreCase(paramString));
 		}
+		
 		return currencyRepo.findAll(pred, paramPageable);
 	}
 
@@ -376,27 +370,41 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	public DataTablesResult<TenantInvoice> findActiveInvoices(DataTablesRequest request, String invoiceNumber,
-			String tenantName) throws IllegalAccessException {
+			String firstName,String otherNames) throws IllegalAccessException {
 		QTenantDef tenant = QTenantInvoice.tenantInvoice.tenant;
-		BooleanExpression pred = null;
-		if (tenantName == null || StringUtils.isBlank(tenantName)) {
-			pred = tenant.isNotNull();
-		} else {
-			pred = tenant.fname.containsIgnoreCase(tenantName).or(tenant.otherNames.containsIgnoreCase(tenantName));
+		Predicate pred1 = null;
+		if (firstName == null || StringUtils.isBlank(firstName)) {
+			firstName = "";
+		}
+		pred1 = tenant.fname.containsIgnoreCase(firstName);
+		
+		if (otherNames == null || StringUtils.isBlank(otherNames)) {
+			otherNames = "";
 		}
 		
+		pred1 = tenant.fname.containsIgnoreCase(firstName).and(tenant.otherNames.containsIgnoreCase(otherNames));
+		
 		if (invoiceNumber == null || StringUtils.isBlank(invoiceNumber)) {
-			if(pred!=null)
-			pred = pred.or(QTenantInvoice.tenantInvoice.invoiceNumber.isNotNull());
-			else
-			  pred = QTenantInvoice.tenantInvoice.invoiceNumber.isNotNull();
-		} else {
-			if(pred!=null)
-			pred = pred.or(QTenantInvoice.tenantInvoice.invoiceNumber.containsIgnoreCase(invoiceNumber).or( QTenantInvoice.tenantInvoice.invoiceNumber.containsIgnoreCase(invoiceNumber)));
-			else
-				pred = QTenantInvoice.tenantInvoice.invoiceNumber.containsIgnoreCase(invoiceNumber).or( QTenantInvoice.tenantInvoice.invoiceNumber.containsIgnoreCase(invoiceNumber));
+			invoiceNumber = "";
 		}
-		 Page<TenantInvoice> page = invoiceRepo.findAll(pred, request);
+		
+		pred1 = QTenantInvoice.tenantInvoice.currentStatus.eq("A").and(QTenantInvoice.tenantInvoice.invoiceNumber.containsIgnoreCase(invoiceNumber)).and(tenant.fname.containsIgnoreCase(firstName).and(tenant.otherNames.containsIgnoreCase(otherNames)));
+		
+//		if (invoiceNumber == null || StringUtils.isBlank(invoiceNumber)) {
+//			if(pred!=null)
+//			pred = QTenantInvoice.tenantInvoice.currentStatus.eq("A").and(QTenantInvoice.tenantInvoice.invoiceNumber.isNotNull());
+//			else
+//			  pred = QTenantInvoice.tenantInvoice.invoiceNumber.isNotNull();
+//		} else {
+//			if(pred!=null)
+//			pred = QTenantInvoice.tenantInvoice.currentStatus.eq("A").and(QTenantInvoice.tenantInvoice.invoiceNumber.containsIgnoreCase(invoiceNumber));
+//			else
+//				pred = QTenantInvoice.tenantInvoice.invoiceNumber.containsIgnoreCase(invoiceNumber);
+//		}
+		
+		
+		
+		 Page<TenantInvoice> page = invoiceRepo.findAll(pred1, request);
 		 return new DataTablesResult(request, page);
 	}
 

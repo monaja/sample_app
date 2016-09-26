@@ -169,9 +169,9 @@ public class InvoiceController {
 	@RequestMapping(value = { "revisionInvoices" }, method = { RequestMethod.GET })
 	@ResponseBody
 	public DataTablesResult<TenantInvoice> getRevisionInvoices(@DataTable DataTablesRequest pageable, @RequestParam(value = "invoiceNumber", required = false) String invoiceNumber,
-			@RequestParam(value = "tenantName", required = false) String tenantName)
+			@RequestParam(value = "firstName", required = false) String firstName,@RequestParam(value = "otherNames", required = false) String otherNames)
 			throws IllegalAccessException {
-		return invService.findActiveInvoices(pageable,invoiceNumber,tenantName);
+		return invService.findActiveInvoices(pageable,invoiceNumber,firstName,otherNames);
 	}
 
 }
