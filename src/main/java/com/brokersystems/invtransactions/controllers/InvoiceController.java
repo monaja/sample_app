@@ -2,6 +2,8 @@ package com.brokersystems.invtransactions.controllers;
 
 
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.brokersystems.invtransactions.model.RevisionForm;
 import com.brokersystems.invtransactions.model.TenantInvoice;
 import com.brokersystems.invtransactions.model.TenantInvoiceBean;
 import com.brokersystems.invtransactions.model.TenantInvoiceDetails;
@@ -172,6 +175,14 @@ public class InvoiceController {
 			@RequestParam(value = "firstName", required = false) String firstName,@RequestParam(value = "otherNames", required = false) String otherNames)
 			throws IllegalAccessException {
 		return invService.findActiveInvoices(pageable,invoiceNumber,firstName,otherNames);
+	}
+	
+	@RequestMapping(value = { "reviseInvoice" }, method = {org.springframework.web.bind.annotation.RequestMethod.POST })
+	public String reviseInvoice(@Valid @ModelAttribute RevisionForm revision, Model model) throws BadRequestException, InvocationTargetException, IllegalAccessException {
+		
+		Long id = invService.reviseTransaction(revision);
+		model.addAttribute("invoiceCode", id);
+         return "invoiceform";
 	}
 
 }

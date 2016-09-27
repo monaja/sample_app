@@ -41,6 +41,9 @@ public class TenantInvoice extends AuditBaseEntity {
 	@Column(name="invoice_number",nullable=false,unique=true)
 	private String invoiceNumber;
 	
+	@Column(name="invoice_rev_number",nullable=false,unique=true)
+	private String revisionNumber;
+	
 	@Column(name="invoice_dt",nullable=false)
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date invoiceDate;
@@ -107,6 +110,9 @@ public class TenantInvoice extends AuditBaseEntity {
 	
 	@Column(name="invoice_trans_type")
 	private String transType;
+	
+	@Column(name="invoice_install_amount")
+	private BigDecimal installmentAmount;
 	
 	@XmlTransient
 	@ManyToOne
@@ -327,6 +333,22 @@ public class TenantInvoice extends AuditBaseEntity {
 
 	public void setCurrentStatus(String currentStatus) {
 		this.currentStatus = currentStatus;
+	}
+
+	public BigDecimal getInstallmentAmount() {
+		return installmentAmount;
+	}
+
+	public void setInstallmentAmount(BigDecimal installmentAmount) {
+		this.installmentAmount = installmentAmount;
+	}
+
+	public String getRevisionNumber() {
+		return revisionNumber;
+	}
+
+	public void setRevisionNumber(String revisionNumber) {
+		this.revisionNumber = revisionNumber;
 	}
 	
 	

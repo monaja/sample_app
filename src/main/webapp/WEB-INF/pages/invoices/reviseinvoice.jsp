@@ -9,14 +9,15 @@
             </div>
 <div class="box-body">
   
-  <form id="revise-form" class="form-horizontal">
+  <form:form  class="form-horizontal" action="reviseInvoice">
       <div class="form-group form-required">
 				<div class="col-md-6">
 					<label for="brn-id" class="col-md-6 control-label">Select an Invoice</label>
 
 					<div class="col-md-6">
 						<div class='input-group'>
-							<input type='text' class="form-control pull-right" name="inv-number"
+						    <input type="hidden" id="invoice-pk" name="invoiceId">
+							<input type='text' class="form-control pull-right"
 								id="inv-number" required readonly/>
 							<div class="input-group-addon">
 								<span class="glyphicon glyphicon-chevron-down" id="btn-show-invoice"></span>
@@ -31,8 +32,54 @@
 
 
 			</div>
+			 <div class="form-group form-required">
+				<div class="col-md-6">
+					<label for="brn-id" class="col-md-6 control-label">Type of Revision</label>
+
+					<div class="col-md-6">
+						<select class="form-control" id="rev-type" name="revisionType"  required>
+							<option value="">Select Revision Type</option>
+							<option value="RV">Revision of Terms</option>
+							<option value="CN">Cancellation of Contract</option>
+							<option value="CO">Contra the Contract</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-6">
+					
+
+				</div>
+
+
+			</div>
+			<div class="form-group form-required">
+				<div class="col-md-6">
+					<label for="brn-id" class="col-md-6 control-label">Effective Date</label>
+
+					<div class="col-md-6">
+						<div class='input-group date datepicker-input' id="inv-date-grp">
+							<input type='text' class="form-control pull-right" name="effectiveDate"
+								id="eff-date" required/>
+							<div class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					
+
+				</div>
+
+
+			</div>
+			
+			<div class="box-footer">
+			   <input type="submit" class="btn btn-info pull-left"
+				style="margin-right: 10px;" value="Next"> 
+			</div>
   
-  </form>
+  </form:form>
   
 	<div class="spacer"></div>
 	
@@ -44,10 +91,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+					
 					<h4 class="modal-title" id="invoiceModalLabel">
 						Select an Invoice
 					</h4>
@@ -109,7 +153,7 @@
 	</table>
 				</div>
 				<div class="modal-footer">
-					<button data-loading-text="Saving..." id="saveNewInvoice"
+					<button data-loading-text="Saving..." id="selectInvoice"
 						type="button" class="btn btn-primary">
 						OK
 					</button>

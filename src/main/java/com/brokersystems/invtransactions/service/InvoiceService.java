@@ -1,11 +1,13 @@
 package com.brokersystems.invtransactions.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.brokersystems.invtransactions.model.RevisionForm;
 import com.brokersystems.invtransactions.model.TenantInvoice;
 import com.brokersystems.invtransactions.model.TenantInvoiceBean;
 import com.brokersystems.invtransactions.model.TenantInvoiceDetails;
@@ -45,5 +47,7 @@ public interface InvoiceService {
 	
 	public DataTablesResult<TenantInvoice> findActiveInvoices(DataTablesRequest request, String invoiceNumber,
 			String firstName,String otherNames) throws IllegalAccessException;
+
+	Long reviseTransaction(RevisionForm revisionForm)  throws BadRequestException,InvocationTargetException,IllegalAccessException;
 
 }

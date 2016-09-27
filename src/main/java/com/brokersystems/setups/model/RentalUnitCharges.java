@@ -63,6 +63,7 @@ public class RentalUnitCharges extends AuditBaseEntity {
 	@Column(name="charge_tax_value")
 	private BigDecimal taxValue;
 	
+	
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	@Column(name="charge_wef", nullable=false)
@@ -72,6 +73,9 @@ public class RentalUnitCharges extends AuditBaseEntity {
 	@Temporal(TemporalType.DATE)
 	@Column(name="charge_wet")
 	private Date wetDate;
+	
+	@Column(name="charge_refundable")
+	private boolean refundable;
 
 	public Long getChargeId() {
 		return chargeId;
@@ -159,6 +163,14 @@ public class RentalUnitCharges extends AuditBaseEntity {
 
 	public void setWetDate(Date wetDate) {
 		this.wetDate = wetDate;
+	}
+
+	public boolean isRefundable() {
+		return refundable;
+	}
+
+	public void setRefundable(boolean refundable) {
+		this.refundable = refundable;
 	}
 	
 	

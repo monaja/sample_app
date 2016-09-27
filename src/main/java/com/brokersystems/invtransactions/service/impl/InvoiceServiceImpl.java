@@ -1,5 +1,6 @@
 package com.brokersystems.invtransactions.service.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
@@ -10,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.brokersystems.invtransactions.model.QTenantInvoice;
 import com.brokersystems.invtransactions.model.QTenantInvoiceDetails;
+import com.brokersystems.invtransactions.model.RevisionForm;
 import com.brokersystems.invtransactions.model.TenantInvoice;
 import com.brokersystems.invtransactions.model.TenantInvoiceBean;
 import com.brokersystems.invtransactions.model.TenantInvoiceDetails;
@@ -166,6 +169,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		
 		final String invNumber = String.format("%05d", invoiceRepo.count() + 1);
 		invoice.setInvoiceNumber("INV" + invNumber);
+		invoice.setRevisionNumber("INV" +invNumber+"/0");
 		}
 		invoice.setStatus("D");
 		invoice.setTransType("NT");
@@ -388,24 +392,44 @@ public class InvoiceServiceImpl implements InvoiceService {
 			invoiceNumber = "";
 		}
 		
-		pred1 = QTenantInvoice.tenantInvoice.currentStatus.eq("A").and(QTenantInvoice.tenantInvoice.invoiceNumber.containsIgnoreCase(invoiceNumber)).and(tenant.fname.containsIgnoreCase(firstName).and(tenant.otherNames.containsIgnoreCase(otherNames)));
-		
-//		if (invoiceNumber == null || StringUtils.isBlank(invoiceNumber)) {
-//			if(pred!=null)
-//			pred = QTenantInvoice.tenantInvoice.currentStatus.eq("A").and(QTenantInvoice.tenantInvoice.invoiceNumber.isNotNull());
-//			else
-//			  pred = QTenantInvoice.tenantInvoice.invoiceNumber.isNotNull();
-//		} else {
-//			if(pred!=null)
-//			pred = QTenantInvoice.tenantInvoice.currentStatus.eq("A").and(QTenantInvoice.tenantInvoice.invoiceNumber.containsIgnoreCase(invoiceNumber));
-//			else
-//				pred = QTenantInvoice.tenantInvoice.invoiceNumber.containsIgnoreCase(invoiceNumber);
-//		}
-		
-		
-		
+		pred1 = QTenantInvoice.tenantInvoice.currentStatus.eq("A").and(QTenantInvoice.tenantInvoice.invoiceNumber.containsIgnoreCase(invoiceNumber)).and(tenant.fname.containsIgnoreCase(firstName).and(tenant.otherNames.containsIgnoreCase(otherNames)));	
 		 Page<TenantInvoice> page = invoiceRepo.findAll(pred1, request);
 		 return new DataTablesResult(request, page);
+	}
+
+	@Override
+	@Modifying
+	@Transactional(readOnly = false)
+	public Long reviseTransaction(RevisionForm revisionForm)  throws BadRequestException, InvocationTargetException, IllegalAccessException{
+		if(revisionForm.getInvoiceId()==null || revisionForm.getInvoiceId()==null)
+			throw new BadRequestException("Invoice to Revise cannot be Empty....");
+		
+		TenantInvoice invoice = invoiceRepo.findOne(revisionForm.getInvoiceId());
+		
+		List<TenantInvoiceDetails> details = invoice.getInvDetails();
+		
+		if(invoice==null) throw new BadRequestException("Invoice does not exist in the system..Select a valid invoice");
+		
+		TenantInvoice destination = new TenantInvoice();
+		BeanUtils.copyProperties(destination, invoice);
+		if("RV".equalsIgnoreCase(revisionForm.getRevisionType()))
+		destination.setTransType("RV");
+		destination.setPreviousTrans(invoice);
+		Long count = invoiceRepo.count(QTenantInvoice.tenantInvoice.invoiceNumber.eq(invoice.getInvoiceNumber()));
+		destination.setInvoiceId(null);
+		destination.setCurrentStatus("D");
+		destination.setDetails(details);
+		destination.setStatus("D");
+		
+		destination.setRevisionNumber(invoice.getInvoiceNumber()+"/"+count);
+		destination.setWefDate(revisionForm.getEffectiveDate());
+		Date wetDate = FormatUtils.addDays(FormatUtils.addMonths(revisionForm.getEffectiveDate(), FormatUtils.calculateFrequencyRate(invoice.getFrequency())),-1);
+		destination.setWetDate(wetDate);
+		destination.setAuthBy(null);
+		TenantInvoice saved =invoiceRepo.save(destination);
+		
+		return saved.getInvoiceId();	
+		
 	}
 
 	

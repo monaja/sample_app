@@ -552,16 +552,16 @@ function changeWefDate(){
 		console.log("here..");
 		if($("#pay-freq").val()!=''){
 			if($("#pay-freq").val()==='M'){ 
-			  $("#wet-date").val(moment(moment(curDate).add(1, 'month')).format('DD/MM/YYYY'));
+			  $("#wet-date").val(moment(moment(curDate).add(1, 'month').subtract(1, "days")).format('DD/MM/YYYY'));
 			}
 			else if($("#pay-freq").val()==='Q'){ 
-			  $("#wet-date").val(moment(moment(curDate).add(3, 'month')).format('DD/MM/YYYY'));
+			  $("#wet-date").val(moment(moment(curDate).add(3, 'month').subtract(1, "days")).format('DD/MM/YYYY'));
 			}
 			else if($("#pay-freq").val()==='S'){ 
-				  $("#wet-date").val(moment(moment(curDate).add(6, 'month')).format('DD/MM/YYYY'));
+				  $("#wet-date").val(moment(moment(curDate).add(6, 'month').subtract(1, "days")).format('DD/MM/YYYY'));
 			}
 			else if($("#pay-freq").val()==='A'){ 
-				  $("#wet-date").val(moment(moment(curDate).add(12, 'month')).format('DD/MM/YYYY'));
+				  $("#wet-date").val(moment(moment(curDate).add(12, 'month').subtract(1, "days")).format('DD/MM/YYYY'));
 			}
 		}
 	});
@@ -577,16 +577,16 @@ function changeWefDate(){
 		if($("#from-date").val()!=''){
 			var curDate = $("#from-date").val();
 			if($("#pay-freq").val()==='M'){ 
-				  $("#wet-date").val(moment(moment(curDate,'DD/MM/YYYY').add(1, 'month')).format('DD/MM/YYYY'));
+				  $("#wet-date").val(moment(moment(curDate,'DD/MM/YYYY').add(1, 'month').subtract(1, "days")).format('DD/MM/YYYY'));
 				}
 				else if($("#pay-freq").val()==='Q'){ 
-				  $("#wet-date").val(moment(moment(curDate,'DD/MM/YYYY').add(3, 'month')).format('DD/MM/YYYY'));
+				  $("#wet-date").val(moment(moment(curDate,'DD/MM/YYYY').add(3, 'month').subtract(1, "days")).format('DD/MM/YYYY'));
 				}
 				else if($("#pay-freq").val()==='S'){ 
-					  $("#wet-date").val(moment(moment(curDate,'DD/MM/YYYY').add(6, 'month')).format('DD/MM/YYYY'));
+					  $("#wet-date").val(moment(moment(curDate,'DD/MM/YYYY').add(6, 'month').subtract(1, "days")).format('DD/MM/YYYY'));
 				}
 				else if($("#pay-freq").val()==='A'){ 
-					  $("#wet-date").val(moment(moment(curDate,'DD/MM/YYYY').add(12, 'month')).format('DD/MM/YYYY'));
+					  $("#wet-date").val(moment(moment(curDate,'DD/MM/YYYY').add(12, 'month').subtract(1, "days")).format('DD/MM/YYYY'));
 				}
 		}
 	})

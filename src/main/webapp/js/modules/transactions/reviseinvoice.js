@@ -6,9 +6,59 @@ $(function(){
 		
 		createInvoices();
 		loadInvoiceModal();
+		confirmSelectedInvoice();
+		
+		$(".datepicker-input").each(function() {
+		    $(this).datetimepicker({
+                format: 'DD/MM/YYYY'
+            });
+		    
+		});
+		
 	});
 });
 
+function revisionTrans(){
+	var $revForm= $('#revise-form');
+	var validator = $revForm.validate();
+	
+	 
+	 $('#btn-revise-invoice').click(function(){
+		 if (!$revForm.valid()) {
+				return;
+			}
+			//var $btn = $(this).button('Saving');
+			var data = {};
+			$revForm.serializeArray().map(function(x){data[x.name] = x.value;});
+			var url = "reviseInvoice";
+	        var request = $.post(url, data );
+	        request.success(function(){
+//	        	bootbox.alert("Record created/updated Successfully");
+//				$('#accounttbl').DataTable().ajax.reload();
+//				validator.resetForm();
+//				$('#acctTypesModal').modal('hide');
+	        });
+	        request.error(function(jqXHR, textStatus, errorThrown){
+	        	bootbox.alert(jqXHR.responseText);
+			});
+			request.always(function(){
+				//$btn.button('reset');
+	        });
+	 });
+	
+}
+
+
+function confirmSelectedInvoice(){
+   $("#selectInvoice").on('click', function(){
+	   if ($("#invoice-pk").val() != ''){
+		   $('#invoiceModal').modal('hide');
+	   }
+	   else{
+		   bootbox.alert('Select an invoice to continue');
+	   }
+   });
+}
 
 function loadInvoiceModal(){
 	$("#btn-show-invoice").on('click', function(){
@@ -58,6 +108,20 @@ function createInvoices(){
 				
 			]
 		} );
+	  
+	  $('#invtbl tbody').on( 'click', 'tr', function () {
+			 
+			 $(this).addClass('bg-light-blue-active').siblings().removeClass('bg-light-blue-active');
+			
+			 var d = currTable.row( this ).data();
+			 if(d){
+				 $("#invoice-pk").val(d.invoiceId);
+				 $("#inv-number").val(d.invoiceNumber);
+			 }
+			   
+		    
+	  } );
+	 
 	  return currTable;
 }
 
