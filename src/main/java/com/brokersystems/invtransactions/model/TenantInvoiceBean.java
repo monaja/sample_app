@@ -40,6 +40,8 @@ public class TenantInvoiceBean implements Serializable {
 	private PaymentModes paymentMode;
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private final Date renewalDate;
+	private final String installmentAmt;
+	private final String revisionNumber;
 	private final List<TenantInvoiceDetailsBean> invoiceDetails;
 	
 	
@@ -47,7 +49,7 @@ public class TenantInvoiceBean implements Serializable {
 	public TenantInvoiceBean(String invoiceNumber, Long invoiceId, String invAmount, String taxAmount,
 			String netAmount,String tenantName,Date transDate,
 			Date wefDate,Date wetDate,String frequency,String status,Long tenantId,Currencies currency,
-			OrgBranch branch,PaymentModes paymentMode,Date renewalDate,List<TenantInvoiceDetailsBean> invoiceDetails) {
+			OrgBranch branch,PaymentModes paymentMode,Date renewalDate,String installmentAmt,String revisionNumber,List<TenantInvoiceDetailsBean> invoiceDetails) {
 		this.invoiceNumber = invoiceNumber;
 		this.invoiceId = invoiceId;
 		this.invAmount = invAmount;
@@ -65,10 +67,12 @@ public class TenantInvoiceBean implements Serializable {
 		this.branch = branch;
 		this.paymentMode =paymentMode;
 		this.renewalDate = renewalDate;
+		this.installmentAmt = installmentAmt;
+		this.revisionNumber = revisionNumber;
 	}
 	
 	public TenantInvoiceBean(String invoiceNumber, Long invoiceId, String invAmount, String taxAmount,
-			String netAmount,String tenantName,Date renewalDate,List<TenantInvoiceDetailsBean> invoiceDetails) {
+			String netAmount,String tenantName,Date renewalDate,String installmentAmt,String revisionNumber,List<TenantInvoiceDetailsBean> invoiceDetails) {
 		this.invoiceNumber = invoiceNumber;
 		this.invoiceId = invoiceId;
 		this.invAmount = invAmount;
@@ -83,6 +87,8 @@ public class TenantInvoiceBean implements Serializable {
 		this.status = null;
 		this.tenantId =null;
 		this.renewalDate = renewalDate;
+		this.installmentAmt = installmentAmt;
+		this.revisionNumber = revisionNumber;
 	}
 
 
@@ -175,6 +181,18 @@ public class TenantInvoiceBean implements Serializable {
 
 	public Date getRenewalDate() {
 		return renewalDate;
+	}
+
+	public String getInstallmentAmt() {
+		return installmentAmt;
+	}
+
+	public String getRevisionNumber() {
+		return revisionNumber;
+	}
+
+	public void setPaymentMode(PaymentModes paymentMode) {
+		this.paymentMode = paymentMode;
 	}
 	
 	

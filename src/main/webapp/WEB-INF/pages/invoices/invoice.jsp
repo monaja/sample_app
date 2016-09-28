@@ -210,7 +210,14 @@
 						<p class="form-control-static" id="inv-status">Draft</p>
 					</div>
 				</div>
-				<div class="col-md-6"></div>
+				<div class="col-md-6">
+				   <label for="brn-id" class="col-md-5 control-label">Revision
+						Number</label>
+
+					<div class="col-md-7">
+						<p class="form-control-static" id="inv-rev-number"></p>
+					</div>
+				</div>
 
 
 			</div>
@@ -252,6 +259,20 @@
 					<div class="col-md-7">
 						<p class="form-control-static" id="inv-ren-date"></p>
 					</div>
+				</div>
+
+
+			</div>
+			<div class="form-group">
+				<div class="col-md-6">
+					<label for="brn-id" class="col-md-6 control-label">Installment Amount</label>
+
+					<div class="col-md-6">
+						<p class="form-control-static" id="inv-install-amt"></p>
+					</div>
+				</div>
+				<div class="col-md-6">
+				     
 				</div>
 
 

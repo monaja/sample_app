@@ -1,5 +1,3 @@
-com\brokersystems\invtransactions\model\QReceiptTrans.class
-com\brokersystems\invtransactions\model\ReceiptTrans.class
-com\brokersystems\invtransactions\controllers\ReceiptController.class
-com\brokersystems\invtransactions\model\RevisionForm.class
-com\brokersystems\invtransactions\repository\ReceiptRepository.class
+com/brokersystems/setups/model/QChargeRatesGroup.class
+com/brokersystems/setups/model/ChargeRatesGroup.class
+com/brokersystems/setup/repository/ChargeRatesGroupRepo.class

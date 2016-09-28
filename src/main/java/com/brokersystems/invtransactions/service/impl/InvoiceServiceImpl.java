@@ -265,7 +265,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		return new TenantInvoiceBean(created.getInvoiceNumber(), created.getInvoiceId(),
 				FormatUtils.formatCurrency(created.getInvAmount()), FormatUtils.formatCurrency(created.getTaxAmount()),
 				FormatUtils.formatCurrency(created.getNetAmount()),
-				created.getTenant().getFname() + " " + created.getTenant().getOtherNames(),created.getInvoiceDate(), details);
+				created.getTenant().getFname() + " " + created.getTenant().getOtherNames(),created.getRenewalDate(),FormatUtils.formatCurrency(invoice.getInstallmentAmount()) ,invoice.getRevisionNumber(), details);
 
 	}
 
@@ -309,7 +309,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 				invoice.getTenant().getFname() + " " + invoice.getTenant().getOtherNames(), invoice.getInvoiceDate(),
 				invoice.getWefDate(), invoice.getWetDate(), invoice.getFrequency(), invoice.getStatus(),
 				invoice.getTenant().getTenId(), invoice.getTransCurrency(), invoice.getBranch(),
-				invoice.getPaymentMode(), invoice.getRenewalDate(),details);
+				invoice.getPaymentMode(), invoice.getRenewalDate(),FormatUtils.formatCurrency(invoice.getInstallmentAmount()),invoice.getRevisionNumber(), details);
 		return bean;
 	}
 
@@ -364,6 +364,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 		invoice.setCurrentStatus("A");
 		transRepo.save(trans);
 		invoiceRepo.save(invoice);
+		TenantInvoice prevInvoice =  invoice.getPreviousTrans();
+		if(prevInvoice!=null){
+			prevInvoice.setCurrentStatus("RV");
+			invoiceRepo.save(prevInvoice);
+		}
 		
 		
 	}
@@ -416,7 +421,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		
 		if(invoice==null) throw new BadRequestException("Invoice does not exist in the system..Select a valid invoice");
 		
-		
+		List<TenantInvoiceDetails> destinationDetails = new ArrayList<>();
 		
 		TenantInvoice destination = new TenantInvoice();
 		destination.setBranch(invoice.getBranch());
@@ -437,21 +442,26 @@ public class InvoiceServiceImpl implements InvoiceService {
 		destination.setInvoiceId(null);
 		destination.setCurrentStatus("D");
 		
-		destination.setInvDetails(details);
 		destination.setStatus("D");
 		
-		destination.setRevisionNumber(invoice.getInvoiceNumber()+"/"+count+1);
+		destination.setRevisionNumber(invoice.getInvoiceNumber()+"/"+(count+1));
 		destination.setWefDate(revisionForm.getEffectiveDate());
 		Date wetDate = FormatUtils.addDays(FormatUtils.addMonths(revisionForm.getEffectiveDate(), FormatUtils.calculateFrequencyRate(invoice.getFrequency())),-1);
 		destination.setWetDate(wetDate);
 		destination.setRenewalDate(FormatUtils.addDays(wetDate, 1));
 		destination.setAuthBy(null);
-		details.stream().forEach(a -> a.setInvoice(destination));
-		invoceDetRepo.save(details);
+		for(TenantInvoiceDetails det:details){
+			TenantInvoiceDetails dest = new TenantInvoiceDetails();
+			dest.setAmount(det.getAmount());
+			dest.setCharge(det.getCharge());
+			dest.setInvoice(destination);
+			dest.setNetAmount(det.getNetAmount());
+			dest.setRateType(det.getRateType());
+			destinationDetails.add(dest);
+		}
+		destination.setInvDetails(destinationDetails);
+		invoceDetRepo.save(destinationDetails);
 		TenantInvoice saved =invoiceRepo.save(destination);
-		
-		
-		
 		return saved.getInvoiceId();	
 		
 	}

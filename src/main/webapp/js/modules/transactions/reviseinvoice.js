@@ -97,14 +97,26 @@ function createInvoices(){
 			searching: false,
 			"columns": [
 				{ "data": "invoiceNumber" },
-				{ "data": "invoiceDate"},
+				{ "data": "invoiceDate",
+					 "render": function ( data, type, full, meta ) {
+					      return moment(full.invoiceDate).format('DD/MM/YYYY');
+					  }
+				},
 				{ "data": "invoiceId",
 					   "render": function ( data, type, full, meta ) {
 						      return full.tenant.fname + " "+full.tenant.otherNames;
 						  }
 				},
-				{ "data": "wefDate"},
-				{ "data": "wetDate"},
+				{ "data": "wefDate",
+					 "render": function ( data, type, full, meta ) {
+					      return moment(full.wefDate).format('DD/MM/YYYY');
+					  }
+				},
+				{ "data": "wetDate",
+					 "render": function ( data, type, full, meta ) {
+					      return moment(full.wetDate).format('DD/MM/YYYY');
+					  }
+				},
 				
 			]
 		} );

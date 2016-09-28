@@ -28,11 +28,11 @@ public interface RentalUnitChargeRepo extends PagingAndSortingRepository<RentalU
 	public static final String POSTGRE_NATIVE_NEW_RENTAL_CHARGES_QRY = "select * from rental_units_charges where charge_group = :groupCode and :invoiceDate between charge_wef and coalesce(charge_wet,current_timestamp) and charge_id NOT IN (select inv_det_charge_id from tenant_invoice_details where inv_ten_code =:tencode)";
 	
 	
-	@Query(nativeQuery=true,value=MYSQL_NATIVE_RENTAL_CHARGES_QRY)
+	@Query(nativeQuery=true,value=POSTGRE_NATIVE_RENTAL_CHARGES_QRY)
 	public List<RentalUnitCharges> getActiveUnitCharges(@Param("groupCode") long groupCode, @Param("invoiceDate") Date invoiceDate);
 	
 	
-	@Query(nativeQuery=true,value=MYSQL_NATIVE_NEW_RENTAL_CHARGES_QRY)
+	@Query(nativeQuery=true,value=POSTGRE_NATIVE_NEW_RENTAL_CHARGES_QRY)
 	public List<RentalUnitCharges> getNewActiveCharges(@Param("groupCode") long groupCode, @Param("invoiceDate") Date invoiceDate,@Param("tencode") long tencode);
 
 }

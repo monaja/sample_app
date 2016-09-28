@@ -100,6 +100,8 @@ function queryInvoiceDetails(){
                 	  $('#pymt-id').val(s.paymentMode.pmId);
                 	  $("#pymt-desc").val(s.paymentMode.pmDesc);
                 	  $("#inv-ren-date").text(moment(s.renewalDate).format('DD/MM/YYYY'));
+                	  $("#inv-rev-number").text(s.revisionNumber);
+                	  $("#inv-install-amt").text(s.installmentAmt);
                 	 
                 	  if(s.status === "A"){
                 		    $("#inv-date").prop("disabled", true);
@@ -197,7 +199,6 @@ function saveInvoiceDetails(){
             	  $("#tenant-label-name").text(s.tenantName);
             	  $("#tenant-info").hide();
             	  getInvoiceCharges(s.invoiceDetails);
-            	  $("#inv-ren-date").text(s.renewalDate);
             	  currValidator.resetForm();
               }, 
               error: function(jqXHR, textStatus, errorThrown){
