@@ -32,6 +32,7 @@ import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
 import com.brokersystems.setups.model.AccountDef;
 import com.brokersystems.setups.model.AccountTypes;
+import com.brokersystems.setups.model.ChargeRatesGroup;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
@@ -40,6 +41,7 @@ import com.brokersystems.setups.model.PaymentModes;
 import com.brokersystems.setups.model.RentalStructForm;
 import com.brokersystems.setups.model.RentalStructure;
 import com.brokersystems.setups.model.RentalUnitCharges;
+import com.brokersystems.setups.model.RentalUnits;
 import com.brokersystems.setups.model.Landlord;
 import com.brokersystems.setups.model.ModelHelperForm;
 import com.brokersystems.setups.model.Town;
@@ -69,6 +71,12 @@ public class SetupsController {
 	@RequestMapping(value = "currency", method = RequestMethod.GET)
 	public String currencyHome(Model model) {
 		return "currency";
+	}
+	
+	
+	@RequestMapping(value = "chargegroups", method = RequestMethod.GET)
+	public String chargeGroups(Model model) {
+		return "chargegroup";
 	}
 
 	@RequestMapping(value = "countries", method = RequestMethod.GET)
@@ -289,6 +297,55 @@ public class SetupsController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteAccount(@PathVariable Long acctId) {
 		setupsService.deleteAccount(acctId);
+	}
+	
+	
+	@RequestMapping(value = { "chargegroupings" }, method = { RequestMethod.GET })
+	@ResponseBody
+	public DataTablesResult<ChargeRatesGroup> getChargeGroups(@DataTable DataTablesRequest pageable) throws IllegalAccessException {
+		return setupsService.findAllChargeGroups(pageable);
+	}
+	
+	@RequestMapping(value = { "rentalCharges/{groupCode}" }, method = { RequestMethod.GET })
+	@ResponseBody
+	public DataTablesResult<RentalUnitCharges> getRentalUnitCharges(@DataTable DataTablesRequest pageable,
+			@PathVariable Long groupCode) throws IllegalAccessException {
+		return setupsService.findRentalUnitCharges(groupCode, pageable);
+	}
+	
+	@RequestMapping(value = { "deleteChargeGroup/{groupCode}" }, method = {
+			org.springframework.web.bind.annotation.RequestMethod.GET })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteChargeGroup(@PathVariable Long groupCode) {
+		setupsService.deleteChargeGroup(groupCode);
+	}
+	
+	@RequestMapping(value = { "createChargeGroup" }, method = {
+			org.springframework.web.bind.annotation.RequestMethod.POST })
+	@ResponseStatus(HttpStatus.CREATED)
+	public void saveOrUpdateChargeGroup(ChargeRatesGroup group)  throws BadRequestException {
+		setupsService.createChargeGroup(group);
+	}
+	
+	@RequestMapping(value = { "createRentalCharge" }, method = {
+			org.springframework.web.bind.annotation.RequestMethod.POST })
+	@ResponseStatus(HttpStatus.CREATED)
+	public void saveOrUpdateRentalCharge(RentalUnitCharges charge) throws BadRequestException {
+		setupsService.defineRentalCharges(charge);
+	}
+	
+	@RequestMapping(value = { "deleteRentalCharge/{chargeId}" }, method = {
+			org.springframework.web.bind.annotation.RequestMethod.GET })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteRentalCharge(@PathVariable Long chargeId) {
+		setupsService.deleteRentalCharge(chargeId);
+	}
+	
+	@RequestMapping(value = { "selRatesGroups" }, method = { org.springframework.web.bind.annotation.RequestMethod.GET })
+	@ResponseBody
+	public Page<ChargeRatesGroup> selRatesGroups(@RequestParam(value = "term", required = false) String term, Pageable pageable)
+			throws IllegalAccessException {
+		return setupsService.findGroupsForSelect(term, pageable);
 	}
 
 }

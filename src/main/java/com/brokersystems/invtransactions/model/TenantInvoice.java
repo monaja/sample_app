@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -38,7 +40,7 @@ public class TenantInvoice extends AuditBaseEntity {
 	@Column(name="invoice_id")
 	private Long invoiceId;
 	
-	@Column(name="invoice_number",nullable=false,unique=true)
+	@Column(name="invoice_number",nullable=false)
 	private String invoiceNumber;
 	
 	@Column(name="invoice_rev_number",nullable=false,unique=true)
@@ -46,18 +48,22 @@ public class TenantInvoice extends AuditBaseEntity {
 	
 	@Column(name="invoice_dt",nullable=false)
 	@JsonFormat(pattern = "dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
 	private Date invoiceDate;
 	
 	@Column(name="invoice_wef_date", nullable=false)
 	@JsonFormat(pattern = "dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
 	private Date wefDate;
 	
 	@Column(name="invoice_wet_date",nullable=false)
 	@JsonFormat(pattern = "dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
 	private Date wetDate;
 	
 	@Column(name="invoice_ren_date",nullable=false)
 	@JsonFormat(pattern = "dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
 	private Date renewalDate;
 	
 	@Column(name="invoice_frequency",nullable=false)

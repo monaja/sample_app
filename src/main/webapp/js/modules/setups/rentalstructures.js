@@ -30,6 +30,7 @@ function showUnitModal(){
 		if ($("#rental-struct-pk").val() != ''){
 			 $('#units-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden],input[type=number], textarea").val("");
 			 populateUnitLov();
+			 populateGroup();
 			 $("#unit-rental-id").val($("#rental-struct-pk").val());
 			 $('#unitsModal').modal('show');
 		}
@@ -68,6 +69,8 @@ function createRentalUnit(){
 
 			request.error(function(jqXHR, textStatus, errorThrown){
 				bootbox.alert(jqXHR.responseText);
+				populateGroup();
+				populateUnitLov();
 			});
 			request.always(function(){
 				$btn.button('reset');
@@ -168,35 +171,39 @@ function populateUnitLov(){
 
 }
 
-function populateRateDiv(){
-	if($("#ratetype").filter("div").html() != undefined)
+function populateGroup(){
+	if($("#charge-id").filter("div").html() != undefined)
 	  {
 		  Select2Builder.initAjaxSelect2({
-	            containerId : "ratetype",
-	            sort : 'rateType',
+	            containerId : "charge-id",
+	            sort : 'shortDesc',
 	            change: function(e,a,v){
-	            	 $("#rateId").val(e.added.rateId);
+	            	$("#chargeId").val(e.added.chargeId);
 	            },
 	            formatResult : function(a)
 	            {
-	            	return a.rateType
+	            	return a.groupName
 	            },
 	            formatSelection : function(a)
 	            {
-	            	return a.rateType
+	            	return a.groupName
 	            },
 	            initSelection: function (element, callback) {
-	            	var rateId = $("#rateId").val();
-                    var rateName = $("#rate-type-name").val();
-	            	model.rental.ratetype.rateId = rateId;
-	            	var data = {rateType:rateName,rateId:rateId};
+	            	var unitCode = $("#chargeId").val();
+                    var unitName = $("#group-name").val();
+	            	model.rental.groups.chargeId = unitCode;
+	            	var data = {groupName:unitName,chargeId:unitCode};
+	            	
                     callback(data);
-              },
-	            id: "rateId",
-	            width:"200px"
+                },
+	            id: "chargeId",
+	            width:"260px"
 	        });
 	  }
+
 }
+
+
 
 function populateBranchDiv(){
 	if($("#branch").filter("div").html() != undefined)
@@ -230,82 +237,10 @@ function populateBranchDiv(){
 	  }
 }
 
-function addUnitCharges(){
-	$("#btn-add-charges").click(function(){
-		$('#charge-form').find("input[type=text],input[type=number],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea,select").val("");
-		populateRateDiv();
-		var $chargeForm = $('#charge-form');
-		var validator = $chargeForm.validate();
-		validator.resetForm();  
-		$("#unit-id-pk").val($("#chargeid").val());
-		$('#unitsChargesModal').modal({
-			  backdrop: 'static',
-			  keyboard: true
-			})
-	});
-}
 
 
-function createRentalUnitCharges(){
-	var $chargeForm = $('#charge-form');
-	  var validator = $chargeForm.validate();
-	 $('#saveRentalFees').click(function(){
-			if (!$chargeForm.valid()) {
-				return;
-			}
-			var $btn = $(this).button('Saving');
-			var data = {};
-			$chargeForm.serializeArray().map(function(x){data[x.name] = x.value;});
-			var url = "createRentalCharge";
-         var request = $.post(url, data );
-			request.success(function(){
-				bootbox.alert("Record created/updated Successfully");
-				$('#unitCharges').DataTable().ajax.reload();				
-				validator.resetForm();
-				$('#charge-form').find("input[type=text],input[type=number],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea,select").val("");
-				$('#unitsChargesModal').modal('hide');
-			});
 
-			request.error(function(jqXHR, textStatus, errorThrown){
-				console.log(jqXHR);
-				bootbox.alert(jqXHR.responseText);
-			});
-			request.always(function(){
-				$btn.button('reset');
-         });
-		});
-}
 
-function refreshTaxes()
-{
-	if($('#chk-taxable').prop('checked')) {
-  	  $("#sel2").removeAttr('disabled');
-  	  $("#sel3").removeAttr('disabled');
-  	  $("#tax-amount").removeAttr('disabled');
-  	  $("#sel2").prop("required", true);
-  	  $("#sel3").prop("required", true);
-  	  $("#tax-amount").prop("required", true);
-	   } 
-	   else{
-		   $("#sel2").val("");
-		   $("#sel3").val("");
-		   $("#tax-amount").val("");
-		   $("#sel2").prop("disabled", true);
-		   $("#sel3").prop("disabled", true);
-		   $("#tax-amount").prop("disabled", true);
-		   $("#sel2").removeAttr('required');
-	       $("#sel3").removeAttr('required');
-	       $("#tax-amount").removeAttr('required');
-		  
-	  }
-
-}
-
-function checkUnitCharges(){
-	$('#chk-taxable').click(function() {
-		refreshTaxes();
-	});
-}
 
 
 $(function(){
@@ -321,9 +256,8 @@ $(function(){
 		getRentalDetails();
 		populateBranchDiv();
 		createRentalUnit();
-		addUnitCharges();
-		createRentalUnitCharges();
-		checkUnitCharges();
+		populateGroup();
+		
 		
 		
 		$(".datepicker-input").each(function() {
@@ -377,6 +311,9 @@ var model = {
 			unit:{
 				unitId:"",
 			},
+			groups:{
+				chargeId:"",
+			},
 			ratetype:{
 				rateId:"",
 			}
@@ -420,132 +357,6 @@ function createStructureTable(){
 	  return currTable;
 }
 
-function showChargesModal(button){
-	var unit = JSON.parse(decodeURI($(button).data("units")));
-	var $chargeForm = $('#charge-form');
-	createUnitCharges(unit["renId"]);
-    $("#charge-unit-name").text(unit["unitName"]);
-    $("#chargeid").val(unit["renId"]);
-	$("#unitsRatesModalLabel").text("Charges for Unit: "+unit["unitName"]+" ("+unit["unitType"].unitName+")");
-	
-	$('#unitRatesModal').modal({
-		  backdrop: 'static',
-		  keyboard: true
-		})
-}
-
-function createUnitCharges(renId){
-	var url = "rentalCharges/0";
-	if(typeof renId!== 'undefined'){
-		url = "rentalCharges/"+renId;
-	}
-	  var currTable = $('#unitCharges').DataTable( {
-			"processing": true,
-			"serverSide": true,
-			 autoWidth: true,
-			"ajax": url,
-			"destroy":true,
-			lengthMenu: [ [10, 15], [10, 15] ],
-			pageLength: 5,
-			"columns": [
-				{ "data": "unit",
-				  "render": function ( data, type, full, meta ) {
-						   if(full.unit)
-						  return full.unit.unitName;
-						  else{
-							  return "";
-						  }
-				   }	
-				},
-				{ "data": "rateType",
-					  "render": function ( data, type, full, meta ) {
-							   if(full.rateType)
-							  return full.rateType.rateType;
-							  else{
-								  return "";
-							  }
-					   }	
-				},
-				{ "data": "amount" },
-				{ "data": "frequency" },
-				{ "data": "taxable" },
-				{ "data": "taxType" },
-				{ "data": "taxValue" },
-				{ "data": "wefDate" },
-				{ "data": "wetDate" },
-				{ 
-					"data": "chargeId",
-					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-charges='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editUnitCharge(this);"/>';
-					}
-
-				},
-				{ 
-					"data": "chargeId",
-					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-charges='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmUnitChargeDel(this);"/>';
-					 }
-
-				},
-				
-			]
-		} );
-	  return currTable;
-}
-
-
-function editUnitCharge(button){
-	var charge = JSON.parse(decodeURI($(button).data("charges")));
-	var $chargeForm = $('#charge-form');
-	var validator = $chargeForm.validate();
-	validator.resetForm();  
-	$("#charge-id").val(charge["chargeId"]);
-	$("#rate-type-name").val(charge["rateType"].rateType);
-	$("#rateId").val(charge["rateType"].rateId);
-	populateRateDiv();
-	$("#unit-id-pk").val($("#chargeid").val());
-	$("#unit-amount").val(charge["amount"]);
-	$("#sel1").val(charge["frequency"]);
-	if(charge["taxable"])
-		$("#chk-taxable").prop("checked", charge["taxable"]);
-	else
-		$("#chk-taxable").prop("checked", false);
-	refreshTaxes();
-	$("#sel2").val(charge["taxType"]);
-	$("#sel3").val(charge["taxRateType"]);
-	$("#tax-amount").val(charge["taxValue"]);
-	$("#wef-date").val(moment(charge["wefDate"]).format('DD/MM/YYYY'));
-	if(charge["wetDate"])
-	$("#wet-date").val(moment(charge["wetDate"]).format('DD/MM/YYYY'));
-	
-	$('#unitsChargesModal').modal({
-		  backdrop: 'static',
-		  keyboard: true
-		})
-}
-
-
-function confirmUnitChargeDel(button){
-	var charge = JSON.parse(decodeURI($(button).data("charges")));
-	bootbox.confirm("Are you sure want to delete Unit Charge for "+charge["unit"].unitName+" "+charge["rateType"].rateType+"?", function(result) {
-		 if(result){
-	    	  $.ajax({
-			        type: 'GET',
-			        url:  'deleteRentalCharge/' + charge["chargeId"],
-			        dataType: 'json',
-			        async: true,
-			        success: function(result) {
-			        	bootbox.alert("Record deleted Successfully");
-			        	$('#unitCharges').DataTable().ajax.reload();
-			        },
-			        error: function(jqXHR, textStatus, errorThrown) {
-                      bootbox.alert(jqXHR.responseText);
-			        }
-			    });
-	      }
-		
-	});
-}
 
 
 function createRentalUnits(){
@@ -572,14 +383,16 @@ function createRentalUnits(){
 						  }
 				   }	
 				},
-				{ 
-					"data": "renId",
-					"render": function ( data, type, full, meta ) {
-						var nam = full.unitName;
-						return '<a href="javascript:void(0)" data-units='+encodeURI(JSON.stringify(full)) + ' onclick="showChargesModal(this);">View Rates</a>';
-					}
-
-				},
+				{ "data": "chargeGroup",
+					  "render": function ( data, type, full, meta ) {
+						  
+							   if(full.unitType)
+							  return full.chargeGroup.groupName;
+							  else{
+								  return "";
+							  }
+					   }	
+					},
 				{ 
 					"data": "renId",
 					"render": function ( data, type, full, meta ) {
@@ -606,6 +419,9 @@ function editUnitType(button){
 	$("#unit-rental-id").val($("#rental-struct-pk").val());
 	$("#unit-type-name").val(unit["unitType"].unitName);
 	$("#unitId").val(unit["unitType"].unitId);
+	$("#chargeId").val(unit["chargeGroup"].chargeId);
+	$("#group-name").val(unit["chargeGroup"].groupName);
+	populateGroup();
 	populateUnitLov();
 	$('#unitsModal').modal('show');
 }

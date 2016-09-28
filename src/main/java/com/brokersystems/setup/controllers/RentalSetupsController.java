@@ -254,26 +254,6 @@ public class RentalSetupsController {
 		setupsService.deleteRentalUnit(unitCode);
 	}
 	
-	@RequestMapping(value = { "rentalCharges/{renId}" }, method = { RequestMethod.GET })
-	@ResponseBody
-	public DataTablesResult<RentalUnitCharges> getRentalUnitCharges(@DataTable DataTablesRequest pageable,
-			@PathVariable Long renId) throws IllegalAccessException {
-		return setupsService.findRentalUnitCharges(renId, pageable);
-	}
-	
-	@RequestMapping(value = { "createRentalCharge" }, method = {
-			org.springframework.web.bind.annotation.RequestMethod.POST })
-	@ResponseStatus(HttpStatus.CREATED)
-	public void saveOrUpdateRentalCharge(RentalUnitCharges charge) throws BadRequestException {
-		setupsService.defineRentalCharges(charge);
-	}
-	
-	@RequestMapping(value = { "deleteRentalCharge/{chargeId}" }, method = {
-			org.springframework.web.bind.annotation.RequestMethod.GET })
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteRentalCharge(@PathVariable Long chargeId) {
-		setupsService.deleteRentalCharge(chargeId);
-	}
 	
 	@RequestMapping(value = { "unitratetypes" }, method = { org.springframework.web.bind.annotation.RequestMethod.GET })
 	@ResponseBody

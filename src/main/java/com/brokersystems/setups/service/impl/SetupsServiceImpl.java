@@ -23,6 +23,7 @@ import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
 import com.brokersystems.setup.repository.AccountRepo;
 import com.brokersystems.setup.repository.AccountTypeRepo;
+import com.brokersystems.setup.repository.ChargeRatesGroupRepo;
 import com.brokersystems.setup.repository.CountryRepository;
 import com.brokersystems.setup.repository.CountyRepository;
 import com.brokersystems.setup.repository.CurrencyRepository;
@@ -38,6 +39,7 @@ import com.brokersystems.setup.repository.TownRepository;
 import com.brokersystems.setup.repository.UnitTypeRepository;
 import com.brokersystems.setups.model.AccountDef;
 import com.brokersystems.setups.model.AccountTypes;
+import com.brokersystems.setups.model.ChargeRatesGroup;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
@@ -46,6 +48,7 @@ import com.brokersystems.setups.model.OrgRegions;
 import com.brokersystems.setups.model.PaymentModes;
 import com.brokersystems.setups.model.QAccountDef;
 import com.brokersystems.setups.model.QAccountTypes;
+import com.brokersystems.setups.model.QChargeRatesGroup;
 import com.brokersystems.setups.model.QCountry;
 import com.brokersystems.setups.model.QCounty;
 import com.brokersystems.setups.model.QCurrencies;
@@ -120,6 +123,9 @@ public class SetupsServiceImpl implements SetupsService {
 	
 	@Autowired
 	private TenantAllocRepo allocRepo;
+	
+	@Autowired
+	private ChargeRatesGroupRepo chargeRepo;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -300,11 +306,8 @@ public class SetupsServiceImpl implements SetupsService {
 	@Modifying
     @Transactional(readOnly=false)
 	public void defineRentalUnits(RentalUnits unit) throws BadRequestException {
-		RentalStructure struct = unit.getRentalStruct();
-//		if (struct.getNoOfUnits() == struct.getRentalUnits().size()) {
-//			throw new BadRequestException(
-//					"Number of Units Defined in the structure cannot be greater than number of units setup");
-//		}
+		 if(unit.getChargeGroup()==null) throw new BadRequestException("Select Group top continue");
+		 if(unit.getUnitType()==null)throw new BadRequestException("Select Unit top continue");
 		rentalUnitRepo.save(unit);
 
 	}
@@ -348,8 +351,8 @@ public class SetupsServiceImpl implements SetupsService {
 	@Override
 	public DataTablesResult<RentalUnitCharges> findRentalUnitCharges(long renId, DataTablesRequest request)
 			throws IllegalAccessException {
-		QRentalUnits unitCharges = QRentalUnitCharges.rentalUnitCharges.unit;
-		BooleanExpression pred = unitCharges.renId.eq(renId);
+		QChargeRatesGroup unitCharges = QRentalUnitCharges.rentalUnitCharges.group;
+		BooleanExpression pred = unitCharges.chargeId.eq(renId);
 		Page<RentalUnitCharges> page = unitChargeRepo
 				.findAll(pred.and(request.searchPredicate(QRentalUnitCharges.rentalUnitCharges)), request);
 		return new DataTablesResult(request, page);
@@ -386,7 +389,7 @@ public class SetupsServiceImpl implements SetupsService {
 		}
 
 		QRentalUnitCharges unitCharges = QRentalUnitCharges.rentalUnitCharges;
-		BooleanExpression exp = unitCharges.rateType.eq(charge.getRateType()).and(unitCharges.unit.eq(charge.getUnit())).and(unitCharges.wefDate
+		BooleanExpression exp = unitCharges.rateType.eq(charge.getRateType()).and(unitCharges.group.eq(charge.getGroup())).and(unitCharges.wefDate
 				.between(charge.getWefDate(), dateTo).or(unitCharges.wetDate.between(charge.getWefDate(), dateTo)));
 		long size = unitChargeRepo.findAll(exp).spliterator().getExactSizeIfKnown();
 		if (charge.getChargeId() == null) {
@@ -399,7 +402,7 @@ public class SetupsServiceImpl implements SetupsService {
 			}
 		}
 		
-		BooleanExpression nullDates = unitCharges.rateType.eq(charge.getRateType()).and(unitCharges.unit.eq(charge.getUnit())).and(unitCharges.wetDate.isNull());
+		BooleanExpression nullDates = unitCharges.rateType.eq(charge.getRateType()).and(unitCharges.group.eq(charge.getGroup())).and(unitCharges.wetDate.isNull());
 		
 		Iterator<RentalUnitCharges> it = unitChargeRepo.findAll(nullDates).iterator();
 		while(it.hasNext()){
@@ -413,7 +416,7 @@ public class SetupsServiceImpl implements SetupsService {
 
 		unitChargeRepo.save(charge);
 
-	}
+}
 
 	@Override
 	@Modifying
@@ -638,6 +641,36 @@ public class SetupsServiceImpl implements SetupsService {
 		  Iterable<TenAllocations> allocs = allocRepo.findAll(pred);
 		 Optional<TenAllocations> tenant =StreamSupport.stream(allocs.spliterator(),false).filter(a -> a.getCancelled().equalsIgnoreCase("N")).findFirst();
 		 return tenant.orElse(new TenAllocations());
+	}
+
+	@Override
+	public DataTablesResult<ChargeRatesGroup> findAllChargeGroups(DataTablesRequest request)
+			throws IllegalAccessException {
+		Page<ChargeRatesGroup> page = chargeRepo.findAll(request.searchPredicate(QChargeRatesGroup.chargeRatesGroup), request);
+		return new DataTablesResult<>(request, page);
+	}
+
+	@Override
+	public void createChargeGroup(ChargeRatesGroup group) throws BadRequestException {
+		chargeRepo.save(group);
+		
+	}
+
+	@Override
+	public void deleteChargeGroup(Long groupCode) {
+		chargeRepo.delete(groupCode);
+		
+	}
+
+	@Override
+	public Page<ChargeRatesGroup> findGroupsForSelect(String paramString, Pageable paramPageable) {
+		Predicate pred = null;
+		if (paramString == null || StringUtils.isBlank(paramString)) {
+			pred = QChargeRatesGroup.chargeRatesGroup.isNotNull();
+		} else {
+			pred = QChargeRatesGroup.chargeRatesGroup.shortDesc.containsIgnoreCase(paramString);
+		}
+		return chargeRepo.findAll(pred, paramPageable);
 	}
 
 }

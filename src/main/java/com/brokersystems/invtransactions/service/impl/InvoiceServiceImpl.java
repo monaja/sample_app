@@ -169,7 +169,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		
 		final String invNumber = String.format("%05d", invoiceRepo.count() + 1);
 		invoice.setInvoiceNumber("INV" + invNumber);
-		invoice.setRevisionNumber("INV" +invNumber+"/0");
+		invoice.setRevisionNumber("INV" +invNumber+"/1");
 		}
 		invoice.setStatus("D");
 		invoice.setTransType("NT");
@@ -188,6 +188,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 		BigDecimal totalTax = BigDecimal.ZERO;
 		BigDecimal grossAmount = BigDecimal.ZERO;
+		BigDecimal installMent = BigDecimal.ZERO;
 		List<TenantInvoiceDetails> invList = new ArrayList<>();
         BigDecimal multiRate =new BigDecimal(getCalculateRate(invoice.getFrequency()));
 		for (TenantInvoiceDetails invoiceDet : invoice.getDetails()) {
@@ -217,6 +218,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 				invoiceDet.setRateType(ratetypeRepo.findOne(invoiceDet.getRateTyoeId()));
 			if(charge.getFrequency().equalsIgnoreCase("Monthly")){
 				grossAmount = grossAmount.add(invoiceDet.getAmount().multiply(multiRate));
+				 installMent = installMent.add(invoiceDet.getAmount().multiply(multiRate));
 				invoiceDet.setNetAmount(invoiceDet.getAmount().subtract(taxValue).multiply(multiRate));
 				invoiceDet.setAmount(invoiceDet.getAmount().multiply(multiRate));
 			}
@@ -224,7 +226,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 				grossAmount = grossAmount.add(invoiceDet.getAmount());
 				invoiceDet.setNetAmount(invoiceDet.getAmount().subtract(taxValue));
 				invoiceDet.setAmount(invoiceDet.getAmount());
+				//if(!charge.isRefundable()) installMent = installMent.add(invoiceDet.getAmount().subtract(taxValue));
 			}
+			
 			
 			invoiceDet.setInvoice(invoice);
 			invList.add(invoiceDet);
@@ -243,6 +247,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		invoice.setInvAmount(grossAmount);
 		invoice.setNetAmount((grossAmount.subtract(totalTax)));
 		invoice.setTaxAmount(totalTax);
+		invoice.setInstallmentAmount(installMent);
 		invoice.setRenewalDate(FormatUtils.addDays(invoice.getWetDate(), 1));
 		TenantInvoice created = invoiceRepo.save(invoice);
 		
@@ -408,25 +413,44 @@ public class InvoiceServiceImpl implements InvoiceService {
 		
 		List<TenantInvoiceDetails> details = invoice.getInvDetails();
 		
+		
 		if(invoice==null) throw new BadRequestException("Invoice does not exist in the system..Select a valid invoice");
 		
+		
+		
 		TenantInvoice destination = new TenantInvoice();
-		BeanUtils.copyProperties(destination, invoice);
+		destination.setBranch(invoice.getBranch());
+		destination.setFrequency(invoice.getFrequency());
+		destination.setInstallmentAmount(invoice.getInstallmentAmount());
+		destination.setInvoiceDate(new Date());
+		destination.setPaymentMode(invoice.getPaymentMode());
+		destination.setInvoiceNumber(invoice.getInvoiceNumber());
+		destination.setInvAmount(invoice.getInvAmount());
+		destination.setNetAmount(invoice.getNetAmount());
+		destination.setTaxAmount(invoice.getTaxAmount());
+		destination.setTenant(invoice.getTenant());
+		destination.setTransCurrency(invoice.getTransCurrency());
 		if("RV".equalsIgnoreCase(revisionForm.getRevisionType()))
 		destination.setTransType("RV");
 		destination.setPreviousTrans(invoice);
 		Long count = invoiceRepo.count(QTenantInvoice.tenantInvoice.invoiceNumber.eq(invoice.getInvoiceNumber()));
 		destination.setInvoiceId(null);
 		destination.setCurrentStatus("D");
-		destination.setDetails(details);
+		
+		destination.setInvDetails(details);
 		destination.setStatus("D");
 		
-		destination.setRevisionNumber(invoice.getInvoiceNumber()+"/"+count);
+		destination.setRevisionNumber(invoice.getInvoiceNumber()+"/"+count+1);
 		destination.setWefDate(revisionForm.getEffectiveDate());
 		Date wetDate = FormatUtils.addDays(FormatUtils.addMonths(revisionForm.getEffectiveDate(), FormatUtils.calculateFrequencyRate(invoice.getFrequency())),-1);
 		destination.setWetDate(wetDate);
+		destination.setRenewalDate(FormatUtils.addDays(wetDate, 1));
 		destination.setAuthBy(null);
+		details.stream().forEach(a -> a.setInvoice(destination));
+		invoceDetRepo.save(details);
 		TenantInvoice saved =invoiceRepo.save(destination);
+		
+		
 		
 		return saved.getInvoiceId();	
 		

@@ -36,8 +36,8 @@ public class RentalUnitCharges extends AuditBaseEntity {
 	@XmlTransient
 	// @JsonIgnore
 	@ManyToOne
-	@JoinColumn(name="charge_unit",nullable=false)
-	private RentalUnits unit;
+	@JoinColumn(name="charge_group",nullable=false)
+	private ChargeRatesGroup group;
 	
 	@XmlTransient
 	// @JsonIgnore
@@ -93,13 +93,6 @@ public class RentalUnitCharges extends AuditBaseEntity {
 		this.taxRateType = taxRateType;
 	}
 
-	public RentalUnits getUnit() {
-		return unit;
-	}
-
-	public void setUnit(RentalUnits unit) {
-		this.unit = unit;
-	}
 
 	public RateTypes getRateType() {
 		return rateType;
@@ -171,6 +164,14 @@ public class RentalUnitCharges extends AuditBaseEntity {
 
 	public void setRefundable(boolean refundable) {
 		this.refundable = refundable;
+	}
+
+	public ChargeRatesGroup getGroup() {
+		return group;
+	}
+
+	public void setGroup(ChargeRatesGroup group) {
+		this.group = group;
 	}
 	
 	

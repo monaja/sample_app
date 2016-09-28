@@ -101,7 +101,7 @@
 
 				<th>Unit Name</th>
 				<th>Unit Type</th>
-				<th></th>
+				<th>Group</th>
 				<th></th>
 				<th></th>
 			</tr>

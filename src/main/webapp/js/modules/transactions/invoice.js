@@ -87,10 +87,10 @@ function queryInvoiceDetails(){
                 	  $("#tenant-label-name").show();
                 	  $("#tenant-label-name").text(s.tenantName);
                 	  $("#tenant-info").hide();
-                	  $("#inv-date").val(s.transDate);
+                	  $("#inv-date").val(moment(s.transDate).format('DD/MM/YYYY'));
                 	  $("#pay-freq").val(s.frequency);
-                	  $("#from-date").val(s.wefDate);
-                	  $("#wet-date").val(s.wetDate);
+                	  $("#from-date").val(moment(s.wefDate).format('DD/MM/YYYY'));
+                	  $("#wet-date").val(moment(s.wetDate).format('DD/MM/YYYY'));
                 	  $("#inv-status").text((s.status == "A" ? "Authorized" : "Draft"));
                 	  $("#cur-name").val(s.currency.curName);
                 	  $("#cur-id").val(s.currency.curCode);
@@ -99,7 +99,7 @@ function queryInvoiceDetails(){
                 	  $("#trans-brn-name").val(s.branch.obName);
                 	  $('#pymt-id').val(s.paymentMode.pmId);
                 	  $("#pymt-desc").val(s.paymentMode.pmDesc);
-                	  $("#inv-ren-date").text(s.renewalDate);
+                	  $("#inv-ren-date").text(moment(s.renewalDate).format('DD/MM/YYYY'));
                 	 
                 	  if(s.status === "A"){
                 		    $("#inv-date").prop("disabled", true);
@@ -324,7 +324,7 @@ function getNewChargeUnit(id){
 	        async: true,
 	        success: function(result) {
 	        	if($("#inv-date").val()!=''){
-	        		getNewCharges(result.renunits.renId,$("#inv-date").val(),$("#invoice-pk").val());	
+	        		getNewCharges(result.renunits.chargeGroup.chargeId,$("#inv-date").val(),$("#invoice-pk").val());	
 	        	}
 	        	
 	        },
@@ -395,7 +395,7 @@ function getTenantUnitDetails(id){
 	        success: function(result) {
 	        	$("#unit-number").val(result.renunits.unitName+"   "+result.structure.houseName);
 	        	if($("#inv-date").val()!=''){
-	        		getActiveCharges(result.renunits.renId,$("#inv-date").val());	
+	        		getActiveCharges(result.renunits.chargeGroup.chargeId,$("#inv-date").val());	
 	        	}
 	        	
 	        },
@@ -599,13 +599,17 @@ function createInvoices(){
 			"processing": true,
 			"serverSide": true,
 			"ajax": url,
-			autoWidth: true,
 			lengthMenu: [ [20,30,40,50], [20,30,40,50] ],
 			pageLength: 20,
 			destroy: true,
 			"columns": [
 				{ "data": "invoiceNumber" },
-				{ "data": "invoiceDate"},
+				{ "data": "invoiceDate",
+					 "render": function ( data, type, full, meta ) {
+					      return moment(full.invoiceDate).format('DD/MM/YYYY');
+					  }
+				
+				},
 				{ "data": "invoiceId",
 					   "render": function ( data, type, full, meta ) {
 						      return full.tenant.fname + " "+full.tenant.otherNames;
@@ -616,16 +620,14 @@ function createInvoices(){
 						      return full.transCurrency.curName;
 						  }
 				},
-				{ "data": "wefDate"},
-				{ "data": "wetDate"},
-				{ "data": "invAmount", 
-					 "render":function(data,type,full,meta){
-						  return currencyFormat(full.invAmount);
+				{ "data": "wefDate",
+					 "render": function ( data, type, full, meta ) {
+					      return moment(full.wefDate).format('DD/MM/YYYY');
 					  }
 				},
-				{ "data": "taxAmount" , 
-					 "render":function(data,type,full,meta){
-						  return currencyFormat(full.taxAmount);
+				{ "data": "wetDate",
+					 "render": function ( data, type, full, meta ) {
+					      return moment(full.wetDate).format('DD/MM/YYYY');
 					  }
 				},
 				{ "data": "netAmount" , 

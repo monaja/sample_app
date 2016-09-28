@@ -48,9 +48,10 @@ public class RentalUnits extends AuditBaseEntity {
 	private RentalStructure rentalStruct;
 	
 	@XmlTransient
-	 @JsonIgnore
-	@OneToMany(mappedBy="unit")
-	private List<RentalUnitCharges> unitChages;
+	//@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name="ren_group_code",nullable=false)
+	private ChargeRatesGroup chargeGroup;
 	
 	@XmlTransient
 	 @JsonIgnore
@@ -89,13 +90,6 @@ public class RentalUnits extends AuditBaseEntity {
 		this.rentalStruct = rentalStruct;
 	}
 
-	public List<RentalUnitCharges> getUnitChages() {
-		return unitChages;
-	}
-
-	public void setUnitChages(List<RentalUnitCharges> unitChages) {
-		this.unitChages = unitChages;
-	}
 
 	public List<TenAllocations> getAllocations() {
 		return allocations;
@@ -103,6 +97,14 @@ public class RentalUnits extends AuditBaseEntity {
 
 	public void setAllocations(List<TenAllocations> allocations) {
 		this.allocations = allocations;
+	}
+
+	public ChargeRatesGroup getChargeGroup() {
+		return chargeGroup;
+	}
+
+	public void setChargeGroup(ChargeRatesGroup chargeGroup) {
+		this.chargeGroup = chargeGroup;
 	}
 	
 	

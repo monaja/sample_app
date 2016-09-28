@@ -15,16 +15,14 @@
 		<thead>
 			<tr>
 
-				<th>Inv. No.</th>
-				<th>Inv. Date</th>
-				<th>Tenant</th>
-				<th>Currency</th>
-				<th>WEF</th>
-				<th>WET</th>
-				<th>Gross</th>
-				<th>Taxes</th>
-				<th>Net</th>
-				<th>Status</th>
+				<th width="10%">Inv. No.</th>
+				<th width="10%">Inv. Date</th>
+				<th width="10%">Tenant</th>
+				<th width="10%">Currency</th>
+				<th width="10%">WEF</th>
+				<th width="10%">WET</th>
+				<th width="10%">Invoice Amount</th>
+				<th width="10%">Status</th>
 				<th width="2%"></th>
 			</tr>
 		</thead>

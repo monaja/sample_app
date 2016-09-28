@@ -8,6 +8,7 @@ import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
 import com.brokersystems.setups.model.AccountDef;
 import com.brokersystems.setups.model.AccountTypes;
+import com.brokersystems.setups.model.ChargeRatesGroup;
 import com.brokersystems.setups.model.Country;
 import com.brokersystems.setups.model.County;
 import com.brokersystems.setups.model.Currencies;
@@ -87,8 +88,6 @@ public interface SetupsService {
 	 
 	 RentalStructure getStructureDetails(Long rentalId);
 	 
-	 DataTablesResult<RentalUnitCharges> findRentalUnitCharges(long renId,DataTablesRequest request)  throws IllegalAccessException;
-	 
 	 void defineRentalCharges(RentalUnitCharges charge) throws BadRequestException ;
 		
      void deleteRentalCharge(Long chargeId);
@@ -124,5 +123,15 @@ public interface SetupsService {
     TenantDef getTenantDetails(Long tenId);
     
     TenAllocations getActiveAllocation(Long tenId);
+    
+    DataTablesResult<ChargeRatesGroup> findAllChargeGroups(DataTablesRequest request)  throws IllegalAccessException;
+    
+    DataTablesResult<RentalUnitCharges> findRentalUnitCharges(long renId,DataTablesRequest request)  throws IllegalAccessException;
+    
+    void createChargeGroup(ChargeRatesGroup group) throws BadRequestException;
+    
+    void deleteChargeGroup(Long groupCode);
+    
+    Page<ChargeRatesGroup> findGroupsForSelect(String paramString, Pageable paramPageable);
 	
 }

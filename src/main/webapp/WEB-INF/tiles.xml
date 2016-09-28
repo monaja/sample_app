@@ -74,6 +74,11 @@
         <put-attribute name="body" value="/WEB-INF/pages/setups/unittype.jsp" />  
     </definition> 
     
+    <definition name="chargegroup" extends="base.definition">  
+        <put-attribute name="title" value="Unit Charges Groups Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/chargegroups.jsp" />  
+    </definition> 
+    
     <definition name="countries" extends="base.definition">  
         <put-attribute name="title" value="Countries/Counties/Towns Definition" />  
         <put-attribute name="body" value="/WEB-INF/pages/setups/countries.jsp" />  
