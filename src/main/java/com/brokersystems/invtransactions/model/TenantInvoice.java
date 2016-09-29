@@ -66,6 +66,11 @@ public class TenantInvoice extends AuditBaseEntity {
 	@Temporal(TemporalType.DATE)
 	private Date renewalDate;
 	
+	@Column(name="invoice_canc_date",nullable=false)
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
+	private Date cancellationDate;
+	
 	@Column(name="invoice_frequency",nullable=false)
 	private String frequency;
 	
@@ -355,6 +360,14 @@ public class TenantInvoice extends AuditBaseEntity {
 
 	public void setRevisionNumber(String revisionNumber) {
 		this.revisionNumber = revisionNumber;
+	}
+
+	public Date getCancellationDate() {
+		return cancellationDate;
+	}
+
+	public void setCancellationDate(Date cancellationDate) {
+		this.cancellationDate = cancellationDate;
 	}
 	
 	

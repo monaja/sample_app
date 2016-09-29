@@ -344,6 +344,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 		if(sum.compareTo(invoice.getNetAmount())!=0){
 			throw new BadRequestException("Invoice details totals does not match with parent invoice totals "+invoice.getNetAmount()+" ; "+sum);
 		}
+		TenantInvoice prevInvoice =  invoice.getPreviousTrans();
+		if(!"CN".equalsIgnoreCase(invoice.getTransType())){
 		Transactions trans = new Transactions();
 		trans.setAuthoriedBy(userUtils.getCurrentUser().getUsername());
 		trans.setAuthorized("Y");
@@ -358,13 +360,17 @@ public class InvoiceServiceImpl implements InvoiceService {
 		trans.setTransTaxes(invoice.getTaxAmount());
 		trans.setTranstype("INV");
 		trans.setTransSettledAmt(BigDecimal.ZERO);
+		transRepo.save(trans);
+		}
 		invoice.setStatus("A");
 		invoice.setAuthBy(userUtils.getCurrentUser());
 		invoice.setPreviousTrans(invoice);
+		if("CN".equalsIgnoreCase(invoice.getTransType())){
+			invoice.setCurrentStatus("CN");
+		}else
 		invoice.setCurrentStatus("A");
-		transRepo.save(trans);
+		
 		invoiceRepo.save(invoice);
-		TenantInvoice prevInvoice =  invoice.getPreviousTrans();
 		if(prevInvoice!=null){
 			prevInvoice.setCurrentStatus("RV");
 			invoiceRepo.save(prevInvoice);
@@ -435,20 +441,24 @@ public class InvoiceServiceImpl implements InvoiceService {
 		destination.setTaxAmount(invoice.getTaxAmount());
 		destination.setTenant(invoice.getTenant());
 		destination.setTransCurrency(invoice.getTransCurrency());
-		if("RV".equalsIgnoreCase(revisionForm.getRevisionType()))
-		destination.setTransType("RV");
+		if("RV".equalsIgnoreCase(revisionForm.getRevisionType())){
+			destination.setTransType("RV");
+			destination.setWefDate(revisionForm.getEffectiveDate());
+			Date wetDate = FormatUtils.addDays(FormatUtils.addMonths(revisionForm.getEffectiveDate(), FormatUtils.calculateFrequencyRate(invoice.getFrequency())),-1);
+			destination.setWetDate(wetDate);
+			destination.setRenewalDate(FormatUtils.addDays(wetDate, 1));
+		}
+		else if("CN".equalsIgnoreCase(revisionForm.getRevisionType())){
+			destination.setTransType("CN");
+			destination.setWetDate(new Date());
+		}
+		
 		destination.setPreviousTrans(invoice);
 		Long count = invoiceRepo.count(QTenantInvoice.tenantInvoice.invoiceNumber.eq(invoice.getInvoiceNumber()));
 		destination.setInvoiceId(null);
 		destination.setCurrentStatus("D");
-		
 		destination.setStatus("D");
-		
 		destination.setRevisionNumber(invoice.getInvoiceNumber()+"/"+(count+1));
-		destination.setWefDate(revisionForm.getEffectiveDate());
-		Date wetDate = FormatUtils.addDays(FormatUtils.addMonths(revisionForm.getEffectiveDate(), FormatUtils.calculateFrequencyRate(invoice.getFrequency())),-1);
-		destination.setWetDate(wetDate);
-		destination.setRenewalDate(FormatUtils.addDays(wetDate, 1));
 		destination.setAuthBy(null);
 		for(TenantInvoiceDetails det:details){
 			TenantInvoiceDetails dest = new TenantInvoiceDetails();

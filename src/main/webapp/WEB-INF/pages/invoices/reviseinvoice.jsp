@@ -20,7 +20,7 @@
 							<input type='text' class="form-control pull-right"
 								id="inv-number" required readonly/>
 							<div class="input-group-addon">
-								<span class="glyphicon glyphicon-chevron-down" id="btn-show-invoice"></span>
+								<span class="glyphicon glyphicon-chevron-down" id="btn-show-invoice" style="cursor:pointer"></span>
 							</div>
 						</div>
 					</div>

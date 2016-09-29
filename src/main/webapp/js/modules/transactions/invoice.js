@@ -199,6 +199,9 @@ function saveInvoiceDetails(){
             	  $("#tenant-label-name").text(s.tenantName);
             	  $("#tenant-info").hide();
             	  getInvoiceCharges(s.invoiceDetails);
+            	  $("#inv-ren-date").text(moment(s.renewalDate).format('DD/MM/YYYY'));
+            	  $("#inv-rev-number").text(s.revisionNumber);
+            	  $("#inv-install-amt").text(s.installmentAmt);
             	  currValidator.resetForm();
               }, 
               error: function(jqXHR, textStatus, errorThrown){
