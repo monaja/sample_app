@@ -33,8 +33,10 @@
 	<div class="box-body">			
 	<form id="invoice-form" class="form-horizontal">
 		
-		
+		    <input type="hidden" name="revisionNumber" id="rev-no">
+		    <input type="hidden" name="transType" id="trans-type">
 			<input type="hidden" name="invoiceId" id="invoice-pk">
+			<input type="hidden" name="prevInvoice" id="prev-invoice">
 			<div class="form-group form-required">
 				<div class="col-md-6">
 					<label for="brn-id" class="col-md-6 control-label">Transaction
@@ -104,7 +106,7 @@
 						Number</label>
 
 					<div class="col-md-6">
-						<input type="text" name=invoiceNumber" id="inv-number"
+						<input type="text" name="invoiceNumber" id="inv-number"
 							class="form-control" placeholder="" readonly>
 					</div>
 					

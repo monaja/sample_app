@@ -21,7 +21,7 @@ public interface InvoiceRepository extends  PagingAndSortingRepository<TenantInv
 	public Long getActiveTenancyCount(@Param("tenantId") long tenantId);
 	
 	
-	@Query("select t from TenantDef t where t.status='A' and (fname like %:search% or otherNames like %:search% or tenantNumber like %:search%) and t NOT IN (select i.tenant from TenantInvoice i where i.currentStatus='A')")
+	@Query("select t from TenantDef t where t.status='A' and (fname like %:search% or otherNames like %:search% or tenantNumber like %:search%) and t NOT IN (select i.tenant from TenantInvoice i where i.currentStatus in ('A','D'))")
 	public Page<TenantDef> findTenantsWithoutContracts(@Param("search") String search, Pageable pageable);
 	
 	@Query("select t from TenantInvoice t where (t.tenant.fname like %:searchName% or t.tenant.otherNames like %:searchName% or t.invoiceNumber like %:searchInvoice% ) and t.currentStatus='A'")

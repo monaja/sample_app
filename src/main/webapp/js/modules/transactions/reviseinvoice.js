@@ -8,45 +8,29 @@ $(function(){
 		loadInvoiceModal();
 		confirmSelectedInvoice();
 		
+		$("#existing-invoices").hide();
+		
 		$(".datepicker-input").each(function() {
 		    $(this).datetimepicker({
                 format: 'DD/MM/YYYY'
             });
+		    
+		   $("#rev-type").on('change', function(){
+			   
+			   if($("#rev-type").val()==='CN' || $("#rev-type").val()==='CO'){
+					 $("#eff-date").prop("disabled", true);
+				 }
+			   else{
+				   $("#eff-date").removeAttr('disabled');
+			   }
+		   })
+		    
 		    
 		});
 		
 	});
 });
 
-function revisionTrans(){
-	var $revForm= $('#revise-form');
-	var validator = $revForm.validate();
-	
-	 
-	 $('#btn-revise-invoice').click(function(){
-		 if (!$revForm.valid()) {
-				return;
-			}
-			//var $btn = $(this).button('Saving');
-			var data = {};
-			$revForm.serializeArray().map(function(x){data[x.name] = x.value;});
-			var url = "reviseInvoice";
-	        var request = $.post(url, data );
-	        request.success(function(){
-//	        	bootbox.alert("Record created/updated Successfully");
-//				$('#accounttbl').DataTable().ajax.reload();
-//				validator.resetForm();
-//				$('#acctTypesModal').modal('hide');
-	        });
-	        request.error(function(jqXHR, textStatus, errorThrown){
-	        	bootbox.alert(jqXHR.responseText);
-			});
-			request.always(function(){
-				//$btn.button('reset');
-	        });
-	 });
-	
-}
 
 
 function confirmSelectedInvoice(){
@@ -129,12 +113,125 @@ function createInvoices(){
 			 if(d){
 				 $("#invoice-pk").val(d.invoiceId);
 				 $("#inv-number").val(d.invoiceNumber);
+				 
+				 $.ajax({
+				        type: 'GET',
+				        url:  'countUnauthInvoices',
+				        dataType: 'json',
+				        data: {"invoiceNumber": $("#inv-number").val()},
+				        async: true,
+				        success: function(result) {
+				        	if(result > 0){
+				        		createUnauthInvoices();
+				        		$("#existing-invoices").show();
+				        	}
+				        	else{
+				        		 $("#existing-invoices").hide(); 
+				        	}
+				        },
+				        error: function(jqXHR, textStatus, errorThrown) {
+				        	
+				        }
+				    });
+
+				 
 			 }
 			   
 		    
 	  } );
 	 
 	  return currTable;
+}
+
+
+function createUnauthInvoices(){
+		var url = "unauthinvoices";
+		  var currTable = $('#invtrans').DataTable( {
+				"processing": true,
+				"serverSide": true,
+				"ajax": {
+					'url': url,
+					'data':{
+						'invoiceNumber': $("#inv-number").val(),
+					},
+				},
+				autoWidth: true,
+				lengthMenu: [ [10], [10] ],
+				pageLength: 10,
+				destroy: true,
+				searching: false,
+				"columns": [
+					{ "data": "invoiceNumber" },
+					{ "data": "invoiceDate",
+						 "render": function ( data, type, full, meta ) {
+						      return moment(full.invoiceDate).format('DD/MM/YYYY');
+						  }
+					},
+					{ "data": "wefDate",
+						 "render": function ( data, type, full, meta ) {
+						      return moment(full.wefDate).format('DD/MM/YYYY');
+						  }
+					},
+					{ "data": "wetDate",
+						 "render": function ( data, type, full, meta ) {
+						      return moment(full.wetDate).format('DD/MM/YYYY');
+						  }
+					},
+					{ "data": "modifiedBy" },
+					{ "data": "currentStatus",
+						 "render": function ( data, type, full, meta ) {
+						      if(full.currentStatus ==='D') return "Draft";
+						      else  if(full.currentStatus ==='NT') return "New Transaction";
+						      else  if(full.currentStatus ==='RV') return "Revision Invoice"; 
+						  }
+					},
+					{ 
+						"data": "invoiceId",
+						"render": function ( data, type, full, meta ) {
+							if(full.status==="A"){
+								return '<form action="editInvoice" method="post"><input type="hidden" name="id" value='+full.invoiceId+'><input type="submit"  class="hyperlink-btn" value="View" ></form>';
+								
+							}else
+							return '<form action="editInvoice" method="post"><input type="hidden" name="id" value='+full.invoiceId+'><input type="submit"  class="hyperlink-btn" value="Edit" ></form>';
+							
+						 }
+
+					},
+					{ 
+						"data": "invoiceId",
+						"render": function ( data, type, full, meta ) {
+							return '<input type="button" class="hyperlink-btn" data-invoice='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmInvoiceDelete(this);"/>';
+						}
+
+					},
+					
+					
+				]
+			} );
+		  return currTable;
+}
+
+function confirmInvoiceDelete(button){
+	var invoice = JSON.parse(decodeURI($(button).data("invoice")));
+	bootbox.confirm("Are you sure want to delete "+invoice["invoiceNumber"]+"?", function(result) {
+		 if(result){
+	    	  $.ajax({
+			        type: 'GET',
+			        url:  'deleteInvoice',
+			        data: {"invoiceCode": invoice["invoiceId"]},
+			        dataType: 'json',
+			        async: true,
+			        success: function(result) {
+			        	bootbox.alert("Record deleted Successfully");
+			        	$('#invtrans').DataTable().ajax.reload();
+			        },
+			        error: function(jqXHR, textStatus, errorThrown) {
+                        bootbox.alert(jqXHR.responseText);
+			        }
+			    });
+	      }
+		
+	});
 }
 
 function currencyFormat (num) {

@@ -64,6 +64,17 @@
 		  margin-left:auto;
 		  margin-right:auto; 
 		}
+	  .hyperlink-btn {
+		     background:none!important;
+		     border:none; 
+		     padding:0!important;
+		    
+		    /*optional*/
+		    font-family:arial,sans-serif; /*input has OS specific font-family*/
+		     color:#069;
+		     text-decoration:underline;
+		     cursor:pointer;
+     }
 	 </style>
 	 
 	

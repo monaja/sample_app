@@ -66,7 +66,7 @@ public class TenantInvoice extends AuditBaseEntity {
 	@Temporal(TemporalType.DATE)
 	private Date renewalDate;
 	
-	@Column(name="invoice_canc_date",nullable=false)
+	@Column(name="invoice_canc_date")
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	private Date cancellationDate;
@@ -145,6 +145,9 @@ public class TenantInvoice extends AuditBaseEntity {
 	@ManyToOne
 	@JoinColumn(name="invoice_auth_user")
 	private User authBy;
+	
+	@Transient
+	private Long prevInvoice;
 
 	public Long getInvoiceId() {
 		return invoiceId;
@@ -368,6 +371,14 @@ public class TenantInvoice extends AuditBaseEntity {
 
 	public void setCancellationDate(Date cancellationDate) {
 		this.cancellationDate = cancellationDate;
+	}
+
+	public Long getPrevInvoice() {
+		return prevInvoice;
+	}
+
+	public void setPrevInvoice(Long prevInvoice) {
+		this.prevInvoice = prevInvoice;
 	}
 	
 	

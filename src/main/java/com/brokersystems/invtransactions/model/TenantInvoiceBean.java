@@ -42,6 +42,8 @@ public class TenantInvoiceBean implements Serializable {
 	private final Date renewalDate;
 	private final String installmentAmt;
 	private final String revisionNumber;
+	private final String transType;
+	private final Long prevInvoice;
 	private final List<TenantInvoiceDetailsBean> invoiceDetails;
 	
 	
@@ -49,7 +51,8 @@ public class TenantInvoiceBean implements Serializable {
 	public TenantInvoiceBean(String invoiceNumber, Long invoiceId, String invAmount, String taxAmount,
 			String netAmount,String tenantName,Date transDate,
 			Date wefDate,Date wetDate,String frequency,String status,Long tenantId,Currencies currency,
-			OrgBranch branch,PaymentModes paymentMode,Date renewalDate,String installmentAmt,String revisionNumber,List<TenantInvoiceDetailsBean> invoiceDetails) {
+			OrgBranch branch,PaymentModes paymentMode,Date renewalDate,String installmentAmt,String revisionNumber,String transType,
+			Long prevInvoice,List<TenantInvoiceDetailsBean> invoiceDetails) {
 		this.invoiceNumber = invoiceNumber;
 		this.invoiceId = invoiceId;
 		this.invAmount = invAmount;
@@ -69,10 +72,13 @@ public class TenantInvoiceBean implements Serializable {
 		this.renewalDate = renewalDate;
 		this.installmentAmt = installmentAmt;
 		this.revisionNumber = revisionNumber;
+		this.transType = transType;
+		this.prevInvoice = prevInvoice;
 	}
 	
 	public TenantInvoiceBean(String invoiceNumber, Long invoiceId, String invAmount, String taxAmount,
-			String netAmount,String tenantName,Date renewalDate,String installmentAmt,String revisionNumber,List<TenantInvoiceDetailsBean> invoiceDetails) {
+			String netAmount,String tenantName,Date renewalDate,String installmentAmt,String revisionNumber,String transType,
+			Long prevInvoice,List<TenantInvoiceDetailsBean> invoiceDetails) {
 		this.invoiceNumber = invoiceNumber;
 		this.invoiceId = invoiceId;
 		this.invAmount = invAmount;
@@ -89,6 +95,8 @@ public class TenantInvoiceBean implements Serializable {
 		this.renewalDate = renewalDate;
 		this.installmentAmt = installmentAmt;
 		this.revisionNumber = revisionNumber;
+		this.transType = transType;
+		this.prevInvoice = prevInvoice;
 	}
 
 
@@ -193,6 +201,14 @@ public class TenantInvoiceBean implements Serializable {
 
 	public void setPaymentMode(PaymentModes paymentMode) {
 		this.paymentMode = paymentMode;
+	}
+
+	public String getTransType() {
+		return transType;
+	}
+
+	public Long getPrevInvoice() {
+		return prevInvoice;
 	}
 	
 	

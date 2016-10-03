@@ -38,8 +38,8 @@ public class FormatUtils {
         return cal.getTime();
     }
 
-	public static int calculateFrequencyRate(String frequency) throws BadRequestException{
-		if(frequency==null) throw new BadRequestException("Frequency cannot be null");
+	public static int calculateFrequencyRate(String frequency){
+		if(frequency==null) return 0;
 		if("M".equalsIgnoreCase(frequency)) return 1;
 		else if("Q".equalsIgnoreCase(frequency)) return 3;
 		else if("S".equalsIgnoreCase(frequency)) return 6;

@@ -35,6 +35,7 @@ function authorizeInvoice(){
 				        async: true,
 				        success: function(result) {
 				        	bootbox.alert("Invoice Authorized Successfully...");
+				        	invoiceCode = $("#invoice-pk").val();
 				        	queryInvoiceDetails();
 				        },
 				        error: function(jqXHR, textStatus, errorThrown) {
@@ -79,6 +80,7 @@ function queryInvoiceDetails(){
 			      processData: false,
 			      contentType: false,
 			      success: function (s ) {
+			    	  console.log(s);
 			    	  $("#inv-number").val(s.invoiceNumber);
                 	  $("#invoice-pk").val(s.invoiceId);
                 	  $("#tot-inv-amt").text(s.invAmount);
@@ -101,7 +103,10 @@ function queryInvoiceDetails(){
                 	  $("#pymt-desc").val(s.paymentMode.pmDesc);
                 	  $("#inv-ren-date").text(moment(s.renewalDate).format('DD/MM/YYYY'));
                 	  $("#inv-rev-number").text(s.revisionNumber);
+                	  $("#rev-no").val(s.revisionNumber);
+                	  $("#trans-type").val(s.transType);
                 	  $("#inv-install-amt").text(s.installmentAmt);
+                	  $("#prev-invoice").val(s.prevInvoice);
                 	 
                 	  if(s.status === "A"){
                 		    $("#inv-date").prop("disabled", true);
@@ -202,6 +207,9 @@ function saveInvoiceDetails(){
             	  $("#inv-ren-date").text(moment(s.renewalDate).format('DD/MM/YYYY'));
             	  $("#inv-rev-number").text(s.revisionNumber);
             	  $("#inv-install-amt").text(s.installmentAmt);
+            	  $("#rev-no").val(s.revisionNumber);
+            	  $("#trans-type").val(s.transType);
+            	  $("#prev-invoice").val(s.prevInvoice);
             	  currValidator.resetForm();
               }, 
               error: function(jqXHR, textStatus, errorThrown){
@@ -648,10 +656,10 @@ function createInvoices(){
 					"data": "invoiceId",
 					"render": function ( data, type, full, meta ) {
 						if(full.status==="A"){
-							return '<form action="editInvoice" method="post"><input type="hidden" name="id" value='+full.invoiceId+'><input type="submit"  class="btn btn-primary" value="View" ></form>';
+							return '<form action="editInvoice" method="post"><input type="hidden" name="id" value='+full.invoiceId+'><input type="submit"  class="hyperlink-btn" value="View" ></form>';
 							
 						}else
-						return '<form action="editInvoice" method="post"><input type="hidden" name="id" value='+full.invoiceId+'><input type="submit"  class="btn btn-primary" value="Edit" ></form>';
+						return '<form action="editInvoice" method="post"><input type="hidden" name="id" value='+full.invoiceId+'><input type="submit"  class="hyperlink-btn" value="Edit" ></form>';
 						
 					 }
 

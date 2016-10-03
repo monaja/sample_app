@@ -18,10 +18,12 @@ import com.brokersystems.setups.model.RateTypes;
 import com.brokersystems.setups.model.RentalStructure;
 import com.brokersystems.setups.model.RentalUnitCharges;
 import com.brokersystems.setups.model.RentalUnits;
+import com.brokersystems.setups.model.SystemSequence;
 import com.brokersystems.setups.model.TenAllocations;
 import com.brokersystems.setups.model.TenantDef;
 import com.brokersystems.setups.model.Town;
 import com.brokersystems.setups.model.UnitTypes;
+import com.mysema.query.types.Predicate;
 
 /**
  * This  is used to maintain crud and query services of several setups screens
@@ -31,6 +33,11 @@ import com.brokersystems.setups.model.UnitTypes;
  */
 public interface SetupsService {
 	
+	public DataTablesResult<SystemSequence> findAllSequences(DataTablesRequest request) throws IllegalAccessException;
+	
+	public void defineSequence(SystemSequence sequence) throws BadRequestException;
+	
+	void deleteSequence(Long seqCode);
 	
 	DataTablesResult<Currencies> findAllCurrencies(DataTablesRequest request)  throws IllegalAccessException;
 	

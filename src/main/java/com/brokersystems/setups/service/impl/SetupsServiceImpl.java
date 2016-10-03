@@ -33,6 +33,7 @@ import com.brokersystems.setup.repository.RateTypeRepository;
 import com.brokersystems.setup.repository.RentalStructRepository;
 import com.brokersystems.setup.repository.RentalUnitChargeRepo;
 import com.brokersystems.setup.repository.RentalUnitsRepository;
+import com.brokersystems.setup.repository.SequenceRepository;
 import com.brokersystems.setup.repository.TenantAllocRepo;
 import com.brokersystems.setup.repository.TenantRepository;
 import com.brokersystems.setup.repository.TownRepository;
@@ -59,6 +60,7 @@ import com.brokersystems.setups.model.QRateTypes;
 import com.brokersystems.setups.model.QRentalStructure;
 import com.brokersystems.setups.model.QRentalUnitCharges;
 import com.brokersystems.setups.model.QRentalUnits;
+import com.brokersystems.setups.model.QSystemSequence;
 import com.brokersystems.setups.model.QTenAllocations;
 import com.brokersystems.setups.model.QTenantDef;
 import com.brokersystems.setups.model.QTown;
@@ -67,6 +69,7 @@ import com.brokersystems.setups.model.RateTypes;
 import com.brokersystems.setups.model.RentalStructure;
 import com.brokersystems.setups.model.RentalUnitCharges;
 import com.brokersystems.setups.model.RentalUnits;
+import com.brokersystems.setups.model.SystemSequence;
 import com.brokersystems.setups.model.TenAllocations;
 import com.brokersystems.setups.model.TenantDef;
 import com.brokersystems.setups.model.Town;
@@ -108,24 +111,27 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Autowired
 	private RentalUnitChargeRepo unitChargeRepo;
-	
+
 	@Autowired
 	private PaymentModeRepo payRepo;
-	
+
 	@Autowired
 	private AccountTypeRepo acctypeRepo;
-	
+
 	@Autowired
 	private AccountRepo accountRepo;
-	
+
 	@Autowired
 	private TenantRepository tenRepo;
-	
+
 	@Autowired
 	private TenantAllocRepo allocRepo;
-	
+
 	@Autowired
 	private ChargeRatesGroupRepo chargeRepo;
+
+	@Autowired
+	private SequenceRepository sequenceRepo;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -135,8 +141,16 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
+	public DataTablesResult<SystemSequence> findAllSequences(DataTablesRequest request) throws IllegalAccessException {
+		Page<SystemSequence> page = sequenceRepo.findAll(request.searchPredicate(QSystemSequence.systemSequence),
+				request);
+		return new DataTablesResult<>(request, page);
+	}
+
+	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void defineCurrency(Currencies currency) {
 
 		currRepo.save(currency);
@@ -145,7 +159,7 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void deleteCurrency(Long currCode) {
 		currRepo.delete(currCode);
 
@@ -159,7 +173,7 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void defineCountry(Country country) {
 		countryRepo.save(country);
 
@@ -167,7 +181,7 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void deleteCountry(Long couCode) {
 		countryRepo.delete(couCode);
 
@@ -184,7 +198,7 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void defineCounty(County county) {
 		countyRepo.save(county);
 
@@ -192,7 +206,7 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void deleteCounty(Long countyCode) {
 		countyRepo.delete(countyCode);
 
@@ -209,14 +223,14 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void defineTown(Town town) {
 		townRepo.save(town);
 	}
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void deleteTown(Long townCode) {
 		townRepo.delete(townCode);
 	}
@@ -229,7 +243,7 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void defineRateType(RateTypes rateType) {
 		rateTypeRepo.save(rateType);
 
@@ -237,7 +251,7 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void deleteRateType(Long rateTypeCode) {
 		rateTypeRepo.delete(rateTypeCode);
 
@@ -251,7 +265,7 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void defineUnitType(UnitTypes unitType) {
 		unitTypeRepo.save(unitType);
 
@@ -259,7 +273,7 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void deleteUnitType(Long unitCode) {
 		unitTypeRepo.delete(unitCode);
 
@@ -287,7 +301,7 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public RentalStructure defineRentalStruct(RentalStructure struct) {
 		RentalStructure s = rentalStructRepo.save(struct);
 		return s;
@@ -296,7 +310,7 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void deleteRentalStruct(Long structId) {
 		rentalStructRepo.delete(structId);
 
@@ -304,17 +318,19 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void defineRentalUnits(RentalUnits unit) throws BadRequestException {
-		 if(unit.getChargeGroup()==null) throw new BadRequestException("Select Group top continue");
-		 if(unit.getUnitType()==null)throw new BadRequestException("Select Unit top continue");
+		if (unit.getChargeGroup() == null)
+			throw new BadRequestException("Select Group top continue");
+		if (unit.getUnitType() == null)
+			throw new BadRequestException("Select Unit top continue");
 		rentalUnitRepo.save(unit);
 
 	}
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void deleteRentalUnit(Long unitId) {
 		rentalUnitRepo.delete(unitId);
 
@@ -360,7 +376,7 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void defineRentalCharges(RentalUnitCharges charge) throws BadRequestException {
 		if (charge.isTaxable()) {
 			if (charge.getTaxValue() == null || charge.getTaxValue().compareTo(BigDecimal.ZERO) == 0) {
@@ -389,8 +405,10 @@ public class SetupsServiceImpl implements SetupsService {
 		}
 
 		QRentalUnitCharges unitCharges = QRentalUnitCharges.rentalUnitCharges;
-		BooleanExpression exp = unitCharges.rateType.eq(charge.getRateType()).and(unitCharges.group.eq(charge.getGroup())).and(unitCharges.wefDate
-				.between(charge.getWefDate(), dateTo).or(unitCharges.wetDate.between(charge.getWefDate(), dateTo)));
+		BooleanExpression exp = unitCharges.rateType.eq(charge.getRateType())
+				.and(unitCharges.group.eq(charge.getGroup()))
+				.and(unitCharges.wefDate.between(charge.getWefDate(), dateTo)
+						.or(unitCharges.wetDate.between(charge.getWefDate(), dateTo)));
 		long size = unitChargeRepo.findAll(exp).spliterator().getExactSizeIfKnown();
 		if (charge.getChargeId() == null) {
 			if (size > 0) {
@@ -401,13 +419,14 @@ public class SetupsServiceImpl implements SetupsService {
 				throw new BadRequestException("Charges for Selected period already exists...");
 			}
 		}
-		
-		BooleanExpression nullDates = unitCharges.rateType.eq(charge.getRateType()).and(unitCharges.group.eq(charge.getGroup())).and(unitCharges.wetDate.isNull());
-		
+
+		BooleanExpression nullDates = unitCharges.rateType.eq(charge.getRateType())
+				.and(unitCharges.group.eq(charge.getGroup())).and(unitCharges.wetDate.isNull());
+
 		Iterator<RentalUnitCharges> it = unitChargeRepo.findAll(nullDates).iterator();
-		while(it.hasNext()){
-			RentalUnitCharges unitCharge = (RentalUnitCharges)it.next();
-			Calendar cal  = Calendar.getInstance();
+		while (it.hasNext()) {
+			RentalUnitCharges unitCharge = (RentalUnitCharges) it.next();
+			Calendar cal = Calendar.getInstance();
 			cal.setTime(new Date());
 			cal.add(Calendar.DAY_OF_YEAR, -1);
 			unitCharge.setWetDate(cal.getTime());
@@ -416,11 +435,11 @@ public class SetupsServiceImpl implements SetupsService {
 
 		unitChargeRepo.save(charge);
 
-}
+	}
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void deleteRentalCharge(Long chargeId) {
 		unitChargeRepo.delete(chargeId);
 
@@ -436,30 +455,30 @@ public class SetupsServiceImpl implements SetupsService {
 		}
 		return rateTypeRepo.findAll(pred, paramPageable);
 	}
-	
+
 	@Override
-	public DataTablesResult<PaymentModes> findAllPaymentModes(DataTablesRequest request) throws IllegalAccessException  {
+	public DataTablesResult<PaymentModes> findAllPaymentModes(DataTablesRequest request) throws IllegalAccessException {
 		Page<PaymentModes> page = payRepo.findAll(request.searchPredicate(QPaymentModes.paymentModes), request);
 		return new DataTablesResult<>(request, page);
 	}
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void definePaymentMode(PaymentModes mode) throws BadRequestException {
-		if(mode.getPmMaxValue().compareTo(mode.getPmMinValue()) ==-1){
+		if (mode.getPmMaxValue().compareTo(mode.getPmMinValue()) == -1) {
 			throw new BadRequestException("Max Value cannot be less than min Value");
 		}
 		payRepo.save(mode);
-		
+
 	}
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void deletePaymentMode(Long pmId) {
 		payRepo.delete(pmId);
-		
+
 	}
 
 	@Override
@@ -470,31 +489,31 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void defineAccountType(AccountTypes acctypes) throws BadRequestException {
-		if(acctypes.isVatAppli()){
-			if(acctypes.getVatRate()==null || acctypes.getVatRate().compareTo(BigDecimal.ZERO)<=0){
+		if (acctypes.isVatAppli()) {
+			if (acctypes.getVatRate() == null || acctypes.getVatRate().compareTo(BigDecimal.ZERO) <= 0) {
 				throw new BadRequestException("Vat Rate cannot be zero or less than zero if Vat is applicable");
 			}
-			if(acctypes.getVatRate().compareTo(new BigDecimal(100))==1){
+			if (acctypes.getVatRate().compareTo(new BigDecimal(100)) == 1) {
 				throw new BadRequestException("VAT Rate cannot cannot be greater than 100");
 			}
 		}
-		if(acctypes.isWhtxAppl()){
-			if(acctypes.getWhtaxVal()==null || acctypes.getWhtaxVal().compareTo(BigDecimal.ZERO)<=0){
+		if (acctypes.isWhtxAppl()) {
+			if (acctypes.getWhtaxVal() == null || acctypes.getWhtaxVal().compareTo(BigDecimal.ZERO) <= 0) {
 				throw new BadRequestException("Whtx Rate cannot be zero or less than zero if Whtx is applicable");
 			}
-			if(acctypes.getWhtaxVal().compareTo(new BigDecimal(100))==1){
+			if (acctypes.getWhtaxVal().compareTo(new BigDecimal(100)) == 1) {
 				throw new BadRequestException("Whtx Rate cannot cannot be greater than 100");
 			}
 		}
 		acctypeRepo.save(acctypes);
-		
+
 	}
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void deleteAccountType(Long acctId) {
 		acctypeRepo.delete(acctId);
 	}
@@ -521,54 +540,54 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public AccountDef getAccountDetails(Long acctId) {
-       return accountRepo.findOne(acctId);
+		return accountRepo.findOne(acctId);
 	}
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
-	public void defineAccount(AccountDef account) throws BadRequestException{
-		if(account.getAccountType()==null){
+	@Transactional(readOnly = false)
+	public void defineAccount(AccountDef account) throws BadRequestException {
+		if (account.getAccountType() == null) {
 			throw new BadRequestException("Select Account Type to continue...");
 		}
-		
-		if(account.getAccountType()==null){
+
+		if (account.getAccountType() == null) {
 			throw new BadRequestException("Select Account Branch to continue...");
 		}
-		
-		if(account.getDob()!=null){
-			Date today  = new Date();
-			if(today.before(account.getDob())){
+
+		if (account.getDob() != null) {
+			Date today = new Date();
+			if (today.before(account.getDob())) {
 				throw new BadRequestException("Date of Birth/Date of Incorporation cannot be greater than today");
 			}
 		}
-		if(null == account.getStatus() || "".equals(account.getStatus())){
-			if(account.getAcctId()!=null){
+		if (null == account.getStatus() || "".equals(account.getStatus())) {
+			if (account.getAcctId() != null) {
 				throw new BadRequestException("Select Status...");
-			}
-			else{
+			} else {
 				account.setStatus("A");
 			}
 		}
-		 accountRepo.save(account);
+		accountRepo.save(account);
 	}
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void deleteAccount(Long acctId) {
 		accountRepo.delete(acctId);
-		
+
 	}
 
 	@Override
-	public Page<RentalStructure> findRentalStructForSelect(Long branchCOde, String paramString, Pageable paramPageable) {
+	public Page<RentalStructure> findRentalStructForSelect(Long branchCOde, String paramString,
+			Pageable paramPageable) {
 		QOrgBranch branch = QRentalStructure.rentalStructure.branch;
 		BooleanExpression pred = branch.obId.eq(branchCOde);
 		if (paramString == null || StringUtils.isBlank(paramString)) {
-		     pred = pred.and(QRentalStructure.rentalStructure.isNotNull());
+			pred = pred.and(QRentalStructure.rentalStructure.isNotNull());
 		} else {
 			pred = pred.and(QRentalStructure.rentalStructure.houseName.containsIgnoreCase(paramString));
 		}
@@ -576,58 +595,58 @@ public class SetupsServiceImpl implements SetupsService {
 	}
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public Page<RentalUnits> findRentalUnitsForSelect(Long renId, String paramString, Pageable paramPageable) {
-	
-		return allocRepo.findUnallocatedUnits(renId,paramPageable);
+
+		return allocRepo.findUnallocatedUnits(renId, paramPageable);
 	}
 
 	@Override
 	@Modifying
-    @Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void defineTenant(TenantDef tenant) throws BadRequestException {
 		List<TenAllocations> allocations = new ArrayList<>();
-		if(tenant.getTenId()==null){
-			if(tenant.getAllocation().getAllocbranch()==null){
+		if (tenant.getTenId() == null) {
+			if (tenant.getAllocation().getAllocbranch() == null) {
 				throw new BadRequestException("Select Tenant Allocation Branch....");
 			}
-			if(tenant.getAllocation().getStructure()==null){
+			if (tenant.getAllocation().getStructure() == null) {
 				throw new BadRequestException("Select Tenant Allocation Property....");
 			}
-			if(tenant.getAllocation().getRenunits()==null){
+			if (tenant.getAllocation().getRenunits() == null) {
 				throw new BadRequestException("Select Tenant Allocation Unit....");
 			}
 			tenant.getAllocation().setDateregistered(new Date());
 			tenant.getAllocation().setCancelled("N");
 			tenant.getAllocation().setTenant(tenant);
 			allocations.add(tenant.getAllocation());
-			
-			final String tenFormat =  String.format("%05d", tenRepo.count()+1);
-			tenant.setTenantNumber("TEN"+tenFormat);
+
+			final String tenFormat = String.format("%05d", tenRepo.count() + 1);
+			tenant.setTenantNumber("TEN" + tenFormat);
 			tenant.setStatus("A");
 		}
-		if(tenant.getRegisteredbrn()==null){
+		if (tenant.getRegisteredbrn() == null) {
 			throw new BadRequestException("Select Tenant Registered Branch....");
 		}
-		
-		if(tenant.getTenantNumber()==null){
+
+		if (tenant.getTenantNumber() == null) {
 			throw new BadRequestException("Tenant Number missing....");
 		}
-		if(tenant.getDateregistered()==null){
+		if (tenant.getDateregistered() == null) {
 			throw new BadRequestException("Date of tenant registration is required....");
 		}
-		if(tenant.getStatus().equals("T")){
-			tenant.setDateterminated(new  Date());
+		if (tenant.getStatus().equals("T")) {
+			tenant.setDateterminated(new Date());
 			TenAllocations activeAllocation = getActiveAllocation(tenant.getTenId());
-			if(activeAllocation!=null){
+			if (activeAllocation != null) {
 				activeAllocation.setDatecancelled(new Date());
 				activeAllocation.setCancelled("Y");
 				allocRepo.save(activeAllocation);
 			}
 		}
 		tenRepo.save(tenant);
-		if(allocations.size()>0)
-		allocRepo.save(allocations);
+		if (allocations.size() > 0)
+			allocRepo.save(allocations);
 	}
 
 	@Override
@@ -637,29 +656,31 @@ public class SetupsServiceImpl implements SetupsService {
 
 	@Override
 	public TenAllocations getActiveAllocation(Long tenId) {
-		  BooleanExpression pred=  QTenAllocations.tenAllocations.tenant.tenId.eq(tenId);
-		  Iterable<TenAllocations> allocs = allocRepo.findAll(pred);
-		 Optional<TenAllocations> tenant =StreamSupport.stream(allocs.spliterator(),false).filter(a -> a.getCancelled().equalsIgnoreCase("N")).findFirst();
-		 return tenant.orElse(new TenAllocations());
+		BooleanExpression pred = QTenAllocations.tenAllocations.tenant.tenId.eq(tenId);
+		Iterable<TenAllocations> allocs = allocRepo.findAll(pred);
+		Optional<TenAllocations> tenant = StreamSupport.stream(allocs.spliterator(), false)
+				.filter(a -> a.getCancelled().equalsIgnoreCase("N")).findFirst();
+		return tenant.orElse(new TenAllocations());
 	}
 
 	@Override
 	public DataTablesResult<ChargeRatesGroup> findAllChargeGroups(DataTablesRequest request)
 			throws IllegalAccessException {
-		Page<ChargeRatesGroup> page = chargeRepo.findAll(request.searchPredicate(QChargeRatesGroup.chargeRatesGroup), request);
+		Page<ChargeRatesGroup> page = chargeRepo.findAll(request.searchPredicate(QChargeRatesGroup.chargeRatesGroup),
+				request);
 		return new DataTablesResult<>(request, page);
 	}
 
 	@Override
 	public void createChargeGroup(ChargeRatesGroup group) throws BadRequestException {
 		chargeRepo.save(group);
-		
+
 	}
 
 	@Override
 	public void deleteChargeGroup(Long groupCode) {
 		chargeRepo.delete(groupCode);
-		
+
 	}
 
 	@Override
@@ -671,6 +692,27 @@ public class SetupsServiceImpl implements SetupsService {
 			pred = QChargeRatesGroup.chargeRatesGroup.shortDesc.containsIgnoreCase(paramString);
 		}
 		return chargeRepo.findAll(pred, paramPageable);
+	}
+
+	@Override
+	@Modifying
+	@Transactional(readOnly = false)
+	public void defineSequence(SystemSequence sequence) throws BadRequestException {
+		Predicate pred = QSystemSequence.systemSequence.transType.eq(sequence.getTransType());
+		if(sequence.getSeqId()==null)
+		if (sequenceRepo.count(pred) > 0) {
+			throw new BadRequestException("The Sequence for the transaction already exists..");
+		}
+		sequenceRepo.save(sequence);
+
+	}
+
+	@Override
+	@Modifying
+	@Transactional(readOnly = false)
+	public void deleteSequence(Long seqCode) {
+		sequenceRepo.delete(seqCode);
+
 	}
 
 }

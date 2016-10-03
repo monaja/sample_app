@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.brokersystems.invtransactions.model.RevisionForm;
 import com.brokersystems.invtransactions.model.TenantInvoice;
@@ -38,6 +41,7 @@ import com.brokersystems.server.datatables.DataTable;
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
+import com.brokersystems.server.exception.InvoiceRevisionException;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.ModelHelperForm;
 import com.brokersystems.setups.model.PaymentModes;
@@ -84,6 +88,11 @@ public class InvoiceController {
 		return "reviseinvoice";
 	}
 	
+	@ExceptionHandler(InvoiceRevisionException.class)
+	public ModelAndView getSuperheroesUnavailable(InvoiceRevisionException ex) {
+	    return new ModelAndView("reviseinvoice", "error", ex.getMessage());
+	}
+	
 	@RequestMapping(value = "/editInvoice", method = RequestMethod.POST)
 	public String editRentalForm(@Valid @ModelAttribute ModelHelperForm helperForm, Model model) {
 		model.addAttribute("invoiceCode", helperForm.getId());
@@ -102,6 +111,8 @@ public class InvoiceController {
 	@ResponseBody
 	public Page<PaymentModes> paymentModes(@RequestParam(value = "term", required = false) String term, Pageable pageable)
 			throws IllegalAccessException {
+		System.out.println("Search term "+term);
+		System.out.println(pageable);
 		return invService.findPaymentModesForSelect(term, pageable);
 	}
 	
@@ -179,10 +190,30 @@ public class InvoiceController {
 	
 	@RequestMapping(value = { "reviseInvoice" }, method = {org.springframework.web.bind.annotation.RequestMethod.POST })
 	public String reviseInvoice(@Valid @ModelAttribute RevisionForm revision, Model model) throws BadRequestException, InvocationTargetException, IllegalAccessException {
-		
 		Long id = invService.reviseTransaction(revision);
 		model.addAttribute("invoiceCode", id);
-         return "invoiceform";
+        return "invoiceform";
+	}
+	
+	@RequestMapping(value = { "unauthinvoices" }, method = { RequestMethod.GET })
+	@ResponseBody
+	public DataTablesResult<TenantInvoice> getUnauthInvoices(@DataTable DataTablesRequest pageable,@RequestParam(value = "invoiceNumber", required = false) String invoiceNumber)
+			throws IllegalAccessException {
+		return invService.findUnauthorisedInvoices(pageable,invoiceNumber);
+	}
+	
+	@RequestMapping(value = { "countUnauthInvoices" }, method = { RequestMethod.GET })
+	@ResponseBody
+	public Long countUnauthInvoices(@RequestParam(value = "invoiceNumber", required = false) String invoiceNumber)
+			throws IllegalAccessException {
+		return invService.countUnauthTransaction(invoiceNumber);
+	}
+	
+	@RequestMapping(value = { "deleteInvoice" }, method = {
+			org.springframework.web.bind.annotation.RequestMethod.GET })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteInvoice(@RequestParam(value = "invoiceCode", required = false) Long invoiceCode) throws BadRequestException {
+		invService.deleteInvoice(invoiceCode);
 	}
 
 }

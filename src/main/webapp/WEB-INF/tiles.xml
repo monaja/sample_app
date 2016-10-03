@@ -38,6 +38,11 @@
         <put-attribute name="body" value="/WEB-INF/pages/setups/currencies.jsp" />  
     </definition> 
     
+     <definition name="syssequences" extends="base.definition">  
+        <put-attribute name="title" value="Sequences Definition" />  
+        <put-attribute name="body" value="/WEB-INF/pages/setups/sequences.jsp" />  
+    </definition> 
+    
      <definition name="ratetypes" extends="base.definition">  
         <put-attribute name="title" value="Rate Type Definition" />  
         <put-attribute name="body" value="/WEB-INF/pages/setups/ratetypes.jsp" />  

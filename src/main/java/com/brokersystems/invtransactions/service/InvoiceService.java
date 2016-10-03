@@ -14,6 +14,7 @@ import com.brokersystems.invtransactions.model.TenantInvoiceDetails;
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
 import com.brokersystems.server.exception.BadRequestException;
+import com.brokersystems.server.exception.InvoiceRevisionException;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.PaymentModes;
 import com.brokersystems.setups.model.RentalUnitCharges;
@@ -48,6 +49,12 @@ public interface InvoiceService {
 	public DataTablesResult<TenantInvoice> findActiveInvoices(DataTablesRequest request, String invoiceNumber,
 			String firstName,String otherNames) throws IllegalAccessException;
 
-	Long reviseTransaction(RevisionForm revisionForm)  throws BadRequestException,InvocationTargetException,IllegalAccessException;
+	Long reviseTransaction(RevisionForm revisionForm)  throws InvoiceRevisionException;
+	
+	DataTablesResult<TenantInvoice> findUnauthorisedInvoices(DataTablesRequest request,String invoiceNumber) throws IllegalAccessException;
+	
+	Long countUnauthTransaction(String invoiceNumber);
+	
+	void deleteInvoice(Long invoiceId);
 
 }

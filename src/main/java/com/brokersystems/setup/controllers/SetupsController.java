@@ -42,6 +42,7 @@ import com.brokersystems.setups.model.RentalStructForm;
 import com.brokersystems.setups.model.RentalStructure;
 import com.brokersystems.setups.model.RentalUnitCharges;
 import com.brokersystems.setups.model.RentalUnits;
+import com.brokersystems.setups.model.SystemSequence;
 import com.brokersystems.setups.model.Landlord;
 import com.brokersystems.setups.model.ModelHelperForm;
 import com.brokersystems.setups.model.Town;
@@ -73,6 +74,11 @@ public class SetupsController {
 		return "currency";
 	}
 	
+	@RequestMapping(value = "syssequences", method = RequestMethod.GET)
+	public String sequencesHome(Model model) {
+		return "syssequences";
+	}
+	
 	
 	@RequestMapping(value = "chargegroups", method = RequestMethod.GET)
 	public String chargeGroups(Model model) {
@@ -94,6 +100,27 @@ public class SetupsController {
 	public DataTablesResult<Currencies> getCurrencies(@DataTable DataTablesRequest pageable)
 			throws IllegalAccessException {
 		return setupsService.findAllCurrencies(pageable);
+	}
+	
+	@RequestMapping(value = { "sequences" }, method = { RequestMethod.GET })
+	@ResponseBody
+	public DataTablesResult<SystemSequence> getSequences(@DataTable DataTablesRequest pageable)
+			throws IllegalAccessException {
+		return setupsService.findAllSequences(pageable);
+	}
+	
+	@RequestMapping(value = { "createSequence" }, method = {
+			org.springframework.web.bind.annotation.RequestMethod.POST })
+	@ResponseStatus(HttpStatus.CREATED)
+	public void saveOrUpdateSequence(SystemSequence sequence) throws IllegalAccessException, BadRequestException {
+		setupsService.defineSequence(sequence);
+	}
+
+	@RequestMapping(value = { "deleteSequence/{seqCode}" }, method = {
+			org.springframework.web.bind.annotation.RequestMethod.GET })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteSequence(@PathVariable Long seqCode) {
+		setupsService.deleteSequence(seqCode);
 	}
 
 	@RequestMapping(value = { "createCurrency" }, method = {
