@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.brokersystems.invtransactions.model.QTenantInvoice;
 import com.brokersystems.invtransactions.model.QTenantInvoiceDetails;
+import com.brokersystems.invtransactions.model.QTransactions;
 import com.brokersystems.invtransactions.model.RevisionForm;
 import com.brokersystems.invtransactions.model.TenantInvoice;
 import com.brokersystems.invtransactions.model.TenantInvoiceBean;
@@ -482,21 +483,15 @@ public class InvoiceServiceImpl implements InvoiceService {
 		if(countUnauthTransaction(invoice.getInvoiceNumber()) > 0){
 			throw new InvoiceRevisionException("Some Unauthorised transactions existing for the invoice..Cannot continue");
 		}
-
+		
+		BigDecimal transAmount  = BigDecimal.ZERO;
+		BigDecimal installAmount = BigDecimal.ZERO;
+		BigDecimal taxAmount = BigDecimal.ZERO;
+		BigDecimal netAmount = BigDecimal.ZERO;
+		
 		List<TenantInvoiceDetails> details = invoice.getInvDetails();
 		List<TenantInvoiceDetails> destinationDetails = new ArrayList<>();
 		TenantInvoice destination = new TenantInvoice();
-		destination.setBranch(invoice.getBranch());
-		destination.setFrequency(invoice.getFrequency());
-		destination.setInstallmentAmount(invoice.getInstallmentAmount());
-		destination.setInvoiceDate(new Date());
-		destination.setPaymentMode(invoice.getPaymentMode());
-		destination.setInvoiceNumber(invoice.getInvoiceNumber());
-		destination.setInvAmount(invoice.getInvAmount());
-		destination.setNetAmount(invoice.getNetAmount());
-		destination.setTaxAmount(invoice.getTaxAmount());
-		destination.setTenant(invoice.getTenant());
-		destination.setTransCurrency(invoice.getTransCurrency());
 		if ("RV".equalsIgnoreCase(revisionForm.getRevisionType())) {
 			destination.setTransType("RV");
 			destination.setWefDate(revisionForm.getEffectiveDate());
@@ -504,12 +499,44 @@ public class InvoiceServiceImpl implements InvoiceService {
 					FormatUtils.calculateFrequencyRate(invoice.getFrequency())), -1);
 			destination.setWetDate(wetDate);
 			destination.setRenewalDate(FormatUtils.addDays(wetDate, 1));
+			transAmount = invoice.getInvAmount();
+			installAmount = invoice.getInstallmentAmount();
+			taxAmount  = invoice.getTaxAmount();
+			netAmount = invoice.getNetAmount();
 		} else if ("CN".equalsIgnoreCase(revisionForm.getRevisionType())) {
 			destination.setTransType("CN");
 			destination.setWefDate(new Date());
 			destination.setWetDate(new Date());
 			destination.setRenewalDate(new Date());
+			installAmount = invoice.getInstallmentAmount().negate();
+			for(Transactions trans:transRepo.findAll(QTransactions.transactions.refno.eq(invoice.getInvoiceNumber()).and(QTransactions.transactions.transtype.eq("INV")))){
+				if(trans.getTransDC().equalsIgnoreCase("D")){
+					transAmount =transAmount.add(trans.getTransAmount());
+					taxAmount = taxAmount.add(trans.getTransTaxes());
+					netAmount = netAmount.add(trans.getTransNetAmt());
+				}
+				else if(trans.getTransDC().equalsIgnoreCase("C")){
+					transAmount = transAmount.subtract(trans.getTransAmount());
+					taxAmount = taxAmount.subtract(trans.getTransTaxes());
+					netAmount = netAmount.subtract(trans.getTransNetAmt());
+				}
+			}
+			transAmount = transAmount.negate();
+			taxAmount = taxAmount.negate();
+			netAmount = netAmount.negate();
 		}
+		destination.setBranch(invoice.getBranch());
+		destination.setFrequency(invoice.getFrequency());
+		destination.setInstallmentAmount(installAmount);
+		destination.setInvoiceDate(new Date());
+		destination.setPaymentMode(invoice.getPaymentMode());
+		destination.setInvoiceNumber(invoice.getInvoiceNumber());
+		destination.setInvAmount(transAmount);
+		destination.setNetAmount(netAmount);
+		destination.setTaxAmount(taxAmount);
+		destination.setTenant(invoice.getTenant());
+		destination.setTransCurrency(invoice.getTransCurrency());
+		
 
 		destination.setPreviousTrans(invoice);
 		Long count = invoiceRepo.count(QTenantInvoice.tenantInvoice.invoiceNumber.eq(invoice.getInvoiceNumber()));
