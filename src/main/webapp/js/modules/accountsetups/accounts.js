@@ -289,14 +289,14 @@ function createAccounts(){
 				{ 
 					"data": "acctId",
 					"render": function ( data, type, full, meta ) {
-						return '<form action="editAcctForm" method="post"><input type="hidden" name="id" value='+full.acctId+'><input type="submit"  class="btn btn-primary" value="Edit" ></form>';
+						return '<form action="editAcctForm" method="post"><input type="hidden" name="id" value='+full.acctId+'><input type="submit"  class="hyperlink-btn" value="Edit" ></form>';
 					}
 
 				},
 				{ 
 					"data": "acctId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-account='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmAccountDel(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-account='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmAccountDel(this);"/>';
 					 }
 
 				},

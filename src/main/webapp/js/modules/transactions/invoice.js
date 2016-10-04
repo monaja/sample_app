@@ -107,6 +107,12 @@ function queryInvoiceDetails(){
                 	  $("#trans-type").val(s.transType);
                 	  $("#inv-install-amt").text(s.installmentAmt);
                 	  $("#prev-invoice").val(s.prevInvoice);
+                	  if(s.transType=="CO")
+                	  $("#inv-tran-type").text("Contra Transaction");
+                	  else  if(s.transType=="NT")
+                    	  $("#inv-tran-type").text("New Transaction");
+                	  else if(s.transType=="RV")
+                    	  $("#inv-tran-type").text("Revise Transaction");
                 	 
                 	  if(s.status === "A"){
                 		    $("#inv-date").prop("disabled", true);
@@ -143,6 +149,26 @@ function queryInvoiceDetails(){
   	        			 $("#btn-add-invoice").show();
   	        			$("#auth-btn").show();
   	        			$("#rates-details-div").hide();
+  	        			if(s.transType=="CO" || s.transType=="CN"){
+  	        				$("#inv-date").prop("disabled", true);
+	  			        	$("#pay-freq").prop("disabled", true);
+	  			        	$("#from-date").prop("disabled", true);
+	  			        	$("#wet-date").prop("disabled", true);
+	  			        	$("#rates-div").hide();
+	  			        	 $("#branch-label-name").show();
+	  	          			  $("#branch-info").hide();
+	  	          			$("#currency-label-name").show();
+	  	        			$("#curr-info-panel").hide();
+	  	          			 $("#branch-label-name").text(s.branch.obName);
+	  	          			$("#currency-label-name").text(s.currency.curName);
+		  	          		$("#paymode-label-name").show();
+	  	        			$("#pay-mode-info").hide();
+	  	          			 $("#paymode-label-name").text(s.paymentMode.pmDesc);
+	  	          			 $("#btn-add-invoice").hide();
+	  	          			//$("#auth-btn").hide();
+	  	          			$("#rates-details-div").show();
+	  	          		     getInvDetails();
+  	        			}
                 	  }
                 	 
                 	  currencyLov();
@@ -613,6 +639,7 @@ function createInvoices(){
 			"ajax": url,
 			lengthMenu: [ [20,30,40,50], [20,30,40,50] ],
 			pageLength: 20,
+			"order": [[ 9, "asc" ]],
 			destroy: true,
 			"columns": [
 				{ "data": "invoiceNumber" },
@@ -622,7 +649,7 @@ function createInvoices(){
 					  }
 				
 				},
-				{ "data": "invoiceId",
+				{ "data": "tenant",
 					   "render": function ( data, type, full, meta ) {
 						      return full.tenant.fname + " "+full.tenant.otherNames;
 						  }
@@ -652,6 +679,7 @@ function createInvoices(){
 						  return (full.status) == "A" ? "Authorized" : "Draft";
 					  }
 				},
+				{ "data": "transType"},
 				{ 
 					"data": "invoiceId",
 					"render": function ( data, type, full, meta ) {

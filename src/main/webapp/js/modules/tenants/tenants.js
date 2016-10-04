@@ -271,7 +271,7 @@ function createTenantsList(){
 				{ 
 					"data": "tenId",
 					"render": function ( data, type, full, meta ) {
-						return '<form action="editTenantForm" method="post"><input type="hidden" name="id" value='+full.tenId+'><input type="submit"  class="btn btn-primary" value="Edit" ></form>';
+						return '<form action="editTenantForm" method="post"><input type="hidden" name="id" value='+full.tenId+'><input type="submit"  class="hyperlink-btn" value="Edit" ></form>';
 					}
 
 				},

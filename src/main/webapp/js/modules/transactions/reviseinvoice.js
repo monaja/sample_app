@@ -224,6 +224,7 @@ function confirmInvoiceDelete(button){
 			        success: function(result) {
 			        	bootbox.alert("Record deleted Successfully");
 			        	$('#invtrans').DataTable().ajax.reload();
+			        	 $("#existing-invoices").hide(); 
 			        },
 			        error: function(jqXHR, textStatus, errorThrown) {
                         bootbox.alert(jqXHR.responseText);

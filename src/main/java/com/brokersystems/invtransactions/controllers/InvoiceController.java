@@ -71,7 +71,7 @@ public class InvoiceController {
 	}
 	
 	@RequestMapping(value = "invlist", method = RequestMethod.GET)
-	public String tenantList(Model model) {
+	public String invoiceList(Model model) {
 		return "invoices";
 	}
 	
@@ -102,7 +102,7 @@ public class InvoiceController {
 	
 	@RequestMapping(value = { "invoices" }, method = { RequestMethod.GET })
 	@ResponseBody
-	public DataTablesResult<TenantInvoice> getCurrencies(@DataTable DataTablesRequest pageable)
+	public DataTablesResult<TenantInvoice> getAllInvoices(@DataTable DataTablesRequest pageable)
 			throws IllegalAccessException {
 		return invService.findAllInvoices(pageable);
 	}
@@ -111,8 +111,6 @@ public class InvoiceController {
 	@ResponseBody
 	public Page<PaymentModes> paymentModes(@RequestParam(value = "term", required = false) String term, Pageable pageable)
 			throws IllegalAccessException {
-		System.out.println("Search term "+term);
-		System.out.println(pageable);
 		return invService.findPaymentModesForSelect(term, pageable);
 	}
 	
@@ -189,8 +187,17 @@ public class InvoiceController {
 	}
 	
 	@RequestMapping(value = { "reviseInvoice" }, method = {org.springframework.web.bind.annotation.RequestMethod.POST })
-	public String reviseInvoice(@Valid @ModelAttribute RevisionForm revision, Model model) throws BadRequestException, InvocationTargetException, IllegalAccessException {
-		Long id = invService.reviseTransaction(revision);
+	public String reviseInvoice(@Valid @ModelAttribute RevisionForm revision, Model model) throws InvoiceRevisionException, InvocationTargetException, IllegalAccessException {
+		Long id = null;
+		if("CO".equalsIgnoreCase(revision.getRevisionType())){
+		 id = invService.contraInvoice(revision);
+		}
+		else if("CN".equalsIgnoreCase(revision.getRevisionType()) || "RV".equalsIgnoreCase(revision.getRevisionType()) ||"NT".equalsIgnoreCase(revision.getRevisionType())){
+			 id = invService.reviseTransaction(revision);
+		}
+		else{
+			throw new InvoiceRevisionException("Transaction Type not supported");
+		}
 		model.addAttribute("invoiceCode", id);
         return "invoiceform";
 	}

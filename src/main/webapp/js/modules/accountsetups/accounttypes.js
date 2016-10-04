@@ -194,14 +194,14 @@ function createAccTypesTable(){
 				{ 
 					"data": "accId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-acctype='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editAcctTypes(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-acctype='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editAcctTypes(this);"/>';
 					}
 
 				},
 				{ 
 					"data": "accId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-acctype='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmAcctypeDel(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-acctype='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmAcctypeDel(this);"/>';
 					}
 
 				},

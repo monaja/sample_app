@@ -113,14 +113,14 @@ function createTenantTable(){
 				{ 
 					"data": "tenantId",
 					"render": function ( data, type, full, meta ) {
-						return '<form action="editTenantForm" method="post"><input type="hidden" name="tenantId" value='+full.tenantId+'><input type="submit"  class="btn btn-primary" value="Edit" ></form>';
+						return '<form action="editTenantForm" method="post"><input type="hidden" name="tenantId" value='+full.tenantId+'><input type="submit"  class="hyperlink-btn" value="Edit" ></form>';
 					}
 
 				},
 				{ 
 					"data": "tenantId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-tenant='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmTenantDel(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-tenant='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmTenantDel(this);"/>';
 					}
 
 				},

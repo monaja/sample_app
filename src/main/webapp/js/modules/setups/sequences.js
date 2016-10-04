@@ -93,14 +93,14 @@ function createSequenceTable(){
 				{ 
 					"data": "seqId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-sequences='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editSequence(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-sequences='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editSequence(this);"/>';
 					}
 
 				},
 				{ 
 					"data": "seqId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-sequences='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmSequenceDelete(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-sequences='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmSequenceDelete(this);"/>';
 					}
 
 				},

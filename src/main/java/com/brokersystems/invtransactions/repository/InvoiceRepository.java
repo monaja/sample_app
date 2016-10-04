@@ -12,10 +12,12 @@ import org.springframework.data.repository.query.Param;
 
 import com.brokersystems.invtransactions.model.TenantInvoice;
 import com.brokersystems.setups.model.TenantDef;
+import com.mysema.query.types.Predicate;
 
 public interface InvoiceRepository extends  PagingAndSortingRepository<TenantInvoice, Long>, QueryDslPredicateExecutor<TenantInvoice> {
 
 	Optional<TenantInvoice> findByInvoiceId(Long invoiceId);
+	
 	
 	@Query(nativeQuery=true,value="select count(1) from tenant_invoices where invoice_ten_id=:tenantId and invoice_status in ('A','D')")
 	public Long getActiveTenancyCount(@Param("tenantId") long tenantId);

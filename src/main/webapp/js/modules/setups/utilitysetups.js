@@ -79,14 +79,14 @@ function createPaymentModes(){
 				{ 
 					"data": "pmId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-modes='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editPaymentModes(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-modes='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editPaymentModes(this);"/>';
 					}
 
 				},
 				{ 
 					"data": "pmId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-modes='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmModesDel(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-modes='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmModesDel(this);"/>';
 					}
 
 				},

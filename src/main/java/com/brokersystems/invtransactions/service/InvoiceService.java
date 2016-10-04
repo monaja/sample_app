@@ -56,5 +56,7 @@ public interface InvoiceService {
 	Long countUnauthTransaction(String invoiceNumber);
 	
 	void deleteInvoice(Long invoiceId);
+	
+	Long contraInvoice(RevisionForm revisionForm)  throws InvoiceRevisionException;
 
 }

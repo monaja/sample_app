@@ -33,7 +33,7 @@
            <span class="info-box-number">
            <small class="text-muted">Receipt Tenant Invoices</small>
            </span>
-            <a href="<c:url value="/protected/rental/setups/ratetypes"/>" class="btn btn-primary">Receipt</a>
+            <a href="<c:url value="/protected/transactions/receipts/receiptList"/>" class="btn btn-primary">Receipt</a>
          </div><!-- /.info-box-content -->
        </div><!-- /.info-box -->
      </div>

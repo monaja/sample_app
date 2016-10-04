@@ -33,14 +33,14 @@ function createRateTypeTable(){
 				{ 
 					"data": "rateId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-rates='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editRateType(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-rates='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editRateType(this);"/>';
 					}
 
 				},
 				{ 
 					"data": "rateId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-rates='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmRateTypeDel(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-rates='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmRateTypeDel(this);"/>';
 					}
 
 				},
@@ -93,14 +93,14 @@ function createUnitTypeTable(){
 				{ 
 					"data": "unitId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-units='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editUnitType(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-units='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editUnitType(this);"/>';
 					}
 
 				},
 				{ 
 					"data": "unitId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-units='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmUnitTypeDel(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-units='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmUnitTypeDel(this);"/>';
 					}
 
 				},

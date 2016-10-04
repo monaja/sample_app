@@ -213,14 +213,14 @@ function createCountryTable(){
 				{ 
 					"data": "couCode",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-country='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editCountry(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-country='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editCountry(this);"/>';
 					}
 
 				},
 				{ 
 					"data": "couCode",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-country='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmCountryDelete(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-country='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmCountryDelete(this);"/>';
 					}
 
 				},
@@ -248,14 +248,14 @@ function createCurrencyTable(){
 				{ 
 					"data": "curCode",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-currency='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editCurrency(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-currency='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editCurrency(this);"/>';
 					}
 
 				},
 				{ 
 					"data": "curCode",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-currency='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmCurrencyDelete(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-currency='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmCurrencyDelete(this);"/>';
 					}
 
 				},
@@ -415,14 +415,14 @@ function createCountyTable(){
 				{ 
 					"data": "countyId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-county='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editCounty(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-county='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editCounty(this);"/>';
 					}
 
 				},
 				{ 
 					"data": "countyId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-county='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmCountyDelete(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-county='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmCountyDelete(this);"/>';
 					}
 
 				},
@@ -451,14 +451,14 @@ function createTownTable(){
 				{ 
 					"data": "ctCode",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-town='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editTown(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-town='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editTown(this);"/>';
 					}
 
 				},
 				{ 
 					"data": "ctCode",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-town='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmTownDelete(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-town='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmTownDelete(this);"/>';
 					}
 
 				},

@@ -167,11 +167,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 		}
 		if (invoice.getInvoiceId() == null) {
 
-			Long count = invoiceRepo.getActiveTenancyCount(invoice.getTenantId());
-
-			if (count > 0) {
-				throw new BadRequestException("An Existing Invoice for the tenant exists....");
-			}
+//			Long count = invoiceRepo.getActiveTenancyCount(invoice.getTenantId());
+//
+//			if (count > 0) {
+//				throw new BadRequestException("An Existing Invoice for the tenant exists....");
+//			}
 			Predicate seqPredicate = QSystemSequence.systemSequence.transType.eq("I");
 			if (sequenceRepo.count(seqPredicate) == 0)
 				throw new BadRequestException("Sequence for Invoice Transactions has not been setup");
@@ -185,6 +185,10 @@ public class InvoiceServiceImpl implements InvoiceService {
 			sequenceRepo.save(sequence);
 			invoice.setTransType("NT");
 			
+		}
+		
+		if("CO".equalsIgnoreCase(invoice.getTransType())||"CN".equalsIgnoreCase(invoice.getTransType())){
+			throw new BadRequestException("Cannot make changes to a cancellation or a contra transaction");
 		}
 
 		invoice.setStatus("D");
@@ -245,8 +249,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 				grossAmount = grossAmount.add(invoiceDet.getAmount());
 				invoiceDet.setNetAmount(invoiceDet.getAmount().subtract(taxValue));
 				invoiceDet.setAmount(invoiceDet.getAmount());
-				// if(!charge.isRefundable()) installMent =
-				// installMent.add(invoiceDet.getAmount().subtract(taxValue));
 			}
 
 			invoiceDet.setInvoice(invoice);
@@ -374,9 +376,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 			throw new BadRequestException("Cannot Authorize..Invoice already authorized");
 		}
 		BigDecimal sum = tenDetails.stream().map(a -> a.getNetAmount()).reduce(BigDecimal.ZERO, BigDecimal::add);
+		if (!("CN".equalsIgnoreCase(invoice.getTransType()) || "CO".equalsIgnoreCase(invoice.getTransType()))) {
 		if (sum.compareTo(invoice.getNetAmount()) != 0) {
 			throw new BadRequestException("Invoice details totals does not match with parent invoice totals "
 					+ invoice.getNetAmount() + " ; " + sum);
+		}
 		}
 		TenantInvoice prevInvoice = invoice.getPreviousTrans();
 		invoice.setStatus("A");
@@ -386,6 +390,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		BigDecimal difference = BigDecimal.ZERO;
 		BigDecimal taxDifference = BigDecimal.ZERO;
 		BigDecimal netDifference = BigDecimal.ZERO;
+		if (!("CN".equalsIgnoreCase(invoice.getTransType()))) {
 		if(prevInvoice!=null){
 			if (prevInvoice.getInvoiceId() != invoice.getInvoiceId()) {
 				prevInvoice.setCurrentStatus(invoice.getTransType());
@@ -404,6 +409,21 @@ public class InvoiceServiceImpl implements InvoiceService {
 			difference = invoice.getInvAmount();
 			taxDifference = invoice.getTaxAmount();
 		    netDifference = invoice.getNetAmount();
+		}
+		}
+		else if("CO".equalsIgnoreCase(invoice.getTransType())){
+			 difference = BigDecimal.ZERO;
+			 taxDifference = BigDecimal.ZERO;
+			 netDifference = BigDecimal.ZERO;
+			 prevInvoice.setCurrentStatus(invoice.getTransType());
+			 invoice.setCurrentStatus(invoice.getTransType());
+		}
+		else if("CN".equalsIgnoreCase(invoice.getTransType())){
+			difference = invoice.getInvAmount();
+			taxDifference = invoice.getTaxAmount();
+		    netDifference = invoice.getNetAmount();
+		    prevInvoice.setCurrentStatus(invoice.getTransType());
+		    invoice.setCurrentStatus(invoice.getTransType());
 		}
 		if(!(difference.compareTo(BigDecimal.ZERO)==0)){
 			Transactions trans = new Transactions();
@@ -545,6 +565,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		destination.setStatus("D");
 		destination.setRevisionNumber(invoice.getInvoiceNumber() + "/" + (count + 1));
 		destination.setAuthBy(null);
+		if ("RV".equalsIgnoreCase(revisionForm.getRevisionType())) {	
 		for (TenantInvoiceDetails det : details) {
 			TenantInvoiceDetails dest = new TenantInvoiceDetails();
 			dest.setAmount(det.getAmount());
@@ -553,6 +574,18 @@ public class InvoiceServiceImpl implements InvoiceService {
 			dest.setNetAmount(det.getNetAmount());
 			dest.setRateType(det.getRateType());
 			destinationDetails.add(dest);
+		}
+		}
+		else if ("CN".equalsIgnoreCase(revisionForm.getRevisionType())) {	
+			for (TenantInvoiceDetails det : details) {
+				TenantInvoiceDetails dest = new TenantInvoiceDetails();
+				dest.setAmount(det.getAmount().negate());
+				dest.setCharge(det.getCharge());
+				dest.setInvoice(destination);
+				dest.setNetAmount(det.getNetAmount().negate());
+				dest.setRateType(det.getRateType());
+				destinationDetails.add(dest);
+			}
 		}
 		destination.setInvDetails(destinationDetails);
 		invoceDetRepo.save(destinationDetails);
@@ -585,6 +618,78 @@ public class InvoiceServiceImpl implements InvoiceService {
 		invoceDetRepo.delete(details);
 		invoiceRepo.delete(invoiceId);
 		
+	}
+
+	@Override
+	@Modifying
+	@Transactional(readOnly = false)
+	public Long contraInvoice(RevisionForm revisionForm) throws InvoiceRevisionException {
+		if (revisionForm.getInvoiceId() == null || revisionForm.getInvoiceId() == null)
+			throw new InvoiceRevisionException("Invoice to Revise cannot be Empty....");
+		
+		if(revisionForm.getRevisionType()==null || StringUtils.isBlank(revisionForm.getRevisionType())){
+			throw new InvoiceRevisionException("Select Revision Type...");
+		}
+		
+		TenantInvoice invoice = invoiceRepo.findOne(revisionForm.getInvoiceId());
+		
+		if(countUnauthTransaction(invoice.getInvoiceNumber()) > 0){
+			throw new InvoiceRevisionException("Some Unauthorised transactions existing for the invoice..Cannot continue");
+		}
+		
+		BigDecimal transAmount  = BigDecimal.ZERO;
+		BigDecimal installAmount = BigDecimal.ZERO;
+		BigDecimal taxAmount = BigDecimal.ZERO;
+		BigDecimal netAmount = BigDecimal.ZERO;
+		
+		List<TenantInvoiceDetails> details = invoice.getInvDetails();
+		List<TenantInvoiceDetails> destinationDetails = new ArrayList<>();
+		TenantInvoice destination = new TenantInvoice();
+		
+		destination.setTransType("CO");
+		destination.setWefDate(new Date());
+		destination.setWetDate(new Date());
+		destination.setRenewalDate(new Date());
+		installAmount = invoice.getInstallmentAmount().negate();
+
+		transAmount = invoice.getInvAmount().negate();
+		taxAmount = invoice.getTaxAmount().negate();
+		netAmount =invoice.getNetAmount().negate();
+		
+		destination.setBranch(invoice.getBranch());
+		destination.setFrequency(invoice.getFrequency());
+		destination.setInstallmentAmount(installAmount);
+		destination.setInvoiceDate(new Date());
+		destination.setPaymentMode(invoice.getPaymentMode());
+		destination.setInvoiceNumber(invoice.getInvoiceNumber());
+		destination.setInvAmount(transAmount);
+		destination.setNetAmount(netAmount);
+		destination.setTaxAmount(taxAmount);
+		destination.setTenant(invoice.getTenant());
+		destination.setTransCurrency(invoice.getTransCurrency());
+		
+
+		destination.setPreviousTrans(invoice);
+		Long count = invoiceRepo.count(QTenantInvoice.tenantInvoice.invoiceNumber.eq(invoice.getInvoiceNumber()));
+		destination.setInvoiceId(null);
+		destination.setCurrentStatus("D");
+		destination.setStatus("D");
+		destination.setRevisionNumber(invoice.getInvoiceNumber() + "/" + (count + 1));
+		destination.setAuthBy(null);
+		for (TenantInvoiceDetails det : details) {
+			TenantInvoiceDetails dest = new TenantInvoiceDetails();
+			dest.setAmount(det.getAmount().negate());
+			dest.setCharge(det.getCharge());
+			dest.setInvoice(destination);
+			dest.setNetAmount(det.getNetAmount().negate());
+			dest.setRateType(det.getRateType());
+			destinationDetails.add(dest);
+		}
+		destination.setInvDetails(destinationDetails);
+		invoceDetRepo.save(destinationDetails);
+		invoiceRepo.save(invoice);
+		TenantInvoice saved = invoiceRepo.save(destination);
+		return saved.getInvoiceId();
 	}
 
 }

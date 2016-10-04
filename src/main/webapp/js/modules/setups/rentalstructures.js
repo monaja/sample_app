@@ -341,14 +341,14 @@ function createStructureTable(){
 				{ 
 					"data": "rentalId",
 					"render": function ( data, type, full, meta ) {
-						return '<form action="editRentalForm" method="post"><input type="hidden" name="rentalId" value='+full.rentalId+'><input type="submit"  class="btn btn-primary" value="Edit" ></form>';
+						return '<form action="editRentalForm" method="post"><input type="hidden" name="rentalId" value='+full.rentalId+'><input type="submit"  class="hyperlink-btn" value="Edit" ></form>';
 					}
 
 				},
 				{ 
 					"data": "rentalId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-structs='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmStuctDel(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-structs='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmStuctDel(this);"/>';
 					 }
 
 				},
@@ -396,14 +396,14 @@ function createRentalUnits(){
 				{ 
 					"data": "renId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-units='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editUnitType(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-units='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editUnitType(this);"/>';
 					}
 
 				},
 				{ 
 					"data": "renId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-units='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmUnitTypeDel(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-units='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmUnitTypeDel(this);"/>';
 					}
 
 				},

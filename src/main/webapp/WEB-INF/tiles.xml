@@ -143,6 +143,16 @@
         <put-attribute name="title" value="Tenant Transactions" />  
         <put-attribute name="body" value="/WEB-INF/pages/submenus/transactionscreen.jsp" />  
     </definition> 
+    
+    <definition name="receiptslist" extends="base.definition">  
+        <put-attribute name="title" value="Receipts" />  
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/receiptlist.jsp" />  
+    </definition>
+    
+     <definition name="receiptsform" extends="base.definition">  
+        <put-attribute name="title" value="Receipts Entry" />  
+        <put-attribute name="body" value="/WEB-INF/pages/receipts/receiptform.jsp" />  
+    </definition>
      
     
 </tiles-definitions> 

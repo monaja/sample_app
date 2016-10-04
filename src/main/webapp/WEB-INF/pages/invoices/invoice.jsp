@@ -274,7 +274,11 @@
 					</div>
 				</div>
 				<div class="col-md-6">
-				     
+				      <label for="brn-id" class="col-md-5 control-label">Transaction Type</label>
+
+					<div class="col-md-7">
+						<p class="form-control-static" id="inv-tran-type"></p>
+					</div>
 				</div>
 
 

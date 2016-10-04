@@ -122,14 +122,14 @@ function createChargeGroupTable(){
 				{ 
 					"data": "chargeId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-group='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editGroup(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-group='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editGroup(this);"/>';
 					}
 
 				},
 				{ 
 					"data": "chargeId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-group='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmGroupDel(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-group='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmGroupDel(this);"/>';
 					}
 
 				},
@@ -214,14 +214,14 @@ function createUnitCharges(groupCode){
 				{ 
 					"data": "chargeId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-rates='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editUnitCharge(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-rates='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="editUnitCharge(this);"/>';
 					}
 
 				},
 				{ 
 					"data": "chargeId",
 					"render": function ( data, type, full, meta ) {
-						return '<input type="button" class="btn btn-primary" data-rates='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmUnitChargeDel(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-rates='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmUnitChargeDel(this);"/>';
 					 }
 
 				},

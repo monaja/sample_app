@@ -155,10 +155,10 @@ function createRegionTable(){
 					"data": "regCode",
 					"render": function ( data, type, full, meta ) {
 						if(action =="A"){
-							return '<input type="button" class="btn btn-primary" data-region='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="openEditRegionModal(this);"/>';
+							return '<input type="button" class="hyperlink-btn" data-region='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="openEditRegionModal(this);"/>';
 						}
 						else{
-							return '<input type="button" class="btn btn-primary" data-region='+encodeURI(JSON.stringify(full)) + ' value="Edit"  onclick="openEditRegionModal(this);" disabled/>';
+							return '<input type="button" class="hyperlink-btn" data-region='+encodeURI(JSON.stringify(full)) + ' value="Edit"  onclick="openEditRegionModal(this);" disabled/>';
 						}
 						
 					}
@@ -168,10 +168,10 @@ function createRegionTable(){
 					"data": "regCode",
 					"render": function ( data, type, full, meta ) {
 						if(action =="A"){
-						return '<input type="button" class="btn btn-primary" data-region='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmRegionDelete(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-region='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmRegionDelete(this);"/>';
 						}
 						else{
-							return '<input type="button" class="btn btn-primary" data-region='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmRegionDelete(this);" disabled/>';
+							return '<input type="button" class="hyperlink-btn" data-region='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmRegionDelete(this);" disabled/>';
 								
 						}
 					}
@@ -230,10 +230,10 @@ function createBranchTable(){
 					"data": "obId",
 					"render": function ( data, type, full, meta ) {
 						if(action =="A"){
-						return '<input type="button" class="btn btn-primary" data-branch='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="openEditBranchModal(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-branch='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="openEditBranchModal(this);"/>';
 						}
 						else{
-							return '<input type="button" class="btn btn-primary" data-branch='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="openEditBranchModal(this);" disabled/>';
+							return '<input type="button" class="hyperlink-btn" data-branch='+encodeURI(JSON.stringify(full)) + ' value="Edit" onclick="openEditBranchModal(this);" disabled/>';
 								
 						}
 					}
@@ -243,10 +243,10 @@ function createBranchTable(){
 					"data": "obId",
 					"render": function ( data, type, full, meta ) {
 						if(action =="A"){
-						return '<input type="button" class="btn btn-primary" data-branch='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmBranchDelete(this);"/>';
+						return '<input type="button" class="hyperlink-btn" data-branch='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmBranchDelete(this);"/>';
 						}
 						else{
-							return '<input type="button" class="btn btn-primary" data-branch='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmBranchDelete(this);" disabled/>';
+							return '<input type="button" class="hyperlink-btn" data-branch='+encodeURI(JSON.stringify(full)) + ' value="Delete" onclick="confirmBranchDelete(this);" disabled/>';
 								
 						}
 						

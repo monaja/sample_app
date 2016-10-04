@@ -60,7 +60,7 @@ public class ReceiptTrans {
 	@Column(name="receipt_cancelled")
 	private String cancelled;
 	
-	@Column(name="receipt_no")
+	@Column(name="receipt_no", nullable=false)
 	private String receiptNo;
 	
 	@Column(name="receipt_counter")
