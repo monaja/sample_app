@@ -443,6 +443,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 			trans.setTransTaxes(taxDifference.abs());
 			trans.setTranstype("INV");
 			trans.setTransSettledAmt(BigDecimal.ZERO);
+			trans.setTransDate(new Date());
 			transRepo.save(trans);
 		}
 		

@@ -48,6 +48,12 @@ public class ReceiptTrans {
 	@Column(name="receipt_paid_by")
 	private String paidBy;
 	
+	@Column(name="receipt_payment_ref")
+	private String paymentRef;
+	
+	@Column(name="receipt_manual_ref")
+	private String manualRef;
+	
 	@Column(name="receipt_doc_date")
 	private Date documentDate;
 	
@@ -248,6 +254,22 @@ public class ReceiptTrans {
 
 	public void setReceiptClearedDate(Date receiptClearedDate) {
 		this.receiptClearedDate = receiptClearedDate;
+	}
+
+	public String getPaymentRef() {
+		return paymentRef;
+	}
+
+	public void setPaymentRef(String paymentRef) {
+		this.paymentRef = paymentRef;
+	}
+
+	public String getManualRef() {
+		return manualRef;
+	}
+
+	public void setManualRef(String manualRef) {
+		this.manualRef = manualRef;
 	}
 	
 	

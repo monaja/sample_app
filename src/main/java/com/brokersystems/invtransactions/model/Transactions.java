@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.brokersystems.setups.model.Currencies;
@@ -69,6 +71,11 @@ public class Transactions {
 	
 	@Column(name="trans_authorized_by")
 	private String authoriedBy;
+	
+	@Column(name="trans_dt",nullable=false)
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
+	private Date transDate;
 	
 
 	public Long getTransId() {
@@ -181,6 +188,14 @@ public class Transactions {
 
 	public void setTransSettledAmt(BigDecimal transSettledAmt) {
 		this.transSettledAmt = transSettledAmt;
+	}
+
+	public Date getTransDate() {
+		return transDate;
+	}
+
+	public void setTransDate(Date transDate) {
+		this.transDate = transDate;
 	}
 	
 	
