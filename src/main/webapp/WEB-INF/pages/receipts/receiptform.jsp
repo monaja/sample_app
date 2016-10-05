@@ -205,12 +205,13 @@
 					<table id="modal-rct-detail-tbl" class="table table-hover table-bordered">
 					<thead>
 						<tr>
-			
+						   <th>Select</th>
 							<th>Trans No</th>
 							<th>Invoice Number</th>
 							<th>Tenant</th>
 							<th>Amount</th>
 							<th>Balance</th>
+							
 						</tr>
 					</thead>
 				</table>
@@ -218,7 +219,7 @@
 				<div class="modal-footer">
 					<button data-loading-text="Saving..." id="saveNewInvoice"
 						type="button" class="btn btn-primary">
-						Save
+						Add Selected
 					</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">
 						Cancel

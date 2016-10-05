@@ -170,6 +170,12 @@ function createTransactionTbl(){
 			pageLength: 10,
 			destroy: true,
 			"columns": [
+				{ "data": "transId",
+					 "render": function ( data, type, full, meta ) {
+						 return '<input type="checkbox">';
+					  }
+				
+				},
 				{ "data": "transId" },
 				{ "data": "refno"},
 //				{ "data": "receiptDate",

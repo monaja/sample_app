@@ -72,7 +72,7 @@ public class Transactions {
 	@Column(name="trans_authorized_by")
 	private String authoriedBy;
 	
-	@Column(name="trans_dt",nullable=false)
+	@Column(name="trans_dt")
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	private Date transDate;
