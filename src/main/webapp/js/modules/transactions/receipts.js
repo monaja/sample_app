@@ -1,3 +1,5 @@
+var arr = [];
+
 $(function(){
 
 	$(document).ready(function() {
@@ -7,86 +9,34 @@ $(function(){
             });
 		    
 		});
+		
 		createReceipts();
 		currencyLov();
 		paymentModesLov();
-		//addInvoiceTrans();
+		addInvoiceTrans();
+		
+		
+		
 		
 		$("#rct-amount").number( true, 2 );
 		
+		$('#save-rct-dtls').on('click', function(){
+			console.log(arr);
+		})
 		
-		var url = "tenanttrans";
-		  var currTable = $('#modal-rct-detail-tbl').DataTable( {
-				"processing": true,
-				"serverSide": true,
-				"ajax": url,
-				lengthMenu: [ [10], [10] ],
-				pageLength: 10,
-				destroy: true,
-				"columns": [
-					{ "data": "transId",
-						 "render": function ( data, type, full, meta ) {
-							 return '<input type="checkbox">';
-				            }
-					
-					},
-					{ "data": "transId" },
-					{ "data": "refno"},
-					{ "data": "receiptDate",
-						 "render": function ( data, type, full, meta ) {
-						      return moment(full.receiptDate).format('DD/MM/YYYY');
-						  }
-					
-					},
-					{ "data": "tenant",
-						   "render": function ( data, type, full, meta ) {
-							   return full.tenant.fname + " "+full.tenant.otherNames;
-							  }
-					},
-					{ "data": "transAmount",
-						 "render": function ( data, type, full, meta ) {
-							 return currencyFormat(full.transAmount);
-						  }
-					},
-					{ "data": "transBalance",
-						 "render": function ( data, type, full, meta ) {
-							 return currencyFormat(full.transBalance);
-						  }
-					},
-					
-				],
-				
-			} );
-		  
-		  $("#btn-add-selected").on('click', function(){
-			  
-			  currTable.rows(this).every( function () {
-				    var d = this.data();
-				 
-				    console.log(d);
-				} );
-			  
-				 
-				  
-				
-		 
-	       });
-		  
-		  $("#add-det-btn").on('click', function(){
-				
-				$('#tenantTransModal').modal({
-					  backdrop: 'static',
-					  keyboard: true
-					})
-			});
-		  
 		
 	});
-	
-	
 });
 
-
+function addInvoiceTrans(){
+	$("#add-det-btn").on('click', function(){
+		createTransactionTbl();
+		$('#tenantTransModal').modal({
+			  backdrop: 'static',
+			  keyboard: true
+			})
+	});
+}
 
 var model = {
 		receipt: {
@@ -221,3 +171,66 @@ function createReceipts(){
 }
 
 
+
+function createTransactionTbl(){
+	var url = "tenanttrans";
+	  var currTable = $('#modal-rct-detail-tbl').DataTable( {
+			"processing": true,
+			"serverSide": true,
+			"ajax": url,
+			lengthMenu: [ [10], [10] ],
+			pageLength: 10,
+			destroy: true,
+			"columns": [
+				{ "data": "transId",
+					 "render": function ( data, type, full, meta ) {
+						 return '<input type="checkbox" class="chk-trans" id="'+full.transId+'">';
+					  }
+				
+				},
+				{ "data": "transId" },
+				{ "data": "refno"},
+//				{ "data": "receiptDate",
+//					 "render": function ( data, type, full, meta ) {
+//					      return moment(full.receiptDate).format('DD/MM/YYYY');
+//					  }
+//				
+//				},
+				{ "data": "tenant",
+					   "render": function ( data, type, full, meta ) {
+						   return full.tenant.fname + " "+full.tenant.otherNames;
+						  }
+				},
+				{ "data": "transAmount",
+					 "render": function ( data, type, full, meta ) {
+						 return currencyFormat(full.transAmount);
+					  }
+				},
+				{ "data": "transBalance",
+					 "render": function ( data, type, full, meta ) {
+						 return currencyFormat(full.transBalance);
+					  }
+				},
+				
+			]
+		} );
+	  
+	  $('#modal-rct-detail-tbl tbody').on( 'click', 'tr', function () {
+		  var val = $(this).find('.chk-trans').attr('id');
+		  if($(this).find('.chk-trans').is(':checked')){
+			  var d = currTable.row( this ).data();
+			  console.log(d);
+			  arr.push(val);
+		  }
+		  else{
+			  var index = arr.indexOf(val);
+			  if (index > -1) {
+				    arr.splice(index, 1);
+				}
+		  }
+	  });
+	  
+	  
+	  
+	  return currTable;
+}
