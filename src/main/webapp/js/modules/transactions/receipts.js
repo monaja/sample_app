@@ -1,4 +1,6 @@
-var arr = [];
+var arr = {};
+
+var recexists = [];
 
 $(function(){
 
@@ -17,11 +19,29 @@ $(function(){
 		
 		
 		
+		  $('#rct-detail-tbl tbody').on( 'click', 'tr', function () {
+				
+			  console.log('here....');
+			 
+			  
+		  });
+		
 		
 		$("#rct-amount").number( true, 2 );
 		
-		$('#save-rct-dtls').on('click', function(){
-			console.log(arr);
+		$('#btn-add-selected').on('click', function(){
+			for(x in arr){
+				var index = recexists.indexOf(arr[x].transId);
+				if(index > -1){
+					
+				}else{
+					var data="<tr><td>"+arr[x].transId+"</td><td>"+arr[x].refno+"</td>";
+				    data +="<td>"+arr[x].receiptDate+"</td> <td>"+arr[x].tenant.fname+' '+arr[x].tenant.otherNames+"</td><td><input type='text' name='receiptDesc'/></td><td>"+arr[x].transAmount+"</td><td>"+arr[x].transBalance+"</td><td><input type='number'  name='receiptAmount'/><input type='button' class='hyperlink-btn del-cur-row' value='Delete'></td></tr>";
+					$('#rct-detail-tbl').append(data);
+					recexists.push(arr[x].transId);
+				}
+				
+			}
 		})
 		
 		
@@ -167,6 +187,9 @@ function createReceipts(){
 				},
 			]
 		} );
+	  
+	
+	 
 	  return currTable;
 }
 
@@ -219,15 +242,16 @@ function createTransactionTbl(){
 		  var val = $(this).find('.chk-trans').attr('id');
 		  if($(this).find('.chk-trans').is(':checked')){
 			  var d = currTable.row( this ).data();
-			  console.log(d);
-			  arr.push(val);
+			  arr[val]  = d;
 		  }
 		  else{
-			  var index = arr.indexOf(val);
-			  if (index > -1) {
-				    arr.splice(index, 1);
-				}
+			  if (val in arr){
+				  delete arr[val];
+			  }
 		  }
+		  
+		 
+		  
 	  });
 	  
 	  

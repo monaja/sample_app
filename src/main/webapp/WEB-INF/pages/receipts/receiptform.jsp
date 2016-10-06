@@ -180,6 +180,7 @@
 				<th>Amount</th>
 				<th>Balance</th>
 				<th>Allocated Amount</th>
+				<th></th>
 			</tr>
 		</thead>
 	</table>
