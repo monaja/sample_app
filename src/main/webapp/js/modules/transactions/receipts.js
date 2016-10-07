@@ -17,27 +17,31 @@ $(function(){
 		paymentModesLov();
 		addInvoiceTrans();
 		
+		 $("#rct-detail-tbl").on('click','.hyperlink-btn',function(){
+			   var transNo = $(this).closest('tr').find("td:first").html();   
+			   var index = recexists.indexOf(transNo);
+				recexists.splice(index, 1);
+				if (val in arr){
+				delete arr(index);
+				}
+		       $(this).closest('tr').remove();
+		     });
+
 		
-		
-		$("#rct-detail-tbl").delegate("tr", "click", function(e) {
-			console.log($(this));
-			
-			 
-			  
-		  });
-		
+	
 		
 		$("#rct-amount").number( true, 2 );
 		
 		$('#btn-add-selected').on('click', function(){
 			var data = "<tbody>";
+			
 			for(x in arr){
 				var index = recexists.indexOf(arr[x].transId);
 				if(index > -1){
 					
 				}else{
 				   data+="<tr><td>"+arr[x].transId+"</td><td>"+arr[x].refno+"</td>";
-				    data +="<td>"+arr[x].receiptDate+"</td> <td>"+arr[x].tenant.fname+' '+arr[x].tenant.otherNames+"</td><td><input type='text' name='receiptDesc'/></td><td>"+arr[x].transAmount+"</td><td>"+arr[x].transBalance+"</td><td><input type='number'  name='receiptAmount'/></td><td><input type='button' class='hyperlink-btn del-cur-row' value='Delete'></td></tr>";
+				    data +="<td>"+arr[x].receiptDate+"</td> <td>"+arr[x].tenant.fname+' '+arr[x].tenant.otherNames+"</td><td><input type='text' name='receiptDesc'/></td><td>"+arr[x].transAmount+"</td><td>"+arr[x].transBalance+"</td><td><input type='number'  name='receiptAmount'/></td><td><input type='button' class='hyperlink-btn' value='Delete'></td></tr>";
 					$('#rct-detail-tbl').append(data);
 					recexists.push(arr[x].transId);
 				}
@@ -46,9 +50,11 @@ $(function(){
 			data+="</tbody>";
 		})
 		
-		
 	});
+		
 });
+
+
 
 function addInvoiceTrans(){
 	$("#add-det-btn").on('click', function(){
