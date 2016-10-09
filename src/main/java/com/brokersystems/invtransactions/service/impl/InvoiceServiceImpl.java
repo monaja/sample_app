@@ -1,27 +1,17 @@
 package com.brokersystems.invtransactions.service.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.brokersystems.invtransactions.model.QTenantInvoice;
@@ -48,25 +38,18 @@ import com.brokersystems.setup.repository.OrgBranchRepository;
 import com.brokersystems.setup.repository.PaymentModeRepo;
 import com.brokersystems.setup.repository.RateTypeRepository;
 import com.brokersystems.setup.repository.RentalUnitChargeRepo;
-import com.brokersystems.setup.repository.RentalUnitsRepository;
 import com.brokersystems.setup.repository.SequenceRepository;
-import com.brokersystems.setup.repository.TenantAllocRepo;
 import com.brokersystems.setup.repository.TenantRepository;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.PaymentModes;
-import com.brokersystems.setups.model.QAccountDef;
 import com.brokersystems.setups.model.QCurrencies;
-import com.brokersystems.setups.model.QOrgBranch;
 import com.brokersystems.setups.model.QPaymentModes;
-import com.brokersystems.setups.model.QRentalUnitCharges;
 import com.brokersystems.setups.model.QSystemSequence;
 import com.brokersystems.setups.model.QTenantDef;
 import com.brokersystems.setups.model.RentalUnitCharges;
-import com.brokersystems.setups.model.RentalUnits;
 import com.brokersystems.setups.model.SystemSequence;
 import com.brokersystems.setups.model.TenantDef;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.BooleanExpression;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
@@ -142,7 +125,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	@Modifying
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false,rollbackFor={BadRequestException.class})
 	public TenantInvoiceBean createInvoice(TenantInvoice invoice) throws BadRequestException {
 		if (invoice.getTenantId() == null) {
 			throw new BadRequestException("Tenant is Mandatory");
@@ -364,7 +347,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	@Modifying
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false,rollbackFor={BadRequestException.class})
 	public void authorizeInvoice(Long invoiceId) throws BadRequestException {
 		if (invoiceId == null)
 			throw new BadRequestException("The invoice does not exist. Cannot Authorize");
@@ -444,6 +427,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 			trans.setTranstype("INV");
 			trans.setTransSettledAmt(BigDecimal.ZERO);
 			trans.setTransDate(new Date());
+			trans.setInvoice(invoice);
 			transRepo.save(trans);
 		}
 		
@@ -489,7 +473,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	@Modifying
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false,rollbackFor={InvoiceRevisionException.class})
 	public Long reviseTransaction(RevisionForm revisionForm)
 			throws InvoiceRevisionException {
 		if (revisionForm.getInvoiceId() == null || revisionForm.getInvoiceId() == null)
@@ -623,7 +607,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	@Modifying
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false,rollbackFor={InvoiceRevisionException.class})
 	public Long contraInvoice(RevisionForm revisionForm) throws InvoiceRevisionException {
 		if (revisionForm.getInvoiceId() == null || revisionForm.getInvoiceId() == null)
 			throw new InvoiceRevisionException("Invoice to Revise cannot be Empty....");

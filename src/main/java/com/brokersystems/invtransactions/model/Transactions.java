@@ -73,9 +73,12 @@ public class Transactions {
 	private String authoriedBy;
 	
 	@Column(name="trans_dt")
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Temporal(TemporalType.DATE)
 	private Date transDate;
+	
+	@XmlTransient
+	@ManyToOne
+	@JoinColumn(name="trans_invoice")
+	private TenantInvoice invoice;
 	
 
 	public Long getTransId() {
@@ -196,6 +199,14 @@ public class Transactions {
 
 	public void setTransDate(Date transDate) {
 		this.transDate = transDate;
+	}
+
+	public TenantInvoice getInvoice() {
+		return invoice;
+	}
+
+	public void setInvoice(TenantInvoice invoice) {
+		this.invoice = invoice;
 	}
 	
 	

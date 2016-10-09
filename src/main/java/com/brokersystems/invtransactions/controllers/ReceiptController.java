@@ -5,10 +5,13 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,11 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.brokersystems.invtransactions.model.ReceiptTrans;
 import com.brokersystems.invtransactions.model.TenantInvoice;
+import com.brokersystems.invtransactions.model.TenantInvoiceBean;
 import com.brokersystems.invtransactions.model.Transactions;
 import com.brokersystems.invtransactions.service.ReceiptService;
 import com.brokersystems.server.datatables.DataTable;
 import com.brokersystems.server.datatables.DataTablesRequest;
 import com.brokersystems.server.datatables.DataTablesResult;
+import com.brokersystems.server.exception.BadRequestException;
 
 @Controller
 @RequestMapping({ "/protected/transactions/receipts" })
@@ -60,6 +65,12 @@ public class ReceiptController {
 			@RequestParam(value = "firstName", required = false) String firstName,@RequestParam(value = "otherNames", required = false) String otherNames)
 			throws IllegalAccessException {
 		return receiptService.findReceiptTransactions(pageable, firstName, otherNames, invoiceNumber);
+	}
+	
+	@RequestMapping(value = { "createReceipt" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
+	public ResponseEntity<Long> createReceipt(@RequestBody ReceiptTrans receipt) throws BadRequestException {
+		Long created = receiptService.createReceipt(receipt);
+		return new ResponseEntity<Long>(created,HttpStatus.OK);
 	}
 
 }

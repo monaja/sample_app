@@ -3,6 +3,7 @@ package com.brokersystems.invtransactions.model;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.brokersystems.setups.model.Currencies;
@@ -19,6 +24,8 @@ import com.brokersystems.setups.model.OrgBranch;
 import com.brokersystems.setups.model.PaymentModes;
 import com.brokersystems.setups.model.TenantDef;
 import com.brokersystems.setups.model.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="sys_receipts")
@@ -30,7 +37,12 @@ public class ReceiptTrans {
 	private Long receiptId;
 	
 	@Column(name="receipt_date")
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
 	private Date receiptDate;
+	
+	@Column(name="receipt_trans_date")
+	private Date receiptTransDate;
 	
 	@XmlTransient
 	@ManyToOne
@@ -40,10 +52,16 @@ public class ReceiptTrans {
 	@Column(name="receipt_amount")
 	private BigDecimal receiptAmount;
 	
+	@Column(name="receipt_amt_words")
+	private String amountWords;
+	
 	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name="receipt_pmode_id")
 	private PaymentModes paymentMode;
+	
+	@Transient
+	private Long payId;
 	
 	@Column(name="receipt_paid_by")
 	private String paidBy;
@@ -55,6 +73,8 @@ public class ReceiptTrans {
 	private String manualRef;
 	
 	@Column(name="receipt_doc_date")
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
 	private Date documentDate;
 	
 	@Column(name="receipt_desc")
@@ -92,8 +112,18 @@ public class ReceiptTrans {
 	@JoinColumn(name="receipt_curr_id")
 	private Currencies transCurrency;
 	
+	@Transient
+	private Long currCode;
+	
 	@Column(name="receipt_cleared")
 	private String cleared;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="receipt")
+	private List<ReceiptTransDtls> receiptDtls;
+	
+	@Transient
+	private List<ReceiptTransDtls> details;
 	
 	
 	@XmlTransient
@@ -270,6 +300,54 @@ public class ReceiptTrans {
 
 	public void setManualRef(String manualRef) {
 		this.manualRef = manualRef;
+	}
+
+	public List<ReceiptTransDtls> getReceiptDtls() {
+		return receiptDtls;
+	}
+
+	public void setReceiptDtls(List<ReceiptTransDtls> receiptDtls) {
+		this.receiptDtls = receiptDtls;
+	}
+
+	public List<ReceiptTransDtls> getDetails() {
+		return details;
+	}
+
+	public void setDetails(List<ReceiptTransDtls> details) {
+		this.details = details;
+	}
+
+	public Date getReceiptTransDate() {
+		return receiptTransDate;
+	}
+
+	public void setReceiptTransDate(Date receiptTransDate) {
+		this.receiptTransDate = receiptTransDate;
+	}
+
+	public Long getPayId() {
+		return payId;
+	}
+
+	public void setPayId(Long payId) {
+		this.payId = payId;
+	}
+
+	public Long getCurrCode() {
+		return currCode;
+	}
+
+	public void setCurrCode(Long currCode) {
+		this.currCode = currCode;
+	}
+
+	public String getAmountWords() {
+		return amountWords;
+	}
+
+	public void setAmountWords(String amountWords) {
+		this.amountWords = amountWords;
 	}
 	
 	

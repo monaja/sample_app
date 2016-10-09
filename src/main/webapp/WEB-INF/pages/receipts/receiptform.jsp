@@ -20,9 +20,6 @@
 			<input type="button" data-toggle="modal" data-target="#reportsModal"
 				class="btn btn-info pull-right" style="margin-right: 10px;"
 				value="Save Unprinted">
-            <input type="button" id="auth-btn"
-				class="btn btn-info pull-right" style="margin-right: 10px;"
-				value="Authorize Receipt">
 			
 				
 				</div>
@@ -34,7 +31,7 @@
 						</label>
 
 					<div class="col-md-6">
-						<input type="hidden" id="cur-id" name="transCurrency"
+						<input type="hidden" id="cur-id" name="currCode"
 							rv-value="receipt.currency.curCode" /> 
 						<input type="hidden" id="cur-name">
 						<div id="curr-div" class="form-control"
@@ -48,7 +45,7 @@
 						Mode</label>
 
 					<div class="col-md-7">
-						<input type="hidden" id="pymt-id" name="paymentMode"
+						<input type="hidden" id="pymt-id" name="payId"
 							rv-value="invoice.paymentmodes.pmId" />
 						<input type="hidden" id="pymt-desc">
 						<div id="div-paymodes" class="form-control"

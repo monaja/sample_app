@@ -113,8 +113,10 @@ function queryInvoiceDetails(){
                     	  $("#inv-tran-type").text("New Transaction");
                 	  else if(s.transType=="RV")
                     	  $("#inv-tran-type").text("Revise Transaction");
-                	 
-                	  if(s.status === "A"){
+                	  else if(s.transType=="RN")
+                    	  $("#inv-tran-type").text("Renewal Transaction");
+                	 console.log(s.status);
+                	  if(s.status === "A" || s.status === "R"){
                 		    $("#inv-date").prop("disabled", true);
 	  			        	$("#pay-freq").prop("disabled", true);
 	  			        	$("#from-date").prop("disabled", true);

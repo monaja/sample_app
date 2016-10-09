@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
 
 
@@ -46,6 +47,9 @@ public class ReceiptTransDtls {
 	@ManyToOne
 	@JoinColumn(name="rect_invoice_no")
 	private TenantInvoice invoice;
+	
+	@Transient
+	private Long invoiceCode;
 	
 	@Column(name="rect_dc", nullable=false)
 	private String rctDC;
@@ -132,5 +136,15 @@ public class ReceiptTransDtls {
 	public void setAllocated(String allocated) {
 		this.allocated = allocated;
 	}
+
+	public Long getInvoiceCode() {
+		return invoiceCode;
+	}
+
+	public void setInvoiceCode(Long invoiceCode) {
+		this.invoiceCode = invoiceCode;
+	}
+	
+	
 	
 }
