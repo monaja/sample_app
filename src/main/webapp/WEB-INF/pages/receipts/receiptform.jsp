@@ -17,7 +17,7 @@
 				class="btn btn-info pull-right" style="margin-right: 10px;">Back</a> 
             <input type="button" class="btn btn-info pull-right"
 				style="margin-right: 10px;" value="Print" id="btn-add-receipt"> 
-			<input type="button" data-toggle="modal" data-target="#reportsModal"
+			<input type="button"  id="btn-print-receipt"
 				class="btn btn-info pull-right" style="margin-right: 10px;"
 				value="Save Unprinted">
 			

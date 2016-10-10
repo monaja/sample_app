@@ -191,7 +191,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 			transact.setTranstype("RCT");
 		    transact.setTransSettledAmt(tran.getRctAmount());
 			transact.setTransDate(new Date());
-			//createSettlements(transaction.getInvoice(), transaction, transact);
+			createSettlements(transaction.getInvoice(), transaction, transact);
 			transactions.add(transact);
 			transactions.add(transaction);
 			transDtls.add(tran);
@@ -239,7 +239,6 @@ public class ReceiptServiceImpl implements ReceiptService {
 		}
 		TenantInvoice invoice = invoiceRepo.findOne(pred);
 		Long count = invoiceRepo.count(QTenantInvoice.tenantInvoice.invoiceNumber.eq(invoice.getInvoiceNumber()));
-		// invoice.setCurrentStatus("A");
 		TenantInvoice renewal = new TenantInvoice();
 		List<TenantInvoiceDetails> details = invoice.getInvDetails();
 		List<TenantInvoiceDetails> renDetails = new ArrayList<>();
@@ -260,25 +259,6 @@ public class ReceiptServiceImpl implements ReceiptService {
 
 			}
 		}
-		// Date wefDate = invoice.getRenewalDate();
-		// Date wetDate = FormatUtils.addDays(FormatUtils.addMonths(
-		// invoice.getRenewalDate(),
-		// FormatUtils.calculateFrequencyRate(invoice.getFrequency())), -1);
-		// Predicate renPred =
-		// QTenantInvoice.tenantInvoice.tenant.tenId.eq(tenId).and(QTenantInvoice.tenantInvoice.status.eq("R"));
-		//
-		// if(invoiceRepo.count(renPred) > 0){
-		// throw new BadRequestException("Renewal Exists....");
-		// }
-		// if(invoiceRepo.count(renPred) > 0){
-		// TenantInvoice latestRenewal = invoiceRepo.findOne(renPred);
-		// wefDate = latestRenewal.getRenewalDate();
-		// wetDate = FormatUtils.addDays(FormatUtils.addMonths(
-		// latestRenewal.getRenewalDate(),
-		// FormatUtils.calculateFrequencyRate(latestRenewal.getFrequency())),
-		// -1);
-		// }
-
 		taxAmount = grossAmount.subtract(netAmount);
 		invoceDetRepo.save(renDetails);
 		renewal.setCurrentStatus("RN");
@@ -338,6 +318,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 		}
 
 		TenantInvoice latestRenewal = invoiceRepo.findOne(renPred);
+		
 
 		BigDecimal installAmt = latestRenewal.getInstallmentAmount();
 		boolean authInvoice = false;
@@ -363,17 +344,12 @@ public class ReceiptServiceImpl implements ReceiptService {
 		if (authInvoice) {
 			transaction.setAuthoriedBy(userUtils.getCurrentUser().getUsername());
 			transaction.setAuthorized("Y");
-			// ReceiptSettlementDetails settlement = new
-			// ReceiptSettlementDetails();
-			// settlement.setInvoice(latestRenewal);
-			// settlement.setCredit(receipt);
-			// settlement.setDebit(transaction);
-			// settlementRepo.save(settlement);
-			// createSettlements(latestRenewal, transaction, receipt);
+		     
 		}
 		transaction.setTransBalance(transaction.getTransBalance().subtract(rctAmount));
 		transaction.setTransSettledAmt(rctAmount);
-		transRepo.save(transaction);
+		Transactions trans = transRepo.save(transaction);
+		createSettlements(latestRenewal, trans, receipt);
 	}
 
 	@Override
