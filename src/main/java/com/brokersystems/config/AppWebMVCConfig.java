@@ -29,6 +29,8 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
+import org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView;
+import org.springframework.web.servlet.view.jasperreports.JasperReportsViewResolver;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesView;
 import org.apache.commons.dbcp.BasicDataSource;
@@ -52,6 +54,18 @@ public class AppWebMVCConfig extends WebMvcConfigurerAdapter {
 	
 	@Autowired
 	Environment env;
+	
+	@Bean
+	public JasperReportsViewResolver getJasperReportsViewResolver() {
+	  JasperReportsViewResolver resolver = new JasperReportsViewResolver();
+	  resolver.setPrefix("classpath:jasperReports/");
+	  resolver.setSuffix(".jasper");
+	  resolver.setReportDataKey("datasource");
+	  resolver.setViewNames("rpt_*");
+	  resolver.setViewClass(JasperReportsMultiFormatView.class);
+	  resolver.setOrder(0);
+	  return resolver;
+	}  
 
 	@Bean
 	public InternalResourceViewResolver jspViewResolver() {
