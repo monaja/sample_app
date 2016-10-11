@@ -255,7 +255,7 @@ function createTenantsList(){
 						   if(!full.tenantType || full.tenantType==="I"){
 							   return "Individual";
 						   }
-						   else if(full.status==="C")
+						   else if(full.tenantType==="C")
 							  return "Corporate";
 						  }
 				},
