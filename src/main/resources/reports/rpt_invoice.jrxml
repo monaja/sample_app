@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2016-10-13T01:35:02 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="116ba2e3-f64b-47ad-a401-c58172b6c593">
+<!-- 2016-10-13T08:13:14 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="116ba2e3-f64b-47ad-a401-c58172b6c593">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="318"/>
@@ -228,7 +228,8 @@ inv_det_amount,inv_det_net_amount,rate_type,cur_iso_code,ten_number,ct_name,ten_
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="36">
+		<band height="49" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<staticText>
 				<reportElement x="0" y="10" width="188" height="15" uuid="04012f1a-0da9-4505-a6c0-0f14861c4d53">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -245,38 +246,37 @@ inv_det_amount,inv_det_net_amount,rate_type,cur_iso_code,ten_number,ct_name,ten_
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{invoice_install_amount}]]></textFieldExpression>
 			</textField>
-		</band>
-	</columnFooter>
-	<pageFooter>
-		<band height="37" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="80" height="15" uuid="97039227-daf5-49fd-8928-061fe19dfb08"/>
+				<reportElement x="0" y="27" width="80" height="15" uuid="97039227-daf5-49fd-8928-061fe19dfb08"/>
 				<text><![CDATA[Processed By:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="370" y="0" width="30" height="15" uuid="a6d532d1-e48e-435e-a30f-941ea2c06b3b">
+				<reportElement x="370" y="27" width="30" height="15" uuid="a6d532d1-e48e-435e-a30f-941ea2c06b3b">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<text><![CDATA[Date:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="190" y="0" width="60" height="15" uuid="56f7df81-0749-4421-aac7-8521510fe4ea"/>
+				<reportElement x="190" y="27" width="60" height="15" uuid="56f7df81-0749-4421-aac7-8521510fe4ea"/>
 				<text><![CDATA[Signed on:
 ]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="402" y="1" width="100" height="15" uuid="c42d0b43-de2f-4535-90c0-cd7efe8b6ad4">
+				<reportElement x="402" y="28" width="100" height="15" uuid="c42d0b43-de2f-4535-90c0-cd7efe8b6ad4">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{invoice_wef_date}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="80" y="0" width="100" height="15" uuid="600def59-3adf-4110-bf16-bfe725e091d5">
+				<reportElement x="80" y="27" width="100" height="15" uuid="600def59-3adf-4110-bf16-bfe725e091d5">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{user_name}]]></textFieldExpression>
 			</textField>
 		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="37" splitType="Stretch"/>
 	</pageFooter>
 	<summary>
 		<band splitType="Stretch"/>
