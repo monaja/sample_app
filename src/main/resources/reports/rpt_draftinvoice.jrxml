@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2016-10-13T15:42:27 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="116ba2e3-f64b-47ad-a401-c58172b6c593">
-	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+<!-- 2016-10-13T15:45:12 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_draftinvoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="bdc995ea-1f1e-4004-9c40-cc088d7f3797">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="test"/>
-	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="318"/>
-	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="670"/>
-	<import value="org.apache.commons.codec.binary.Base64"/>
-	<parameter name="invoicetrans" class="java.lang.Long">
-		<parameterDescription><![CDATA[]]></parameterDescription>
-	</parameter>
-	<queryString language="SQL">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="invoicetrans" class="java.lang.Long"/>
+	<queryString>
 		<![CDATA[select org_name,org_mobile,org_address,invoice_number,invoice_dt,invoice_install_amount,invoice_rev_number,
 invoice_tax_amount,invoice_amount,invoice_net_amount,invoice_trans_type,invoice_wef_date,invoice_wet_date,
-inv_det_amount,inv_det_net_amount,rate_type,cur_iso_code,ten_number,ct_name,ten_fname,ten_onames,ten_address,user_name
- from tenant_invoices,tenant_invoice_details,organization,rate_types,currency,towns,tenant_details,g7_users where invoice_id = inv_ten_code
+inv_det_amount,inv_det_net_amount,rate_type,cur_iso_code,ten_number,ct_name,ten_fname,ten_onames,ten_address
+ from tenant_invoices,tenant_invoice_details,organization,rate_types,currency,towns,tenant_details where invoice_id = inv_ten_code
  and inv_det_rate_type = rt_id
  and invoice_curr_id = cur_code
  and town_code = ct_code
  and invoice_ten_id=ten_id
-  and invoice_auth_user = user_id
  and invoice_id= $P{invoicetrans}]]>
 	</queryString>
 	<field name="org_name" class="java.lang.String"/>
@@ -44,18 +38,17 @@ inv_det_amount,inv_det_net_amount,rate_type,cur_iso_code,ten_number,ct_name,ten_
 	<field name="ten_fname" class="java.lang.String"/>
 	<field name="ten_onames" class="java.lang.String"/>
 	<field name="ten_address" class="java.lang.String"/>
-	<field name="user_name" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="402" splitType="Stretch">
 			<image>
-				<reportElement x="38" y="17" width="112" height="93" uuid="cd7d74e1-1199-467f-92b7-14270a65d679"/>
+				<reportElement x="38" y="5" width="112" height="93" uuid="cd7d74e1-1199-467f-92b7-14270a65d679"/>
 				<imageExpression><![CDATA["src/main/resources/reports/logo.gif"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="350" y="36" width="200" height="14" uuid="4903d95e-e51a-43b2-889e-5267cca629c2"/>
+				<reportElement x="350" y="36" width="223" height="14" uuid="4903d95e-e51a-43b2-889e-5267cca629c2"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
@@ -83,44 +76,44 @@ inv_det_amount,inv_det_net_amount,rate_type,cur_iso_code,ten_number,ct_name,ten_
 				<textFieldExpression><![CDATA[$F{org_mobile}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="38" y="110" width="152" height="20" uuid="471c098a-f7e6-4eef-8040-5e9d2417d8ff"/>
+				<reportElement x="38" y="130" width="152" height="20" uuid="471c098a-f7e6-4eef-8040-5e9d2417d8ff"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TENANT DEBIT NOTE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="38" y="130" width="42" height="15" uuid="6ab61800-3882-4fb5-bf35-e9b174a4cdf8">
+				<reportElement x="38" y="150" width="42" height="15" uuid="6ab61800-3882-4fb5-bf35-e9b174a4cdf8">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<text><![CDATA[Client:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="38" y="145" width="152" height="15" uuid="e7a4a2c4-d608-4f89-9fba-06e97ad6573e">
+				<reportElement x="38" y="165" width="152" height="15" uuid="e7a4a2c4-d608-4f89-9fba-06e97ad6573e">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{ten_fname}+ " "+$F{ten_onames}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="38" y="160" width="152" height="15" isPrintWhenDetailOverflows="true" uuid="e038bee7-561d-415a-8657-aa440aa4d97b">
+				<reportElement x="38" y="180" width="152" height="15" isPrintWhenDetailOverflows="true" uuid="e038bee7-561d-415a-8657-aa440aa4d97b">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{ten_address}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="40" y="185" width="150" height="15" uuid="eefca4b5-ad96-4009-96e7-566a9c7c2545">
+				<reportElement x="40" y="205" width="150" height="15" uuid="eefca4b5-ad96-4009-96e7-566a9c7c2545">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textFieldExpression><![CDATA["Tenant Ref: "+$F{ten_number}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="40" y="203" width="150" height="15" uuid="a919169e-9a63-41f6-8acc-1d4bad33fd71">
+				<reportElement x="40" y="223" width="150" height="15" uuid="a919169e-9a63-41f6-8acc-1d4bad33fd71">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textFieldExpression><![CDATA["Invoice Number "+$F{invoice_number}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="40" y="220" width="150" height="30" uuid="e2b971e4-f7d5-47fb-89d3-65f961eade1d"/>
+				<reportElement x="40" y="240" width="150" height="30" uuid="e2b971e4-f7d5-47fb-89d3-65f961eade1d"/>
 				<text><![CDATA[Regarding payment of Monthly tenancy fees]]></text>
 			</staticText>
 			<staticText>
@@ -216,6 +209,13 @@ inv_det_amount,inv_det_net_amount,rate_type,cur_iso_code,ten_number,ct_name,ten_
 				<reportElement x="0" y="380" width="200" height="20" uuid="0411b3a3-3fb1-4062-a13e-d783feda047c"/>
 				<text><![CDATA[Payment items breakdown]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="200" y="100" width="100" height="30" uuid="91b9ae22-6c55-4cc4-9f17-bd7cb6a0a05d"/>
+				<textElement>
+					<font size="22"/>
+				</textElement>
+				<text><![CDATA[DRAFT]]></text>
+			</staticText>
 		</band>
 	</title>
 	<detail>
@@ -250,31 +250,16 @@ inv_det_amount,inv_det_net_amount,rate_type,cur_iso_code,ten_number,ct_name,ten_
 				<textFieldExpression><![CDATA[$F{invoice_install_amount}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="27" width="80" height="15" uuid="97039227-daf5-49fd-8928-061fe19dfb08"/>
-				<text><![CDATA[Processed By:]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="370" y="27" width="30" height="15" uuid="a6d532d1-e48e-435e-a30f-941ea2c06b3b">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<text><![CDATA[Date:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="190" y="27" width="60" height="15" uuid="56f7df81-0749-4421-aac7-8521510fe4ea"/>
-				<text><![CDATA[Signed on:
-]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="402" y="28" width="100" height="15" uuid="c42d0b43-de2f-4535-90c0-cd7efe8b6ad4">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{invoice_dt}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="80" y="27" width="100" height="15" uuid="600def59-3adf-4110-bf16-bfe725e091d5">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textFieldExpression><![CDATA[$F{user_name}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>

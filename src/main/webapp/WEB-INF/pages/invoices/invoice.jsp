@@ -367,7 +367,8 @@
 				      <div class="col-md-6">
 				     
 					 <ul style="list-style-type: none;">
-					<li>  <a href="#" >Tenant Debit Note</a></li>
+					<li> 
+					 <a href="<c:url value='/protected/transactions/invoices/invoice_rpt'/> "  target="_blank">Tenant Debit Note</a></li>
 					  <li>  <a href="#" >Agent Credit Note</a></li>
 					  <li>  <a href="#" >Rental Working</a></li>
 					</ul>

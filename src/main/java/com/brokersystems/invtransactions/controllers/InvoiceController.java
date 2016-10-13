@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -32,6 +35,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.brokersystems.invtransactions.model.InvoiceReportModel;
 import com.brokersystems.invtransactions.model.RevisionForm;
 import com.brokersystems.invtransactions.model.TenantInvoice;
 import com.brokersystems.invtransactions.model.TenantInvoiceBean;
@@ -62,6 +66,10 @@ public class InvoiceController {
 	
 	@Autowired
 	private SetupsService service;
+	
+	@Autowired
+	  private DataSource datasource;
+	
 	
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -94,8 +102,9 @@ public class InvoiceController {
 	}
 	
 	@RequestMapping(value = "/editInvoice", method = RequestMethod.POST)
-	public String editRentalForm(@Valid @ModelAttribute ModelHelperForm helperForm, Model model) {
+	public String editRentalForm(@Valid @ModelAttribute ModelHelperForm helperForm, Model model, HttpServletRequest request) {
 		model.addAttribute("invoiceCode", helperForm.getId());
+		request.getSession().setAttribute("invoiceTransNo", helperForm.getId());
 		return "invoiceform";
 	}
 	
@@ -131,8 +140,9 @@ public class InvoiceController {
 	
 	
 	@RequestMapping(value = { "createInvoice" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
-	public ResponseEntity<TenantInvoiceBean> createTenant(@RequestBody TenantInvoice invoice) throws BadRequestException {
+	public ResponseEntity<TenantInvoiceBean> createTenant(@RequestBody TenantInvoice invoice,HttpServletRequest request) throws BadRequestException {
 		TenantInvoiceBean created = invService.createInvoice(invoice);
+		request.getSession().setAttribute("invoiceTransNo", created.getInvoiceId());
 		return new ResponseEntity<TenantInvoiceBean>(created,HttpStatus.OK);
 	}
 	
@@ -221,6 +231,22 @@ public class InvoiceController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteInvoice(@RequestParam(value = "invoiceCode", required = false) Long invoiceCode) throws BadRequestException {
 		invService.deleteInvoice(invoiceCode);
+	}
+	
+	@RequestMapping(value = "invoice_rpt", method = RequestMethod.GET)
+	public ModelAndView getRpt4(ModelMap modelMap,  HttpServletRequest request,ModelAndView modelAndView) throws BadRequestException {
+	  
+	  Long invoiceCode = (Long)request.getSession().getAttribute("invoiceTransNo");
+	  TenantInvoice invoice = invService.findByInvoiceId(invoiceCode);
+	  
+	  modelMap.put("datasource", datasource);
+	  modelMap.put("format", "pdf");
+	  modelMap.put("invoicetrans", invoiceCode);
+	  if(invoice.getStatus()==null || invoice.getStatus().equals("D")){
+		  modelAndView = new ModelAndView("rpt_draftinvoice", modelMap);
+	  }else
+	  modelAndView = new ModelAndView("rpt_invoice", modelMap);
+	  return modelAndView;
 	}
 
 }
