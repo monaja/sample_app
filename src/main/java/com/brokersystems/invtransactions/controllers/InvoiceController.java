@@ -234,7 +234,7 @@ public class InvoiceController {
 	}
 	
 	@RequestMapping(value = "invoice_rpt", method = RequestMethod.GET)
-	public ModelAndView getRpt4(ModelMap modelMap,  HttpServletRequest request,ModelAndView modelAndView) throws BadRequestException {
+	public ModelAndView invoiceRpt(ModelMap modelMap,  HttpServletRequest request,ModelAndView modelAndView) throws BadRequestException {
 	  
 	  Long invoiceCode = (Long)request.getSession().getAttribute("invoiceTransNo");
 	  TenantInvoice invoice = invService.findByInvoiceId(invoiceCode);

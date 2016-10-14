@@ -84,17 +84,24 @@ $(function() {
 										});
 
 						$("#btn-add-receipt").on('click', function() {
-							createReceipt();
+							createandPrintReceipt();
+							
 						});
 						
 						$("#btn-print-receipt").on('click', function() {
-							printPdf("http://www.pdf995.com/samples/pdf.pdf");
+							createReceipt();
 						});
 						
 
 					});
 
 });
+
+function getContextPath() {
+	return window.location.pathname.substring(0, window.location.pathname
+			.indexOf("/", 2));
+}
+
 
 
 function printPdf(url){
@@ -129,13 +136,57 @@ function createReceipt() {
 	var url = "createReceipt";
 	var arr = createAllocation();
 	data.details = arr;
-	console.log(data);
 	$.ajax({
 		url : url,
 		type : "POST",
 		data : JSON.stringify(data),
 		success : function(s) {
 			bootbox.alert("Receipt Created Successfully");
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			bootbox.alert(jqXHR.responseText);
+		},
+		dataType : "json",
+		contentType : "application/json"
+	});
+}
+
+function createandPrintReceipt() {
+	var $currForm = $('#receipt-form');
+	var currValidator = $currForm.validate();
+	if (!$currForm.valid()) {
+		return;
+	}
+
+	var data = {};
+	$currForm.serializeArray().map(function(x) {
+		data[x.name] = x.value;
+	});
+	var url = "createReceipt";
+	var arr = createAllocation();
+	data.details = arr;
+	$.ajax({
+		url : url,
+		type : "POST",
+		data : JSON.stringify(data),
+		success : function(s) {
+			printPdf(getContextPath()+"/protected/transactions/receipts/receipt_rpt/"+s);
+		    bootbox.confirm({
+		        message: "Receipt Printed Successfully?",
+		        buttons: {
+		            confirm: {
+		                label: 'Yes',
+		                className: 'btn-success'
+		            },
+		            cancel: {
+		                label: 'No',
+		                className: 'btn-danger'
+		            }
+		        },
+		        callback: function (result) {
+		            
+		        }
+		    });
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			bootbox.alert(jqXHR.responseText);
