@@ -18,6 +18,8 @@ $(function() {
 						currencyLov();
 						paymentModesLov();
 						addInvoiceTrans();
+						
+						
 
 						$("#rct-detail-tbl").on(
 								'click',
@@ -80,8 +82,50 @@ $(function() {
 
 											$('#rct-detail-tbl').append(data);
 											$('[id^=rctamt-]').number(true, 2);
-											// data+="</tbody>";
 										});
+						$('#btn-add-selected-exit')
+						.on(
+								'click',
+								function() {
+									var data = "";
+									var counter = 0;
+									for (x in arr) {
+
+										var index = recexists
+												.indexOf(arr[x].transId);
+										if (index > -1) {
+
+										} else {
+											counter++;
+											data += "<tr><td><input type='text' size='7' readonly value='"
+													+ arr[x].transId
+													+ "' name='invoiceCode'></td><td>"
+													+ arr[x].refno
+													+ "</td>";
+											data += "<td>"
+													+ moment(arr[x].transDate).format('DD/MM/YYYY') 
+													+ "</td> <td>"
+													+ arr[x].tenant.fname
+													+ ' '
+													+ arr[x].tenant.otherNames
+													+ "</td><td><textarea rows='3' cols=15 name='narration'/></td><td>"
+													+ arr[x].transAmount
+													+ "</td><td>"
+													+ arr[x].transBalance
+													+ "</td><td><input type='text' size='11' id='rctamt-"
+													+ counter
+													+ "'  name='rctAmount'/></td><td><input type='button' class='hyperlink-btn' value='Delete'></td></tr>";
+
+											recexists
+													.push(arr[x].transId);
+										}
+
+									}
+
+									$('#rct-detail-tbl').append(data);
+									$('[id^=rctamt-]').number(true, 2);
+									$('#tenantTransModal').modal('hide');
+								});
 
 						$("#btn-add-receipt").on('click', function() {
 							createandPrintReceipt();
@@ -92,6 +136,10 @@ $(function() {
 							createReceipt();
 						});
 						
+						$("#btn-search-invoice").on('click', function(){
+							createTransactionTbl();
+							
+						});
 
 					});
 
@@ -141,7 +189,27 @@ function createReceipt() {
 		type : "POST",
 		data : JSON.stringify(data),
 		success : function(s) {
-			bootbox.alert("Receipt Created Successfully");
+			$('#receipt-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden],input[type=number], textarea").val("");
+			 arr = {};
+			 recexists = [];
+			 $('#rct-detail-tbl tbody').remove();
+			 currencyLov();
+			 paymentModesLov();
+			$.ajax({
+		        type: 'GET',
+		        url:  'allocateReceipt',
+		        dataType: 'json',
+		        data: {"receiptCode": s},
+		        async: true,
+		        success: function(result) {
+		        	bootbox.alert("Receipt Created Successfully");
+		        },
+		        error: function(jqXHR, textStatus, errorThrown) {
+		        	console.log(jqXHR);
+		        	bootbox.alert(jqXHR.responseText);
+		        }
+		    });
+			
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			bootbox.alert(jqXHR.responseText);
@@ -170,6 +238,12 @@ function createandPrintReceipt() {
 		type : "POST",
 		data : JSON.stringify(data),
 		success : function(s) {
+			$('#receipt-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden],input[type=number], textarea").val("");
+			 arr = {};
+			 recexists = [];
+			 $('#rct-detail-tbl tbody').remove();
+			 currencyLov();
+			 paymentModesLov();
 			printPdf(getContextPath()+"/protected/transactions/receipts/receipt_rpt/"+s);
 		    bootbox.confirm({
 		        message: "Receipt Printed Successfully?",
@@ -184,7 +258,24 @@ function createandPrintReceipt() {
 		            }
 		        },
 		        callback: function (result) {
-		            
+		        	 if(result){
+							$.ajax({
+						        type: 'GET',
+						        url:  'allocateReceipt',
+						        dataType: 'json',
+						        data: {"receiptCode": s},
+						        async: true,
+						        success: function(result) {
+						        	bootbox.alert("Receipt Printing operation complete");
+						        	
+						        },
+						        error: function(jqXHR, textStatus, errorThrown) {
+						        	console.log(jqXHR);
+						        	bootbox.alert(jqXHR.responseText);
+						        }
+						    });
+						 
+					 }
 		        }
 		    });
 		},
@@ -370,8 +461,16 @@ function createTransactionTbl() {
 					{
 						"processing" : true,
 						"serverSide" : true,
-						"ajax" : url,
-						lengthMenu : [ [ 10 ], [ 10 ] ],
+						"searching": false,
+						"ajax": {
+							'url': url,
+							'data':{
+								'firstName': $("#inv-search-name").val(),
+								'otherNames':  $("#inv-search-other-names").val(),
+								'invoiceNumber': $("#inv-search-number").val(),
+							},
+						},
+						lengthMenu : [ [ 10,20 ], [ 10,20 ] ],
 						pageLength : 10,
 						destroy : true,
 						"columns" : [

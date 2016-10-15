@@ -1,5 +1,7 @@
 package com.brokersystems.invtransactions.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,6 +36,9 @@ public class ReceiptSettlementDetails {
 	@ManyToOne
 	@JoinColumn(name="rec_settle_cr")
 	private Transactions credit;
+	
+	@Column(name="rec_alloc_amt")
+	private BigDecimal allocatedAmt;
 
 	public Long getSettlementId() {
 		return settlementId;
@@ -65,6 +70,14 @@ public class ReceiptSettlementDetails {
 
 	public void setCredit(Transactions credit) {
 		this.credit = credit;
+	}
+
+	public BigDecimal getAllocatedAmt() {
+		return allocatedAmt;
+	}
+
+	public void setAllocatedAmt(BigDecimal allocatedAmt) {
+		this.allocatedAmt = allocatedAmt;
 	}
 	
 	

@@ -31,7 +31,7 @@ public class GeneralExceptionHandler {
 	@SuppressWarnings("unchecked")
 	@ExceptionHandler(BadRequestException.class)
     ResponseEntity handleError(BadRequestException   e) {
-		System.out.println("Error passed here...."+e.getMessage());
+		e.printStackTrace();
         return new ResponseEntity(e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 	

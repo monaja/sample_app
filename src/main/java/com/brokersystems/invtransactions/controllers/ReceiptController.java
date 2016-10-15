@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.brokersystems.invtransactions.model.ReceiptTrans;
@@ -82,10 +83,15 @@ public class ReceiptController {
 		return new ResponseEntity<Long>(created,HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = { "allocateReceipt" }, method = {
+			org.springframework.web.bind.annotation.RequestMethod.GET })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void allocateReceipt(@RequestParam(value = "receiptCode", required = false) Long receiptCode) throws BadRequestException {
+		receiptService.markReceiptPrinted(receiptCode);
+	}
+	
 	@RequestMapping(value = "receipt_rpt/{receiptNo}", method = RequestMethod.GET)
-	public ModelAndView receiptRpt(ModelMap modelMap,  HttpServletRequest request,ModelAndView modelAndView, @PathVariable Long receiptNo) throws BadRequestException {
-	  
-	 
+	public ModelAndView receiptRpt(ModelMap modelMap, ModelAndView modelAndView, @PathVariable Long receiptNo) throws BadRequestException { 
 	  modelMap.put("datasource", datasource);
 	  modelMap.put("format", "pdf");
 	  modelMap.put("receiptNo", receiptNo);

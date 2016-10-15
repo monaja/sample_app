@@ -201,6 +201,49 @@
 					</h4>
 				</div>
 				<div class="modal-body">
+				    <form id="search-form" class="form-horizontal pull-left">
+						<div class="form-group">
+
+							<div class="col-md-12">
+								<label for="brn-id" class="col-md-6 control-label">Invoice
+									Number</label>
+
+								<div class="col-md-6">
+									<input type='text' class="form-control pull-right"
+										id="inv-search-number" />
+								</div>
+						</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-12">
+								<label for="brn-id" class="col-md-6 control-label">Tenant
+									First Name</label>
+
+								<div class="col-md-6">
+									<input type='text' class="form-control pull-right"
+										id="inv-search-name" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-12">
+								<label for="brn-id" class="col-md-6 control-label">Tenant
+									Other Names</label>
+
+								<div class="col-md-6">
+									<input type='text' class="form-control pull-right"
+										id="inv-search-other-names" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<input type="button" class="btn btn-info pull-right"
+								style="margin-right: 10px;" value="Search"
+								id="btn-search-invoice">
+						</div>
+
+
+					</form>
 					<table id="modal-rct-detail-tbl" class="table table-hover table-bordered">
 					<thead>
 						<tr>
@@ -217,6 +260,10 @@
 				</table>
 				</div>
 				<div class="modal-footer">
+					<button data-loading-text="Saving..." id="btn-add-selected-exit"
+						type="button" class="btn btn-primary">
+						Add Selected and Close
+					</button>
 					<button data-loading-text="Saving..." id="btn-add-selected"
 						type="button" class="btn btn-primary">
 						Add Selected

@@ -18,10 +18,6 @@ public interface ReceiptService {
 
 	Long createReceipt(ReceiptTrans receipt) throws BadRequestException;
 	
-	void createRenewal(Long tenId,Date wefDate,Date wetDate) throws BadRequestException;
-	
-	void authorizeRenewal(Long tenId, BigDecimal rctAmount,Transactions receipt) throws BadRequestException;
-	
-	void createSettlements(TenantInvoice invoice,Transactions debit,Transactions credit) throws BadRequestException;
+	void markReceiptPrinted(Long receiptId) throws BadRequestException;
 	
 }
