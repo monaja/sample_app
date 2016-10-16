@@ -166,7 +166,6 @@ public class UtilitiesServiceImpl implements UtilitiesService {
 
 			}
 			createSettlements(transaction.getInvoice(), transaction, transact,tran.getRctAmount());
-			
 			transactions.add(transaction);
 		}
 		transRepo.save(transactions);
@@ -231,7 +230,7 @@ public class UtilitiesServiceImpl implements UtilitiesService {
 		renewal.setTransType("RN");
 		renewal.setWefDate(wefDate);
 		renewal.setWetDate(wetDate);
-		invoiceRepo.save(renewal);
+		TenantInvoice ren = invoiceRepo.save(renewal);
 		Transactions trans = new Transactions();
 		trans.setAuthoriedBy(userUtils.getCurrentUser().getUsername());
 		trans.setAuthorized("R");
@@ -247,7 +246,7 @@ public class UtilitiesServiceImpl implements UtilitiesService {
 		trans.setTranstype("RN");
 		trans.setTransSettledAmt(BigDecimal.ZERO);
 		trans.setTransDate(new Date());
-		trans.setInvoice(invoice);
+		trans.setInvoice(ren);
 		transRepo.save(trans);
 	}
 

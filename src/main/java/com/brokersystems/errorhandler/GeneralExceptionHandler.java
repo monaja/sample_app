@@ -2,6 +2,7 @@ package com.brokersystems.errorhandler;
 
 import java.sql.SQLException;
 
+import javax.mail.MessagingException;
 import javax.persistence.PersistenceException;
 
 import org.hibernate.JDBCException;
@@ -27,6 +28,13 @@ public class GeneralExceptionHandler {
 		    e.printStackTrace();
 	        return new ResponseEntity(e.getCause().getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 	    }
+	
+	@SuppressWarnings("unchecked")
+	@ExceptionHandler(MessagingException.class)
+    ResponseEntity messagingError(MessagingException   e) {
+		e.printStackTrace();
+        return new ResponseEntity(e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
 	
 	@SuppressWarnings("unchecked")
 	@ExceptionHandler(BadRequestException.class)

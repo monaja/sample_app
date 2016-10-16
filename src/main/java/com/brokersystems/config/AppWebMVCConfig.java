@@ -16,6 +16,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -48,7 +50,7 @@ import java.util.Properties;
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableSpringDataWebSupport
 @EnableTransactionManagement
-@PropertySource("classpath:config.properties")
+@PropertySource({"classpath:config.properties","classpath:mail.properties"})
 public class AppWebMVCConfig extends WebMvcConfigurerAdapter {
 
 	
@@ -95,6 +97,7 @@ public class AppWebMVCConfig extends WebMvcConfigurerAdapter {
 	public static PropertyPlaceholderConfigurer placeHolderConfigurer() {
 		PropertyPlaceholderConfigurer bean = new PropertyPlaceholderConfigurer();
 		bean.setLocation(new ClassPathResource("config.properties"));
+		bean.setLocation(new ClassPathResource("mail.properties"));
 		bean.setIgnoreUnresolvablePlaceholders(true);
 		return bean;
 	}
@@ -249,4 +252,24 @@ public class AppWebMVCConfig extends WebMvcConfigurerAdapter {
 			java.util.List<org.springframework.web.method.support.HandlerMethodArgumentResolver> argumentResolvers) {
 		argumentResolvers.add(new DataTableRequestResolver());
 	}
+	
+	@Bean
+    public JavaMailSender getMailSender(){
+		String host = env.getProperty("mail.host");
+		String port = env.getProperty("mail.port");
+		String username = env.getProperty("sender.username");
+		String password = env.getProperty("sender.password");
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost(host);
+        mailSender.setPort(new Integer(port));
+        mailSender.setUsername(username);
+        mailSender.setPassword(password);
+        Properties javaMailProperties = new Properties();
+        javaMailProperties.put("mail.smtp.starttls.enable", "true");
+        javaMailProperties.put("mail.smtp.auth", "true");
+        javaMailProperties.put("mail.transport.protocol", "smtp");
+       // javaMailProperties.put("mail.debug", "true");//Prints out everything on screen
+        mailSender.setJavaMailProperties(javaMailProperties);
+        return mailSender;
+    }
 }

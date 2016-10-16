@@ -18,6 +18,8 @@ $(function(){
 		addNewCharge();
 		saveNewCharges();
 		authorizeInvoice();
+		sendEmail();
+		
 		
 		
 	});
@@ -69,6 +71,7 @@ function saveNewCharges(){
 
 
 function queryInvoiceDetails(){
+	console.log("Invoice code "+invoiceCode);
 	if(typeof invoiceCode!== 'undefined'){
 		if(invoiceCode!==-2000){
 			$("#invoice-pk").val(invoiceCode);
@@ -737,6 +740,28 @@ function getInvDetails(){
 			]
 		} );
 	  return table;
+}
+
+function sendEmail(){
+	$("#send-email").on('click', function(){
+		          var $btn = $(this).val('Sending Email');
+					$.ajax({
+				        type: 'GET',
+				        url:  'sendEmail',
+				        dataType: 'json',
+				        async: true,
+				        success: function(result) {
+				        	bootbox.alert("Email Send Successfully...");
+				        },
+				        error: function(jqXHR, textStatus, errorThrown) {
+				        	console.log(jqXHR);
+				        	bootbox.alert(jqXHR.responseText);
+				        },
+				        always: function(){
+							$btn.button('reset');
+				        }
+				    });
+          });
 }
 		
 		
