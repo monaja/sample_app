@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2016-10-13T15:42:27 -->
+<!-- 2016-10-17T18:11:50 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="116ba2e3-f64b-47ad-a401-c58172b6c593">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="test"/>
@@ -168,7 +168,7 @@ inv_det_amount,inv_det_net_amount,rate_type,cur_iso_code,ten_number,ct_name,ten_
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Gross Amount]]></text>
+				<text><![CDATA[Net Amount]]></text>
 			</staticText>
 			<textField pattern="#,##0.00;¤-#,##0.00">
 				<reportElement x="425" y="290" width="115" height="15" uuid="e5f7c23d-a457-4d87-bf82-a325afa5e2de">
@@ -200,7 +200,7 @@ inv_det_amount,inv_det_net_amount,rate_type,cur_iso_code,ten_number,ct_name,ten_
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Net Amount]]></text>
+				<text><![CDATA[Gross Amount]]></text>
 			</staticText>
 			<textField pattern="#,##0.00;¤-#,##0.00">
 				<reportElement x="425" y="330" width="115" height="15" uuid="993ddf1d-2469-42e8-a119-8d4e4089b1f0">

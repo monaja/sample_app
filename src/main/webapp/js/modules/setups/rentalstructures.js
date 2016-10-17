@@ -63,14 +63,17 @@ function createRentalUnit(){
 				bootbox.alert("Record created/updated Successfully");
 				$('#rentalUnits').DataTable().ajax.reload();				
 				validator.resetForm();
+				populateGroup();
+				populateUnitLov();
+				$("#unit-id").select2("val", "");
+				$("#charge-id").select2("val", "");
 				$('#units-form').find("input[type=text],input[type=mobileNumber],input[type=emailFull],input[type=password],input[type=hidden], textarea").val("");
 				$('#unitsModal').modal('hide');
 			});
 
 			request.error(function(jqXHR, textStatus, errorThrown){
 				bootbox.alert(jqXHR.responseText);
-				populateGroup();
-				populateUnitLov();
+				
 			});
 			request.always(function(){
 				$btn.button('reset');

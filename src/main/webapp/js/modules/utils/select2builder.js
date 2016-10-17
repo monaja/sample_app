@@ -4,6 +4,7 @@ var Select2Builder = Select2Builder || {
                 return;
             }
             var $element = opts.element;
+           
             if (!$element) {
                 if (opts.containerId) {
                     $element = $('#' + opts.containerId);

@@ -67,7 +67,7 @@ function populateBranchLov2(){
 	            initSelection: function (element, callback) {
 	            	
                 },
-	            id: "obId",
+	            id: "obName",
 	            width:"200px"
 	        });
 	  }
@@ -88,12 +88,16 @@ function createTenant(){
 		      contentType: false,
 		      success: function (s ) {
 		    	  bootbox.alert("Record created/updated Successfully");
-		    	  $('#tenant-form').find("input[type=text],input[type=mobileNumber],input[file],input[type=email],input[type=password],input[type=hidden],input[type=number], textarea,select").val("");
-		    	  $('#avatar').fileinput('reset');
 		    	  populateBranchLov1();
 		  		  populateBranchLov2();
 		  		  populateStructures();
 		  		  populateUnits();
+		  		  $("#ten-branch").select2('data', null);
+		  	      $("#unit-branch").select2('data', null);
+		  		  $("#ten-property").select2('data', null);
+		  		  $("#ten-unit").select2('data', null);
+		    	  $('#tenant-form').find("input[type=text],input[type=mobileNumber],input[file],input[type=email],input[type=password],input[type=hidden],input[type=number], textarea,select").val("");
+		    	  $('#avatar').fileinput('reset');
 		      },
 		      error: function(xhr, error){
 		    	  bootbox.alert(xhr.responseText);
@@ -238,7 +242,7 @@ function createTenantsList(){
 				'url': url,
 			},
 			lengthMenu: [ [10, 15], [10, 15] ],
-			pageLength: 5,
+			pageLength: 10,
 			destroy: true,
 			"columns": [
                 { "data": "tenantNumber" },
