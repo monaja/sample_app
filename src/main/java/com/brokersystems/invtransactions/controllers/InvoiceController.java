@@ -59,10 +59,12 @@ import com.brokersystems.server.exception.BadRequestException;
 import com.brokersystems.server.exception.InvoiceRevisionException;
 import com.brokersystems.setups.model.Currencies;
 import com.brokersystems.setups.model.ModelHelperForm;
+import com.brokersystems.setups.model.Organization;
 import com.brokersystems.setups.model.PaymentModes;
 import com.brokersystems.setups.model.RentalUnitCharges;
 import com.brokersystems.setups.model.TenAllocations;
 import com.brokersystems.setups.model.TenantDef;
+import com.brokersystems.setups.service.OrganizationService;
 import com.brokersystems.setups.service.SetupsService;
 
 import net.sf.jasperreports.engine.JRException;
@@ -88,6 +90,9 @@ public class InvoiceController {
 	
 	@Autowired
 	private ResourceLoader resourceLoader;
+	
+	@Autowired
+	private OrganizationService orgService;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -298,6 +303,13 @@ public class InvoiceController {
 		HashMap<String,Object> parameters=new HashMap<String,Object>();
 		Long invoiceCode = (Long) request.getSession().getAttribute("invoiceTransNo");
 		TenantInvoice invoice = invService.findByInvoiceId(invoiceCode);
+		String tenantEmail = invoice.getTenant().getEmailAddress();
+		if(tenantEmail==null)
+			throw new BadRequestException("Tenant does not have a valid email address");
+        Organization defaultOrg = orgService.getOrganizationDetails();
+        if(defaultOrg.getAddress().getEmailAddress()==null || StringUtils.isBlank(defaultOrg.getAddress().getEmailAddress())){
+        	throw new BadRequestException("Organization Email is not valid.");
+        }
 		parameters.put("invoicetrans", invoiceCode);
 		Resource resource = resourceLoader.getResource("classpath:/reports/rpt_invoice.jasper");
 		if (invoice.getStatus() == null || invoice.getStatus().equals("D")) {
@@ -312,9 +324,9 @@ public class InvoiceController {
 		javax.activation.DataSource aAttachment =  new ByteArrayDataSource(baos.toByteArray(), "application/pdf");
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		helper.setFrom("pmugenya@gmail.com");
-		helper.setTo("pmugenya@gmail.com");
-		helper.setSubject("Test mail");
+		helper.setFrom(defaultOrg.getAddress().getEmailAddress());
+		helper.setTo(tenantEmail);
+		helper.setSubject("Monthly Tenant Invoice");
 		helper.addAttachment("invoice.pdf", aAttachment);
 		helper.setText("Attached is your invoice...",true);
 		mailSender.send(message);

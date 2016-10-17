@@ -22,7 +22,6 @@
 				<th width="10%">Amount</th>
 				<th width="10%">Paid By</th>
 				<th width="10%">Printed?</th>
-				<th width="2%"></th>
 			</tr>
 		</thead>
 	</table>

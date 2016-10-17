@@ -19,6 +19,9 @@ public class Address extends AuditBaseEntity implements Serializable {
 
 	@Column(name="add_zip_code")
 	private String addZipCode;
+	
+	@Column(name="add_email_addr")
+	private String emailAddress;
 
 	//bi-directional many-to-one association to Town
 	@ManyToOne
@@ -83,6 +86,16 @@ public class Address extends AuditBaseEntity implements Serializable {
 
 	public void setCounty(County county) {
 		this.county = county;
+	}
+
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 	
 	

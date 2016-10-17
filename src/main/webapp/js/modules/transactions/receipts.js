@@ -433,22 +433,23 @@ function createReceipts() {
 								{
 									"data" : "printed"
 								},
-								{
-									"data" : "receiptId",
-									"render" : function(data, type, full, meta) {
-										if (full.status === "A") {
-											return '<form action="editInvoice" method="post"><input type="hidden" name="id" value='
-													+ full.receiptId
-													+ '><input type="submit"  class="hyperlink-btn" value="View" ></form>';
-
-										} else
-											return '<form action="editInvoice" method="post"><input type="hidden" name="id" value='
-													+ full.receiptId
-													+ '><input type="submit"  class="hyperlink-btn" value="Edit" ></form>';
-
-									}
-
-								}, ]
+//								{
+//									"data" : "receiptId",
+//									"render" : function(data, type, full, meta) {
+//										if (full.status === "A") {
+//											return '<form action="editInvoice" method="post"><input type="hidden" name="id" value='
+//													+ full.receiptId
+//													+ '><input type="submit"  class="hyperlink-btn" value="View" ></form>';
+//
+//										} else
+//											return '<form action="editInvoice" method="post"><input type="hidden" name="id" value='
+//													+ full.receiptId
+//													+ '><input type="submit"  class="hyperlink-btn" value="Edit" ></form>';
+//
+//									}
+//
+//								}, 
+								]
 					});
 
 	return currTable;

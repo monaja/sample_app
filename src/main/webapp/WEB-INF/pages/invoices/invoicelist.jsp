@@ -21,7 +21,7 @@
 				<th width="10%">Currency</th>
 				<th width="10%">WEF</th>
 				<th width="10%">WET</th>
-				<th width="10%">Invoice Amount</th>
+				<th width="10%">Net Amount</th>
 				<th width="10%">Status</th>
 				<th width="10%">Trans Type</th>
 				<th width="2%"></th>

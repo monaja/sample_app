@@ -163,6 +163,12 @@
 		                    <p class="form-control-static"> <c:out value="${organization.address.addZipCode}"></c:out></p>                
 		                 </div>
 		                 </div>
+		                  <div class="col-md-6">
+		                    <label for="zipCode" class="control-label col-md-5">Email Address</label>
+		                    <div class="col-md-7">
+		                    <p class="form-control-static"> <c:out value="${organization.address.emailAddress}"></c:out></p>                
+		                 </div>
+		                 </div>
 				          
 				          </div>
 				        

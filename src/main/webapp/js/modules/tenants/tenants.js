@@ -88,14 +88,14 @@ function createTenant(){
 		      contentType: false,
 		      success: function (s ) {
 		    	  bootbox.alert("Record created/updated Successfully");
-		    	  populateBranchLov1();
-		  		  populateBranchLov2();
-		  		  populateStructures();
-		  		  populateUnits();
-		  		  $("#ten-branch").select2('data', null);
-		  	      $("#unit-branch").select2('data', null);
-		  		  $("#ten-property").select2('data', null);
-		  		  $("#ten-unit").select2('data', null);
+		  		 $('#ten-branch').select2('val', null);
+		  		 $('#ten-branch').attr('value', '');
+		  		 $('#unit-branch').select2('val', null);
+		  		 $('#unit-branch').attr('value', '');
+		  		$('#ten-property').select2('val', null);
+		  		 $('#ten-property').attr('value', '');
+		  		$('#ten-unit').select2('val', null);
+		  		 $('#ten-unit').attr('value', '');
 		    	  $('#tenant-form').find("input[type=text],input[type=mobileNumber],input[file],input[type=email],input[type=password],input[type=hidden],input[type=number], textarea,select").val("");
 		    	  $('#avatar').fileinput('reset');
 		      },

@@ -38,6 +38,8 @@ public class QAddress extends BeanPath<Address> {
     //inherited
     public final DateTimePath<java.util.Date> createdDate = _super.createdDate;
 
+    public final StringPath emailAddress = createString("emailAddress");
+
     //inherited
     public final StringPath modifiedBy = _super.modifiedBy;
 

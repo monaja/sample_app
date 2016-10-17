@@ -194,6 +194,12 @@
 		                     <form:input path="address.addZipCode" id="zipCode" class="form-control" placeholder="Zip Code"/>                  
 		                 </div>
 		                 </div>
+		                 <div class="col-md-6 form-required">
+		                    <label for="zipCode" class="control-label col-md-5">Email Address</label>
+		                    <div class="col-md-7">
+		                     <form:input path="address.emailAddress" id="emailAddress" class="form-control" placeholder="Email Address"/>                  
+		                 </div>
+		                 </div>
 				          
 				          </div>
 				        

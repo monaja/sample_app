@@ -140,10 +140,10 @@ public class UtilitiesServiceImpl implements UtilitiesService {
 			Date wefDate = transaction.getInvoice().getRenewalDate();
 			Date wetDate = FormatUtils.addDays(FormatUtils.addMonths(transaction.getInvoice().getRenewalDate(),
 					FormatUtils.calculateFrequencyRate(transaction.getInvoice().getFrequency())), -1);
-
+			BigDecimal remainder = BigDecimal.ZERO;
 			if (overpayment.compareTo(BigDecimal.ZERO) == 1) {
 				receiptAmt = overpayment;
-				BigDecimal remainder = receiptAmt.remainder(transaction.getInvoice().getInstallmentAmount());
+				 remainder = receiptAmt.remainder(transaction.getInvoice().getInstallmentAmount());
 				while (receiptAmt.compareTo(BigDecimal.ZERO) == 1) {
 					BigDecimal installAmt = transaction.getInvoice().getInstallmentAmount();
 					if (installAmt.compareTo(receiptAmt) == 1)
@@ -160,10 +160,10 @@ public class UtilitiesServiceImpl implements UtilitiesService {
 													.calculateFrequencyRate(transaction.getInvoice().getFrequency())),
 									-1);
 				}
-				if (remainder.compareTo(BigDecimal.ZERO) == 0) {
-					createRenewal(transaction.getTenant().getTenId(), wefDate, wetDate,invoice.getInvoiceNumber());
-				}
 
+			}
+			if (remainder.compareTo(BigDecimal.ZERO) == 0) {
+				createRenewal(transaction.getTenant().getTenId(), wefDate, wetDate,invoice.getInvoiceNumber());
 			}
 			createSettlements(transaction.getInvoice(), transaction, transact,tran.getRctAmount());
 			transactions.add(transaction);
