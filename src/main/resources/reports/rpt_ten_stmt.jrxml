@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2016-10-17T01:40:09 -->
+<!-- 2016-10-17T07:45:48 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_ten_stmt" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="e098baf0-697f-492d-a8b3-f59692413b89">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -28,7 +28,7 @@ and trans_currency = cur_code
  and town_code = ct_code
  and trans_invoice = invoice_id
  and trans_type not in ('RCT')
- and trans_ten_id= 252
+ and trans_ten_id=  $P{tenantId} 
  union all
 select trans_dt,trans_id,ten_fname,ten_onames,ten_number,ten_email,ten_status,
 ten_address,trans_ref_no,trans_type,trans_dc,trans_amount,trans_settled_amt,
@@ -38,7 +38,7 @@ null invoice_wef_date,null invoice_wet_date
 where trans_ten_id = ten_id
 and trans_currency = cur_code
  and town_code = ct_code
- and trans_ten_id= 252
+ and trans_ten_id=  $P{tenantId} 
  and trans_type='RCT' ) x 
  order by x.trans_dt asc,x.trans_type]]>
 	</queryString>
@@ -284,7 +284,10 @@ and trans_currency = cur_code
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textField pattern="d/M/yyyy">
-					<reportElement x="2" y="3" width="78" height="13" uuid="88e9921f-2650-459a-b5a1-8990d704840f"/>
+					<reportElement x="2" y="2" width="68" height="12" uuid="88e9921f-2650-459a-b5a1-8990d704840f">
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
 					<textFieldExpression><![CDATA[$F{trans_dt}]]></textFieldExpression>
 				</textField>
 			</frame>
@@ -314,18 +317,20 @@ and trans_currency = cur_code
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textField>
-					<reportElement x="1" y="3" width="56" height="13" uuid="2680d680-015f-419a-b08c-62276870be93">
+					<reportElement x="1" y="2" width="56" height="12" uuid="2680d680-015f-419a-b08c-62276870be93">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{trans_ref_no}]]></textFieldExpression>
 				</textField>
 				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-					<reportElement x="56" y="3" width="65" height="13" uuid="65f2f3ae-a591-4ee6-bf3e-55082c542401"/>
+					<reportElement x="56" y="2" width="65" height="12" uuid="65f2f3ae-a591-4ee6-bf3e-55082c542401"/>
 					<textFieldExpression><![CDATA[$F{invoice_wef_date}]]></textFieldExpression>
 				</textField>
 				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-					<reportElement x="131" y="3" width="58" height="13" uuid="4d07d728-b8db-4742-8ff0-7ac7f499b69e">
+					<reportElement x="131" y="2" width="58" height="12" uuid="4d07d728-b8db-4742-8ff0-7ac7f499b69e">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{invoice_wet_date}]]></textFieldExpression>
 				</textField>
@@ -339,7 +344,10 @@ and trans_currency = cur_code
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textField pattern="#,##0.00;#,##0.00">
-					<reportElement x="2" y="3" width="98" height="13" uuid="7d7c8722-9c22-42f6-8f8a-e524c20ddb26"/>
+					<reportElement x="2" y="2" width="98" height="12" uuid="7d7c8722-9c22-42f6-8f8a-e524c20ddb26">
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[( $F{trans_dc}.equals("D") ? $F{trans_amount} : $F{trans_amount}.negate() )]]></textFieldExpression>
 				</textField>
@@ -353,7 +361,10 @@ and trans_currency = cur_code
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textField pattern="#,##0.00;#,##0.00">
-					<reportElement x="2" y="3" width="98" height="13" uuid="8882f001-8f93-468b-9960-9f9163c05297"/>
+					<reportElement x="2" y="2" width="98" height="12" uuid="8882f001-8f93-468b-9960-9f9163c05297">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					</reportElement>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[( $F{trans_dc}.equals("C") ? $F{trans_settled_amt} : $F{trans_settled_amt}.negate() )]]></textFieldExpression>
 				</textField>
@@ -367,7 +378,10 @@ and trans_currency = cur_code
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textField pattern="#,##0.00;#,##0.00">
-					<reportElement x="2" y="3" width="98" height="13" uuid="e9276968-0096-4de7-8059-ad04b4428a0f"/>
+					<reportElement x="2" y="2" width="98" height="12" uuid="e9276968-0096-4de7-8059-ad04b4428a0f">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					</reportElement>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[( $F{trans_dc}.equals("D") ? $F{trans_balance} : $F{trans_balance}.negate() )]]></textFieldExpression>
 				</textField>
@@ -375,7 +389,7 @@ and trans_currency = cur_code
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="50"/>
+		<band height="54"/>
 	</columnFooter>
 	<pageFooter>
 		<band height="54" splitType="Stretch"/>

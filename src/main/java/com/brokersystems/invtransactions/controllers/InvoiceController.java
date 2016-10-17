@@ -282,7 +282,6 @@ public class InvoiceController {
 
 		Long invoiceCode = (Long) request.getSession().getAttribute("invoiceTransNo");
 		TenantInvoice invoice = invService.findByInvoiceId(invoiceCode);
-         System.out.println("Tenant Id "+invoice.getTenant().getTenId());
 		modelMap.put("datasource", datasource);
 		modelMap.put("format", "pdf");
 		modelMap.put("tenantId", invoice.getTenant().getTenId());
