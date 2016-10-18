@@ -99,6 +99,7 @@ public class UtilitiesServiceImpl implements UtilitiesService {
 			BigDecimal balance = transaction.getTransBalance();
 			BigDecimal rem = balance.subtract(allocationAmt);
 			BigDecimal overpayment = BigDecimal.ZERO;
+			BigDecimal underpayment =rem;
 			if (rem.compareTo(BigDecimal.ZERO) == -1) {
 				overpayment = rem;
 				rem = BigDecimal.ZERO;
@@ -111,7 +112,7 @@ public class UtilitiesServiceImpl implements UtilitiesService {
 				authPendingTrans(ActiveRen);
 				authTrans = true;
 			} else if (rem.compareTo(BigDecimal.ZERO) == 1) {
-				transaction.setTransSettledAmt(rem);
+				transaction.setTransSettledAmt(allocationAmt);
 			}
 			if(authTrans && transaction.getTranstype().equals("RN")){
 				System.out.print("Authorizing renewal");
@@ -140,10 +141,11 @@ public class UtilitiesServiceImpl implements UtilitiesService {
 			Date wefDate = transaction.getInvoice().getRenewalDate();
 			Date wetDate = FormatUtils.addDays(FormatUtils.addMonths(transaction.getInvoice().getRenewalDate(),
 					FormatUtils.calculateFrequencyRate(transaction.getInvoice().getFrequency())), -1);
-			BigDecimal remainder = BigDecimal.ZERO;
+			System.out.println("Over payment "+overpayment);
+		
 			if (overpayment.compareTo(BigDecimal.ZERO) == 1) {
 				receiptAmt = overpayment;
-				 remainder = receiptAmt.remainder(transaction.getInvoice().getInstallmentAmount());
+				//BigDecimal  remainder = receiptAmt.remainder(transaction.getInvoice().getInstallmentAmount());
 				while (receiptAmt.compareTo(BigDecimal.ZERO) == 1) {
 					BigDecimal installAmt = transaction.getInvoice().getInstallmentAmount();
 					if (installAmt.compareTo(receiptAmt) == 1)
@@ -162,7 +164,7 @@ public class UtilitiesServiceImpl implements UtilitiesService {
 				}
 
 			}
-			if (remainder.compareTo(BigDecimal.ZERO) == 0) {
+		     if(underpayment.compareTo(BigDecimal.ZERO)==0){
 				createRenewal(transaction.getTenant().getTenId(), wefDate, wetDate,invoice.getInvoiceNumber());
 			}
 			createSettlements(transaction.getInvoice(), transaction, transact,tran.getRctAmount());
