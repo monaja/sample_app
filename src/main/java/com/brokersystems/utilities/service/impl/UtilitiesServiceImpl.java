@@ -2,6 +2,7 @@ package com.brokersystems.utilities.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -76,15 +77,8 @@ public class UtilitiesServiceImpl implements UtilitiesService {
 		Currencies currency = receipt.getTransCurrency();
 		for (ReceiptTransDtls tran : rctDetails) {
 			TenantInvoice invoice = tran.getInvoice();
-			Iterable<Transactions> trans = transRepo.findAll(QTransactions.transactions.invoice.eq(invoice)
+			Iterable<Transactions> trans = transRepo.findAll(QTransactions.transactions.invoice.invoiceNumber.eq(invoice.getInvoiceNumber())
 					.and(QTransactions.transactions.transBalance.goe(BigDecimal.ZERO)).and(QTransactions.transactions.transDC.eq("D")));
-			Transactions transaction = null;
-			for (Transactions tr : trans) {
-				if (tr.getTransBalance().compareTo(BigDecimal.ZERO) == 1) {
-					transaction = tr;
-					break;
-				}
-			}
 			Predicate pendingRen = QTenantInvoice.tenantInvoice.currentStatus.eq("RN")
 					.and(QTenantInvoice.tenantInvoice.status.eq("R"))
 					.and(QTenantInvoice.tenantInvoice.invoiceNumber.eq(invoice.getInvoiceNumber()));
@@ -93,82 +87,94 @@ public class UtilitiesServiceImpl implements UtilitiesService {
 				throw new BadRequestException(
 						"Error doing auto renewals for the invoice...More than one active transaction exist...");
 			}
-			boolean authTrans = false;
+			
+			boolean auth  = false;
+			if (invoiceRepo.count(pendingRen) == 1) {
+				auth = true;
+			}
 			TenantInvoice ActiveRen = invoiceRepo.findOne(pendingRen);
-			BigDecimal allocationAmt = tran.getRctAmount();
-			BigDecimal balance = transaction.getTransBalance();
-			BigDecimal rem = balance.subtract(allocationAmt);
-			BigDecimal overpayment = BigDecimal.ZERO;
-			BigDecimal underpayment =rem;
-			if (rem.compareTo(BigDecimal.ZERO) == -1) {
-				overpayment = rem;
-				rem = BigDecimal.ZERO;
-
-			}
-			transaction.setTransBalance(rem.abs());
-			if (rem.compareTo(BigDecimal.ZERO) == -1 || rem.compareTo(BigDecimal.ZERO) == 0) {
-				transaction.setTransSettledAmt(transaction.getTransSettledAmt().add(balance));
-				if(ActiveRen!=null)
-				authPendingTrans(ActiveRen);
-				authTrans = true;
-			} else if (rem.compareTo(BigDecimal.ZERO) == 1) {
-				transaction.setTransSettledAmt(allocationAmt);
-			}
-			if(authTrans && transaction.getTranstype().equals("RN")){
-				System.out.print("Authorizing renewal");
-				transaction.setAuthoriedBy(userUtils.getCurrentUser().getUsername());
-				transaction.setAuthorized("Y");
-			}
 			
-			
-			BigDecimal receiptAmt = BigDecimal.ZERO;
-			
-			if (overpayment.compareTo(BigDecimal.ZERO) == 1) {
-				receiptAmt = overpayment;
-				while (receiptAmt.compareTo(BigDecimal.ZERO) == 1) {
-					BigDecimal installAmt = transaction.getInvoice().getInstallmentAmount();
-					if (installAmt.compareTo(receiptAmt) == 1)
-						installAmt = receiptAmt;
-					receiptAmt = receiptAmt.subtract(installAmt);
+			BigDecimal receiptAmount = tran.getRctAmount();
+			Date wefDate = null;
+			Date wetDate = null;
+			BigDecimal installAmt =null;
+			TenantDef tenant = null;
+			Transactions transact = createTransaction(receipt.getReceiptNo(), invoice.getTenant(), tran.getRctAmount(), BigDecimal.ZERO, currency);
+			if(trans.spliterator().getExactSizeIfKnown()==0){
+				throw new  BadRequestException("Error getting allocation transaction...");
+			}
+			wefDate= new Date(0L);
+			for (Transactions tr : trans) {
+				if (tr.getTransBalance().compareTo(BigDecimal.ZERO) == 1) {
+					BigDecimal balance = tr.getTransBalance();
+					installAmt = tr.getInvoice().getInstallmentAmount();
+					tenant = tr.getTenant();
+					BigDecimal amount = tr.getTransAmount();
+					if(receiptAmount.compareTo(BigDecimal.ZERO)==1){
+					if(receiptAmount.compareTo(balance)==1 || receiptAmount.compareTo(balance)==0){
+						tr.setTransBalance(BigDecimal.ZERO);
+						tr.setTransSettledAmt(amount.abs());
+						if(auth)
+						authPendingTrans(ActiveRen);
+						if(tr.getTranstype().equals("RN")){
+							tr.setAuthoriedBy(userUtils.getCurrentUser().getUsername());
+							tr.setAuthorized("Y");
+						}
+					}
+					else{
+						tr.setTransSettledAmt(tr.getTransSettledAmt().add(receiptAmount.abs()));
+						tr.setTransBalance(tr.getTransBalance().subtract(receiptAmount.abs()));
+					}
+					createSettlements(tr.getInvoice(), tr, transact,tran.getRctAmount());
+					transactions.add(tr);
+					if(receiptAmount.compareTo(balance)==1 || receiptAmount.compareTo(balance)==0)
+					   receiptAmount  = receiptAmount.subtract(balance);
+					else
+						receiptAmount = BigDecimal.ZERO;
+					}
+					if(wefDate.before( tr.getInvoice().getRenewalDate()))
+						wefDate =  tr.getInvoice().getRenewalDate();
 					
 				}
+				
 			}
-
-			Transactions transact = createTransaction(receipt.getReceiptNo(), transaction.getTenant(), tran.getRctAmount(), receiptAmt, currency);
-			tran.setAllocated("Y");
-		     receiptAmt = BigDecimal.ZERO;
-			overpayment = overpayment.abs();
-			Date wefDate = transaction.getInvoice().getRenewalDate();
-			Date wetDate = FormatUtils.addDays(FormatUtils.addMonths(transaction.getInvoice().getRenewalDate(),
-					FormatUtils.calculateFrequencyRate(transaction.getInvoice().getFrequency())), -1);
-			System.out.println("Over payment "+overpayment);
-		
+			wetDate = FormatUtils.addDays(FormatUtils.addMonths(wefDate,
+					FormatUtils.calculateFrequencyRate(invoice.getFrequency())), -1);
+			boolean zeroBalance=true;
+			for(Transactions t:transactions){
+				if(!(t.getTransBalance().compareTo(BigDecimal.ZERO)==0)){
+					zeroBalance = false;
+				}
+			}
+			BigDecimal overpayment = BigDecimal.ZERO;
+			if(receiptAmount.compareTo(BigDecimal.ZERO)==1){
+				overpayment = receiptAmount.abs();
+			}
+			
 			if (overpayment.compareTo(BigDecimal.ZERO) == 1) {
-				receiptAmt = overpayment;
-				//BigDecimal  remainder = receiptAmt.remainder(transaction.getInvoice().getInstallmentAmount());
-				while (receiptAmt.compareTo(BigDecimal.ZERO) == 1) {
-					BigDecimal installAmt = transaction.getInvoice().getInstallmentAmount();
-					if (installAmt.compareTo(receiptAmt) == 1)
-						installAmt = receiptAmt;
-					createRenewal(transaction.getTenant().getTenId(), wefDate, wetDate,invoice.getInvoiceNumber());
-					authorizeRenewal(transaction.getTenant().getTenId(), installAmt, transact,invoice.getInvoiceNumber());
-					receiptAmt = receiptAmt.subtract(installAmt);
+				BigDecimal recptAmt = overpayment;
+				zeroBalance = false;
+				while (recptAmt.compareTo(BigDecimal.ZERO) == 1) {
+					if (installAmt.compareTo(recptAmt) == 1)
+						installAmt = recptAmt;
+					createRenewal(tenant.getTenId(), wefDate, wetDate,invoice.getInvoiceNumber());
+					authorizeRenewal(tenant.getTenId(), installAmt, transact,invoice.getInvoiceNumber());
+					recptAmt = recptAmt.subtract(installAmt);
 					wefDate = FormatUtils.addMonths(wefDate,
-							FormatUtils.calculateFrequencyRate(transaction.getInvoice().getFrequency()));
+							FormatUtils.calculateFrequencyRate(invoice.getFrequency()));
 					wetDate = FormatUtils
 							.addDays(
 									FormatUtils.addMonths(wefDate,
 											FormatUtils
-													.calculateFrequencyRate(transaction.getInvoice().getFrequency())),
+													.calculateFrequencyRate(invoice.getFrequency())),
 									-1);
 				}
-
 			}
-		     if(underpayment.compareTo(BigDecimal.ZERO)==0){
-				createRenewal(transaction.getTenant().getTenId(), wefDate, wetDate,invoice.getInvoiceNumber());
+			
+			if(zeroBalance){
+				createRenewal(tenant.getTenId(), wefDate, wetDate,invoice.getInvoiceNumber());
 			}
-			createSettlements(transaction.getInvoice(), transaction, transact,tran.getRctAmount());
-			transactions.add(transaction);
+			
 		}
 		transRepo.save(transactions);
 
